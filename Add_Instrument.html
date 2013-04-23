@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+	<head>
+		<title>Add New Instrument To Database</title>
+<link rel="stylesheet" href="validationEngine.jquery.css" type="text/css">
+ <style type="text/css">
+* { font-family: Verdana; font-size=10; }
+label {padding-right:1em;float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+.drawingqty{border-spacing=2px;
+color: #ffffff;
+} 
+</style>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.validate.js"></script>
+<script src="jquery.datetimeentry.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+		$('#addinst').validate(); //attach form to validation engine
+		$('#footer2').load("get_instruments_for_display.php")
+
+	$("#submit").click(function(event) {
+	 if($("#addinst").valid())
+  	{
+  		event.preventDefault();
+		$.ajax({
+      					data: $('#addinst').serializeArray(),
+      					type: "POST",
+      					url: "add_instrument.php",
+      					success: function(html) {
+				document.getElementById("footer").innerHTML=html;
+				$('#addinst')[0].reset();
+				$('#footer2').load("get_instruments_for_display.php")
+      							}
+    							});
+  	}
+		});
+
+
+});
+
+
+$(function () {
+	$('#caldate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#caldatedb', altFormat: 'Y-O-D'});
+	
+	$('#nextcaldate').datetimeEntry({datetimeFormat: 'D-O-Y', beforeShow: customRange,altField: '#nextcaldatedb', altFormat: 'Y-O-D'});
+	
+	});  
+
+function customRange() { 
+
+return {minDatetime: $('#caldate').datetimeEntry('getDatetime')};
+}
+
+
+	
+	
+</script>
+</head>
+<body>
+
+<form name="addinst" id="addinst" >
+<fieldset><legend>Enter Instrument Details</legend>
+
+   <p>
+		<label for="bno">Instrument Serial No</label>
+     	<input type="text" name="instno" id="instno" class="required" />
+   </p>
+
+	<p>
+			<label for="bno">Instrument Description</label></td>
+			<input type="text" name="instdesc" id="instdesc" class="required"/>
+	</p>
+	
+	<p>
+			<label for="bno">Calibration Date</label></td>
+			<input type="text" name="caldate" id="caldate" class="required"/>
+			<input type="hidden" name="caldatedb" id="caldatedb"/>
+	</p>
+
+	<p>
+			<label for="bno">Next Calibration Date</label></td>
+			<input type="text" name="nextcaldate" id="nextcaldate" class="required"/>
+			<input type="hidden" name="nextcaldatedb" id="nextcaldatedb"/>
+	</p>
+
+   <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+
+</fieldset>
+	
+		</form>
+
+<div id="footer"> </div> <!--place show errors, results etc-->
+<div id="footer2"> </div> <!--place show errors, results etc-->
+</body>
+</html>

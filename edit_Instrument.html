@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+	<head>
+		<title>Edit Existing Instrument In Database</title>
+<link rel="stylesheet" href="validationEngine.jquery.css" type="text/css">
+ <style type="text/css">
+* { font-family: Verdana; font-size=10; }
+label {padding-right:1em;float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+.drawingqty{border-spacing=2px;
+color: #ffffff;
+} 
+</style>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.validate.js"></script>
+<script src="jquery.datetimeentry.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+		$('#addinst').validate(); //attach form to validation engine
+
+         $('#inst').load("get_instruments.php");	
+
+	$('#editinst').hide();
+
+	$('#inst').click(function(){
+		var iid=$('#Instrument_ID').val();
+
+
+				$.ajax({
+      					type: "GET",
+      					url: "get_instrument_to_edit.php?iid="+iid,
+      					async:false,
+      					success: function(html) {
+      									
+      						if(html!="")
+      						{
+					data=html.split("<|>");
+
+
+					$('#instno').val(data[0]);
+					$('#instdesc').val(data[1]);
+					$('#caldate').val(data[2]);
+					$('#caldatedb').val(data[3]);
+					$('#nextcaldate').val(data[4]);
+					$('#nextcaldatedb').val(data[5]);
+			$('#editinst').show();
+						}else
+						{
+							$('#footer').html("You can edit only Production, Set Up or Re Work Logs");
+						}
+										}
+    							});
+	
+	});
+
+	$("#submit").click(function(event) {
+	 if($("#addinst").valid())
+  	{
+  		event.preventDefault();
+		$.ajax({
+      					data: $('#addinst').serializeArray(),
+      					type: "POST",
+      					url: "update_instrument.php",
+      					success: function(html) {
+				document.getElementById("footer").innerHTML=html;
+				$('#addinst')[0].reset();
+				$('#footer2').load("get_instruments_for_display.php")
+      							}
+    							});
+  	}
+		});
+
+
+});
+
+
+$(function () {
+	$('#caldate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#caldatedb', altFormat: 'Y-O-D'});
+	
+	$('#nextcaldate').datetimeEntry({datetimeFormat: 'D-O-Y', beforeShow: customRange,altField: '#nextcaldatedb', altFormat: 'Y-O-D'});
+	
+	});  
+
+function customRange() { 
+
+return {minDatetime: $('#caldate').datetimeEntry('getDatetime')};
+}
+
+
+	
+	
+</script>
+</head>
+<body>
+
+<form name="addinst" id="addinst" >
+<div id="inst"> </div>
+<fieldset><legend>Edit Instrument Details</legend>
+
+   <p>
+		<label for="bno">Instrument Serial No</label>
+     	<input type="text" name="instno" id="instno" class="required" />
+   </p>
+
+	<p>
+			<label for="bno">Instrument Description</label></td>
+			<input type="text" name="instdesc" id="instdesc" class="required"/>
+	</p>
+	
+	<p>
+			<label for="bno">Calibration Date</label></td>
+			<input type="text" name="caldate" id="caldate" class="required"/>
+			<input type="hidden" name="caldatedb" id="caldatedb"/>
+	</p>
+
+	<p>
+			<label for="bno">Next Calibration Date</label></td>
+			<input type="text" name="nextcaldate" id="nextcaldate" class="required"/>
+			<input type="hidden" name="nextcaldatedb" id="nextcaldatedb"/>
+	</p>
+
+   <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+
+</fieldset>
+	
+		</form>
+
+<div id="footer"> </div> <!--place show errors, results etc-->
+<div id="footer2"> </div> <!--place show errors, results etc-->
+</body>
+</html>
