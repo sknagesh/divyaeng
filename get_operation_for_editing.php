@@ -7,7 +7,8 @@ $opid=$_GET['opid'];
 
 $query="SELECT Drawing_ID,Program_NO,Operation_Desc,NC_Prog_Path,Operation_Notes,Clamping_Time,Machining_Time,
 		(Select GROUP_CONCAT(Fixture_NO) FROM Ope_Fixt_Map WHERE Operation_ID='$opid')as fno,
-		(Select GROUP_CONCAT(Operation_Image_Path) FROM Operation_Image WHERE Operation_ID='$opid')as oip,Stage_Drawing_Path FROM Operation WHERE Operation_ID='$opid';";
+		(Select GROUP_CONCAT(CONCAT(OP_Image_ID, ',' ,Operation_Image_Path)) FROM Operation_Image WHERE Operation_ID='$opid')as oip,
+		Stage_Drawing_Path FROM Operation WHERE Operation_ID='$opid';";
 
 
 $res=mysql_query($query) or die(mysql_error());
@@ -19,8 +20,8 @@ if($n!=0)
 
 $drawid=$row['Drawing_ID'];
 $opedesc=$row['Operation_Desc'];
-$ctime=$row['Clamping_Time'];
-$mtime=$row['Machining_Time'];
+$ctime=hms2mins($row['Clamping_Time']);
+$mtime=hms2mins($row['Machining_Time']);
 $fixtno=$row['fno'];
 $progno=$row['Program_NO'];
 $ppath=$row['NC_Prog_Path'];

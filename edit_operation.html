@@ -59,12 +59,26 @@ p { font-weight: bold; clear: both; }
 					$('#ppath').val(data[4]);
 					$('#onote').val(data[5]);
 					$('#fixtno').val(data[6]);
-					$('#simg').html(data[7]);
-					$('#sdrg').html(data[8]);
-			$('#eop').show();
-						}else
+					if(data[7]!='')
+					{
+						var images=data[7].split(",");
+						var noofimages=images.length;
+						console.log(data[7]);
+						console.log(noofimages);
+						var simg='<p><label>Images Uploaded for this operation, Check Images to be deleted</label><p>';
+						for(var i=0;i<noofimages;i+=2)
 						{
-							$('#footer').html("Invalid Operation Selected For Editing");
+							simg+='<input type="checkbox" name=simg['+i+'] id=simg['+i+'] value="'+images[i]+'">';
+							simg+=images[i+1]+'<p>';
+
+						}
+						
+					}
+					$('#simg').html(simg);
+					$('#sdrg').html(data[8]);
+
+
+			$('#eop').show();
 						}
 										}
     							});
@@ -98,7 +112,7 @@ var options = {  ///options for ajaxSubnit function
 
     </head>
     <body>
-  <form name ="addoperation" id="addoperation" action="add_operation.php" method="post" enctype="multipart/form-data">
+  <form name ="addoperation" id="addoperation" action="update_operation.php" method="post" enctype="multipart/form-data">
  <fieldset>
 <legend>Edit Operation Details</legend>
 

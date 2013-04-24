@@ -14,7 +14,7 @@ echo '<option value="">Select Operation</option>';
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while ($row = mysql_fetch_assoc($resa))
 {
-	if($row['Operation']==$did){$sel="selected=\"selected\"";}else{$sel="";}
+	if($row['Operation_ID']==$did){$sel="selected=\"selected\"";}else{$sel="";}
 echo "<option value=".$row['Operation_ID']." $sel >";
 echo "$row[Operation_Desc]</option>";
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Add New Suppplier for Tool Brand To Database</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 15em; float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+	$('#brand').load("get_tool_brands.php")
+    $("#addbrand").validate();  //attach validater to form
+    
+	$('#brand').click(function(){
+		var bid=$('#Brand_ID').val();
+		if(bid!='')
+		{
+			$('#supplier').load('get_suppliers.php');
+		}
+		
+	});
+
+
+	$("#submit").click(function(event) {
+	 if($("#addbrand").valid())
+  	{
+  		event.preventDefault();
+		$.ajax({
+      					data: $('#addbrand').serializeArray(),
+      					type: "POST",
+      					url: "add_supplier_brand.php",
+      					success: function(html) {
+				document.getElementById("footer").innerHTML=html;
+				$('#addbrand')[0].reset();
+      							}
+    							});
+  	}
+		});
+   
+    
+    
+  });
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+<div id="adraw">
+  <form name ="addbrand" id="addbrand">
+ <fieldset>
+<legend>Select Supplier and Brand Details</legend>
+
+<div id="brand"> </div>
+<div id="supplier"> </div>
+
+   <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"> </div>
+</div>
+
+</body>
+</html>

@@ -3,8 +3,9 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $uploadDir = '/home/www/drawings/';
-print_r($_POST);
+
 $drawid=$_POST['Drawing_ID'];
+$opid=$_POST['Operation_ID'];
 $opedesc=$_POST['opdesc'];
 if(isSet($_POST['ctime'])){$ctime=$_POST['ctime'];}else{$ctime="";}
 if(isSet($_POST['mtime'])){$mtime=$_POST['mtime'];}else{$mtime="";}
@@ -12,14 +13,9 @@ if(isSet($_POST['fixtno'])){$fixtno=$_POST['fixtno'];}else{$fixtno="";}
 if(isSet($_POST['progno'])){$progno=$_POST['progno'];}else{$progno="";}
 if(isSet($_POST['ppath'])){$ppath=$_POST['ppath'];}else{$ppath="";}
 if(isSet($_POST['onote'])){$onote=$_POST['onote'];}else{$onote="";}
+if(isSet($_POST['simg'])){$simg=$_POST['simg'];}else{$simg="";}
 
-if($fixtno!='')
-{
 $fxtno=explode(',', $fixtno);
-}
-
-$oimgfiles=count($_FILES['oimg']['name']);
-
 
 
 if($ctime!="")
@@ -37,7 +33,12 @@ if($mtime!="")
 
 }
 
-
+if(isSet($_FILES['oimg']))
+{
+$oimgfiles=count($_FILES['oimg']['name']);
+}else{
+	$oimgfiles='';
+}
 
 if($oimgfiles!=0)
 {
@@ -87,62 +88,78 @@ if(isSet($_FILES['odwg']['name']))
 
 }else{$odrgfileName='';}
 
+if($odrgfileName!='')
+{
+	
+	$stagedrg=",Stage_Drawing_Path='$odrgfileName'";
+}else{
+	$stagedrg='';
+}
 
+$query="UPDATE Operation 
+			SET Operation_Desc='$opedesc',
+				Clamping_Time='$cltime',
+				Machining_Time='$mctime',
+				Program_NO='$progno',
+				NC_Prog_Path='$ppath',
+				Operation_Notes='$onote'
+				$stagedrg
+			WHERE Operation_ID=$opid;";
 
-
-
-
-
-
-$query="INSERT INTO Operation (Drawing_ID,
-								Operation_Desc,
-								Clamping_Time,
-								Machining_Time,
-								Program_NO,
-								NC_Prog_Path,
-								Operation_Notes,
-								Stage_Drawing_Path) 
-	 						VALUES('$drawid',
-									'$opedesc',
-									'$cltime',
-									'$mctime',
-									'$progno',
-									'$ppath',
-									'$onote',
-									'$odrgfileName');";
-
-//print($query);
+print($query);
 
 $res=mysql_query($query) or die(mysql_error());
 
 $result=mysql_affected_rows();
-if($result!=0)
+
+//add path of new images for this operation to database
+
+if($oimgfiles!=0)
 {
-	$oid=mysql_insert_id();
+
+
+	for ($i=0; $i < $oimgfiles; $i++) { 
+			$quef="INSERT INTO Operation_Image (Operation_ID,Operation_Image_Path) VALUES( $opid,'$drgfileNames[$i]');";
+		print($quef);
+		$resf=mysql_query($quef) or die(mysql_error());
+		}
+}	
+//delete any old image selected to be deleted
+if($simg!='')
+{
+$simages=count($simg);
+
+$simg=array_values($simg); //re-order array
+
+	for ($j=0; $j<$simages; $j++)
+	{
+//select file name and delete them from HDD and path from database
+		$qf="SELECT Operation_Image_Path FROM Operation_Image WHERE OP_Image_ID=$simg[$j];";
+		$rf=mysql_query($qf) or die(mysql_error());
+		$rfr=mysql_fetch_assoc($rf);
+		$filepath=$uploadDir.$rfr['Operation_Image_Path'];
+//		print($filepath);
+		unlink($filepath);	
+		$q="DELETE FROM Operation_Image WHERE OP_Image_ID=$simg[$j];";
+		$rf=mysql_query($q) or die(mysql_error());
+		}
+}
+
+
+
 	if($fixtno!='')
 	{
 		$j=count($fxtno);
-		for ($i=0; $i < $j; $i++) { 
-		$que="INSERT INTO Ope_Fixt_Map (Operation_ID,Fixture_NO) VALUES( $oid,'$fxtno[$i]');";
-	//		print($que);
+  	//just being lazy and deleting all previous fixture entries for this operation
+					$qfixt="DELETE FROM Ope_Fixt_Map WHERE Operation_ID=$opid;";
+			$resf=mysql_query($qfixt) or die(mysql_error());
+	//add new fixtures for this operation
+		for ($i=0; $i < $j; $i++) {
+		$que="INSERT INTO Ope_Fixt_Map (Operation_ID,Fixture_NO) VALUES( $opid,'$fxtno[$i]');";
+			print($que);
 			$resf=mysql_query($que) or die(mysql_error());
 		}
 	}	
-
-		for ($i=0; $i < $oimgfiles; $i++) { 
-			$quef="INSERT INTO Operation_Image (Operation_ID,Operation_Image_Path) VALUES( $oid,'$drgfileNames[$i]');";
-//			print($quef);
-			$resf=mysql_query($quef) or die(mysql_error());
-	}
-	
-	
-	
-print("Added new Operaton $opedesc");	
-	
-}else
-	{
-		print("Error Adding Operation");
-	}
 
 
 ?>
