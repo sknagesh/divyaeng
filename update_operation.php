@@ -7,6 +7,7 @@ $uploadDir = '/home/www/drawings/';
 $drawid=$_POST['Drawing_ID'];
 $opid=$_POST['Operation_ID'];
 $opedesc=$_POST['opdesc'];
+if(isSet($_POST['stime'])){$stime=$_POST['stime'];}else{$stime="";}
 if(isSet($_POST['ctime'])){$ctime=$_POST['ctime'];}else{$ctime="";}
 if(isSet($_POST['mtime'])){$mtime=$_POST['mtime'];}else{$mtime="";}
 if(isSet($_POST['fixtno'])){$fixtno=$_POST['fixtno'];}else{$fixtno="";}
@@ -16,6 +17,12 @@ if(isSet($_POST['onote'])){$onote=$_POST['onote'];}else{$onote="";}
 if(isSet($_POST['simg'])){$simg=$_POST['simg'];}else{$simg="";}
 
 $fxtno=explode(',', $fixtno);
+
+if($stime!="")
+{
+	$t=secs2hms($stime*60);
+	$sltime=$t[0].':'.$t[1].':'.$t[2];
+}
 
 
 if($ctime!="")
@@ -98,6 +105,7 @@ if($odrgfileName!='')
 
 $query="UPDATE Operation 
 			SET Operation_Desc='$opedesc',
+				Setup_Time='$sltime',
 				Clamping_Time='$cltime',
 				Machining_Time='$mctime',
 				Program_NO='$progno',

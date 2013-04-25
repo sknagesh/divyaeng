@@ -13,6 +13,7 @@ $query="SELECT * FROM Tool_Brand;";
 }
 
 //print($query);
+print("<label>Tool Make</label>");
 print("<select name=\"Brand_ID\" id=\"Brand_ID\" class=\"required\">");
 echo '<option value="">Select Tool Brand</option>';
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));

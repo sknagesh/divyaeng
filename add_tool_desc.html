@@ -24,17 +24,17 @@ p { font-weight: bold; clear: both; }
 		var ttype=$('#Tool_Type_ID').val();
 		if(ttype!='')
 		{
-  		$("#supplier").load('get_suppliers.php');  //load supplier list from get_supplierss.php			
+		  		$("#toolbrand").load('get_tool_brands.php'); 	
 		}
 		
 	});
 
-	$('#supplier').click(function(){
-		var supid=$('#Supplier_ID').val();
-		if(supid!='')
+	$('#toolbrand').click(function(){
+		var bid=$('#Brand_ID').val();
+		if(bid!='')
 		{
-		var url='get_tool_brands.php?sid='+supid;
-  		$("#toolbrand").load(url);  //load tool brand list list from get_tool_brand.php			
+			var url='get_suppliers.php?bid='+bid;
+  		$("#supplier").load(url);  //load supplier list from get_supplierss.php
 		}
 		
 	});
@@ -106,8 +106,12 @@ $.validator.addClassRules({
   <form name ="tool" id="tool" >
  <fieldset>
 <legend>New Tool Details</legend>
-     <label for="tooltype">Tool Type</label>
+
      <div id="tooltype"> </div>
+   <p>
+
+   <p>
+     <div id="toolbrand"> </div>
    <p>
 
    <p>
@@ -115,10 +119,6 @@ $.validator.addClassRules({
      <div id="supplier"> </div>
    <p>
 
-   <p>
-     <label for="brand">Tool Make</label>
-     <div id="toolbrand"> </div>
-   <p>
 
    <p>
      <label for="tdesc">Tool Description</label>
@@ -135,13 +135,19 @@ $.validator.addClassRules({
 
    <p>
      <label for="sdia">Shank Diameter</label>
-     <input id="sdia" name="sdia" size="25"  class="required" />
+     <input id="sdia" name="sdia" size="25"  class="required number" />
    </p>
 
    <p>
-     <label for="tcr">Corner Radius/Angle</label>
+     <label for="tcr">Corner Radius</label>
      <input id="tcr" name="tcr" size="25"  class="number" />
    </p>
+
+   <p>
+     <label for="tcr">Cutting Edge Angle</label>
+     <input id="tang" name="tang" size="25"  class="number" />
+   </p>
+
 
    <p>
      <label for="tfl">Flute Length</label>
@@ -175,8 +181,8 @@ $.validator.addClassRules({
    </p>
 
    <p>
-     <label for="remark">Tool Price </label>
-     <input type="text" id="tprice" name="tprice" class="decimal" />
+     <label>Tool Price </label>
+     <input type="text" id="tprice" name="tprice" class="number" />
    </p>
 
 
@@ -185,7 +191,7 @@ $.validator.addClassRules({
    </p>
  </fieldset>
  </form>
-<div id="footer"></div>
+<div id="footer"> </div>
 
 
 </body>

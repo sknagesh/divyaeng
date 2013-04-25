@@ -6,6 +6,7 @@ $uploadDir = '/home/www/drawings/';
 print_r($_POST);
 $drawid=$_POST['Drawing_ID'];
 $opedesc=$_POST['opdesc'];
+if(isSet($_POST['stime'])){$stime=$_POST['stime'];}else{$stime="";}
 if(isSet($_POST['ctime'])){$ctime=$_POST['ctime'];}else{$ctime="";}
 if(isSet($_POST['mtime'])){$mtime=$_POST['mtime'];}else{$mtime="";}
 if(isSet($_POST['fixtno'])){$fixtno=$_POST['fixtno'];}else{$fixtno="";}
@@ -20,6 +21,11 @@ $fxtno=explode(',', $fixtno);
 
 $oimgfiles=count($_FILES['oimg']['name']);
 
+if($stime!="")
+{
+	$t=secs2hms($stime*60);
+	$sltime=$t[0].':'.$t[1].':'.$t[2];
+}
 
 
 if($ctime!="")
@@ -96,6 +102,7 @@ if(isSet($_FILES['odwg']['name']))
 
 $query="INSERT INTO Operation (Drawing_ID,
 								Operation_Desc,
+								Setup_Time,
 								Clamping_Time,
 								Machining_Time,
 								Program_NO,
@@ -104,6 +111,7 @@ $query="INSERT INTO Operation (Drawing_ID,
 								Stage_Drawing_Path) 
 	 						VALUES('$drawid',
 									'$opedesc',
+									'$sltime',
 									'$cltime',
 									'$mctime',
 									'$progno',
