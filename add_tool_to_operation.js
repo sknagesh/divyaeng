@@ -1,158 +1,132 @@
   $(document).ready(function(){
-var tlist=new Array();
-var toolno=0;
-$('#added').hide();
-$('#addedit').hide();
-$('#del').hide();
+	var opeid='';
+	$('#toolsoperation').validate();
   	$("#customer").load('get_customer.php');  //load customer list from get_customer.php
-    $("#toolsoperation").validate();  //attach validater to form
+	$('#toolselection').hide();
 	$('#tooldia').hide();
-	$('#addd').hide();
-		$('#customer').click(function(){ ///load drawing list based on customer
+	$('#addbutton').hide();
+	$('#customer').click(function(){
 		var custid=$('#Customer_ID').val();
-		var url='get_drawing.php?custid='+custid;
-  		$("#drawing").load(url)
-  		});
-
-		$('#drawing').click(function(){  //load operation list based on drawing
+		
+		if(custid!='')
+		{	url='get_drawing.php?custid='+custid;
+			$('#drawing').load(url);
+		}
+		
+	});
+		$('#drawing').click(function(){
 		var drawingid=$('#Drawing_ID').val();
-		var url='get_operations.php?drawingid='+drawingid;
-  		$("#operation").load(url)
-  		});
-
-		$('#operation').click(function(){  
-		$('#addedit').show();
-
-  		});
-
-		$('#addedit').click(function(){  
-		var opid=$('#Operation_ID').val();  //get selected opid
-		var adddel=$('#add-edit:checked').val();
-				if(opid!="")
-		{  //if an operation is selected show tool types and text field to enter diameter
-				if(adddel=="add")
-				{	
-					$('#tooltype').show();
-					$("#footer").show();
-					$('#del').hide();
-					$('#tooltype').load('get_tool_types.php');
-					var url='show_tool_list_for_op.php?opid='+opid;  //display already added tools for this operation
-  				$("#footer").load(url)
-				}else
-				if(adddel=="del")
-				{
-				$('#tooltype').empty();
-				$("#footer").empty();
-				$("#added").empty()
-				
-					var url='get_tool_list_for_op.php?opid='+opid;  //display already added tools for this operation
-  				$("#del").load(url)
-					$('#del').show();				
-				}
-		}else 
-		{  //if no operations are selected hide tool type and dia text field
-			$('#tooltype').empty();
+		
+		if(drawingid!='')
+		{	url='get_operations.php?drawingid='+drawingid;
+			$('#operation').load(url);
 		}
-		
-  		});
-
-
-
-		$('#tooltype').click(function(){  //load operation list based on drawing
-		var ttype=$('#Tool_Type_ID').val();
-		if(ttype!="")
-		{
-			$('#tooldia').show();
-		}else
-		{
-			$('#tooldia').hide();
-			$('#tool').hide();
-		}
-		
-  		});
-
-		$('#tdia').keyup(function(){  //load operation list based on drawing
-		var ttype=$('#Tool_Type_ID').val();
-		var tdia=$('#tdia').val();
-		var url='get_tool_of_type_dia.php?ttype='+ttype+'&tdia='+tdia;
-			if(tdia!=''&& ttype!='')
-			{
-		$('#tool').show();
-  		$("#tool").load(url)
-  		$('#addd').show();
-  			}
-  		});
-
-	$('#add').click(function(){
-		
-		if($('#toolsoperation').valid())
-		{
-		var tid1=$('#Tool_ID_1').val();
-		var insid=$('#Insert_ID').val();
-		var tid2=$('#Tool_ID_2').val();
-		var hid=$('#Holder_ID').val();
-		var tdesc=$('#tdesc').val();
-		var toh=$('#toh').val();
-		var tlife=$('#tlife').val();
-		if(tlife==""){tlife=0;}
-		tlist[toolno]=[tid1,insid,tid2,hid,tdesc,toh,tlife];
-		var newtr="<tr><td>"+$('#Tool_ID_1 :selected').text()+"</td><td>"+$('#Tool_ID_2 :selected').text()+"</td><td>"+$('#Holder_ID :selected').text()+"</td><td>";
-		newtr+=tdesc+"</td><td>"+toh+"</td><td>"+tlife+"</td></tr>";
-		$('#tool').hide();
-		$('#tooldia').hide();
-		$('#added').append(newtr);
-		$('#added').show();
-			console.log(tlist[toolno]);
-		toolno+=1;
-		$('#addd').hide();
-		}
-		
 		
 	});
 
-	$("#submit").click(function(event) {
+	$('#operation').click(function(){
+		var opid=$('#Operation_ID').val();
+		opeid=$('#Operation_ID').val();
+		if(opid!='')
+		{	
+			$('#tooltype').load('get_tool_types.php');
+				var urlo="get_tools_for_operation.php?opid="+opid;
+				$('#footer2').load(urlo);			
+		}
+		
+	});
 
-	 if($("#toolsoperation").valid())
-  	{
-  		$('#addedtools').val(tlist);
-  		$('#nooftools').val(toolno);
-  		event.preventDefault();
-		$.ajax({
-      					data: $('#toolsoperation').serializeArray(),
-      					type: "POST",
-      					url: "add_tools_to_operation.php",
-      					success: function(html) {
+	$('#tooltype').click(function(){
+		var type=$('Tool_Type_ID').val();
+		if(type!='')
+		{	
+					$('#tooldia').show();
+					$('#addbutton').show();
+			
+		}
+		
+	});
 
-				document.getElementById("footer").innerHTML=html;
-				$('#toolsoperation')[0].reset();
-				$('#tooltype').hide();
-//				$("#footer").hide();
-				$("#added").hide();
-				$("#addedit").hide("");
-				toolno=0;
-				tlist=[];
-      							}
-    							});
+	$('#toolsoperation').on("click",'#Tool_ID_1',function(){
+		var tid=$('#Tool_ID_1').val();
+		if(tid!='')
+		{	var urli="get_insert_for_tool.php?tid="+tid+'&iid=1';
+					$('#insert1').load(urli);
+			
+		}
+		
+	});
+
+	$('#toolsoperation').on("click",'#Tool_ID_2',function(){
+		var tid=$('#Tool_ID_2').val();
+		if(tid!='')
+		{	var urli="get_insert_for_tool.php?tid="+tid+'&iid=2';
+					$('#insert2').load(urli);
+			
+		}
+		
+	});
+
+
+	$('#tdia').keyup(function(){
+		var tooldiameter=$('#tdia').val();
+		var ttype=$('#Tool_Type_ID').val();
+		if(tooldiameter!='')
+		{	
+			
+			url='get_tool_of_type_dia.php?ttype='+ttype+'&tdia='+tooldiameter;
+			$('#tool').load(url);
+		
+		}
+		
+	});
+
+$('#add').click(function(){
+	if($('#toolsoperation').valid())
+	{
+
+	var opid=$('#Operation_ID').val();
+    $("#toolsoperation").ajaxSubmit(options);
+    						
   	}
 		});
+			
+var options = {  ///options for ajaxSubnit function 
+			method: "post",
+			url: "add_tool_to_operation.php",
 
-	$('#Tool_ID_1').live("click",function(){
-		var toolid=$(this).val();
-		var iurl='show_inserts_for_tool_body.php?toolid='+toolid+'&iid=1';
-		$('#insert1').load(iurl);
-		
-		
-	})
+        target:        '#footer2',   // target div id to update result of submit 
+      					success: function(html) {
 
-	$('#Tool_ID_2').live("click",function(){
-		var toolid=$(this).val();
-		var iurl='show_inserts_for_tool_body.php?toolid='+toolid+'&iid=2';
-		$('#insert2').load(iurl);
-		
-		
-	})
+				$('#tooltype').text(' ');
+				$('#tool').text(' ');
+				$('#tdia').val();
+				$('#tooldia').hide();
+				$('#addbutton').hide();
+				document.getElementById("footer").innerHTML=html;
+			console.log(opeid);															
+				var urlo="get_tools_for_operation.php?opid="+opeid;
+				$('#footer2').load(urlo);
+      							}
+ 
 
+
+    };
+	
+	
+		
+	
+	
 
 
 
   });
+
+
+/*		var toolid1=$('#Tool_ID_1').val();
+		var toolid2=$('#Tool_ID_2').val();
+		var holderid=$('#Holder_ID').val();
+		var mdesc=$('#tdesc').val();
+		var toh=$('#toh').val();
+		var tlife=$('#tlife').val();
+	var turl="add_tool_to_operation.php?toolid1="+toolid1+'&toolid2='+toolid2+'&holderid='+holderid+'&mdesc='+mdesc+'&toh='+toh+'&tlife='+tlife;*/

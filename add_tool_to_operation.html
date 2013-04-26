@@ -6,6 +6,7 @@
         <title>Add Tools For Operation</title>
         <script src="jquery.js"></script>
         <script src="jquery.validate.js"></script>
+         <script src="jquery.form.js"></script>
         <script src="add_tool_to_operation.js"></script>
 
  <style type="text/css">
@@ -18,7 +19,7 @@ p { font-weight: bold; clear: both; }
 
     </head>
     <body>
-  <form name ="toolsoperation" id="toolsoperation" >
+<form name ="toolsoperation" id="toolsoperation" enctype="multipart/form-data">
  <fieldset>
 <legend>Select Operation Details</legend>
    <p>
@@ -26,31 +27,21 @@ p { font-weight: bold; clear: both; }
      <div id="customer"> </div>
      <div id="drawing"> </div>
      <div id="operation"> </div>
-		<div id="addedit"><input type="radio" name="add-edit" id="add-edit" value="add" class="required">Add</input>
-			<input type="radio" id="add-edit" name="add-edit" value="del" class="required">Delete</input>
-					
-		</div>
-     <input type="hidden" id="addedtools" name="addedtools">
-     <input type="hidden" id="nooftools" name="nooftools">
 </fieldset>
-<fieldset><legend>Select Tool Search Criteria</legend>
+
 <div id="tooltype"> </div>
-<div id="tooldia">
-		<p><label for="tdia">Enter Tool Diameter</label>
+<div id="tooldia"> 
+	<fieldset><legend>Select Tool Search Criteria</legend>
+		<p><label>Enter Tool Diameter</label>
     	<input type="text" id="tdia" name="tdia" size="10"></p>
+    	</div>
+    	<div id="tool"> </div>
+    	<div id="addbutton"><input type="button" id="add" value="Add Tool To List"></div> 
 </div>
-<div id="tool"> </div>
-<div id="addd"><input type="button" id="add" value="Add Tool To List"></div>
 </fieldset>
-<div id="del"> </div>
-
-   <p>
-     <input class="submit" id="submit" type="submit" value="Submit"/>
-   </p>
  </form>
-<table id="added" border="1px" cellspacing="2px" bgcolor="#D8BFD8">
-<tr><th>Prefered Tool</th><th>Alternate Tool</th><th>Holder</th><th>Machining Description</th><th>Tool Overhang</th><th>Tool Life</th></tr> <!--table to display currently added tools-->
-<div id="footer"> </div> <!--div to display tools in the database-->
 
+<div id="footer"> </div> <!--div to display tools in the database-->
+<div id="footer2"> </div>
 </body>
 </html>
