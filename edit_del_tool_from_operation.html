@@ -7,7 +7,7 @@
         <script src="jquery.js"></script>
         <script src="jquery.validate.js"></script>
          <script src="jquery.form.js"></script>
-        <script src="add_tool_to_operation.js"></script>
+        <script src="edit_del_tool_from_operation.js"></script>
 
  <style type="text/css">
 * { font-family: Verdana; font-size: 96%; }
@@ -19,7 +19,7 @@ p { font-weight: bold; clear: both; }
 
     </head>
     <body>
-<form name ="toolsoperation" id="toolsoperation" enctype="multipart/form-data">
+<form name ="toolsoperation" id="toolsoperation" action="update_tools_for_operation.php" method="post" enctype="multipart/form-data">
  <fieldset>
 <legend>Select Operation Details</legend>
    <p>
@@ -29,16 +29,10 @@ p { font-weight: bold; clear: both; }
      <div id="operation"> </div>
 </fieldset>
 
-<div id="tooltype"> </div>
-<div id="tooldia"> 
-	<fieldset><legend>Select Tool Search Criteria</legend>
-		<p><label>Enter Tool Diameter</label>
-    	<input type="text" id="tdia" name="tdia" size="10"></p>
-    	</div>
-    	<div id="tool"> </div>
-    	<div id="addbutton"><input type="button" id="add" value="Add Tool To List"></div> 
+<div id="edittools"> </div>
+<div id="save">
+<input class="submit" type="submit" value="Submit"/>
 </div>
-</fieldset>
  </form>
 
 <div id="footer"> </div> <!--div to display tools in the database-->

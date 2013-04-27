@@ -3,7 +3,8 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $uploadDir = '/home/www/drawings/';
-//print_r($_POST);
+print_r($_POST);
+/***
 //print_r($_FILES);
 $opid=$_POST['Operation_ID'];
 if(isSet($_POST['Insert_ID1'])){$insertid1=$_POST['Insert_ID1'];}else{$insertid1='';}
@@ -77,5 +78,5 @@ $query="INSERT INTO Ope_Tool (
 	
 				}
 
-
+**/
 ?>
