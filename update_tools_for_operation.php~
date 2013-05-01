@@ -3,69 +3,79 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $uploadDir = '/home/www/drawings/';
-//print_r($_POST);
+print_r($_POST);
+
 //print_r($_FILES);
 $opid=$_POST['Operation_ID'];
-if(isSet($_POST['Insert_ID1'])){$insertid1=$_POST['Insert_ID1'];}else{$insertid1='';}
-if(isSet($_POST['Insert_ID2'])){$insertid2=$_POST['Insert_ID2'];}else{$insertid2='';}
+$opeid=$_POST['Ope_Tool_ID'];
+if(isSet($_POST['Insert_ID_1'])){$insertid1=$_POST['Insert_ID1'];}else{$insertid1='';}
+if(isSet($_POST['Insert_ID_2'])){$insertid2=$_POST['Insert_ID2'];}else{$insertid2='';}
 if(isSet($_POST['Tool_ID_2'])){$toolid2=$_POST['Tool_ID_2'];}else{$toolid2='';}
 $toolid1=$_POST['Tool_ID_1'];
-$holderid=$_POST['Holder_ID_1'];
-$mdesc=$_POST['tdesc'];
+$holderid1=$_POST['Holder_ID_1'];
+$mdesc=$_POST['mdesc'];
 if(isSet($_POST['toh'])){$toh=$_POST['toh'];}else{$toh='';}
 if(isSet($_POST['tlife'])){$tlife=$_POST['tlife'];}else{$tlife='';}
+
+if(isSet($_POST['del'])){$del=$_POST['del'];}else{$del='';}
 
 
 if(isSet($_FILES['timg']['name']))
 {
-	$odrgfileName = $opid."-".$_FILES['timg']['name'];
-	$odrgtmpName = $_FILES['timg']['tmp_name'];
-	$odrgfileSize = $_FILES['timg']['size'];
-	$odrgfileType = $_FILES['timg']['type'];
-	$odrgfilePath = $uploadDir . $odrgfileName;
-	$oresult = move_uploaded_file($odrgtmpName, $odrgfilePath);
-	if (!$oresult) {
-						echo "<br>Error uploading Tool Image $odrgfileName";
+
+$timgfiles=count($_FILES['timg']['name']);
+
+
+
+foreach ($_FILES['timg']['name'] as $key => $name) {
+		
+
+	$drgfileName = $opid."-".$_FILES['timg']['name'][$key];
+	$drgtmpName = $_FILES['timg']['tmp_name'][$key];
+	$drgfileSize = $_FILES['timg']['size'][$key];
+	$drgfileType = $_FILES['timg']['type'][$key];
+	$drgfilePath = $uploadDir . $drgfileName;
+	$result = move_uploaded_file($drgtmpName, $drgfilePath);
+	if (!$result) {
+						echo "<br>Error uploading Drawing $drgfileName";
 						exit;
 						}
 
 	if(!get_magic_quotes_gpc())
 						{
-						$odrgfileName = addslashes($odrgfileName);
-						$odrgfilePath = addslashes($odrgfilePath);
+						$odrgfileNames[$key] = addslashes($drgfileName);
+						$drgfilePath = addslashes($drgfilePath);
+						}
 						}
 
-}else{$odrgfileName='';}
 
 
 
+}else{$odrgfileNames='';}
 
 
-$query="INSERT INTO Ope_Tool (
-				Operation_ID,
-				Tool_ID_1,
-				Insert_ID_1,
-				Tool_ID_2,
-				Insert_ID_2,
-				Holder_ID_1,
-				Ope_Tool_Desc,
-				Ope_Tool_OH,
-				Ope_Tool_Life,
-				Ope_Tool_Image_Path)
-				 
-		VALUES('$opid',
-				'$toolid1',
-				'$insertid1',
-				'$toolid2',
-				'$insertid2',
-				'$holderid',
-				'$mdesc',
-				'$toh',
-				'$tlife',
-				'$odrgfileName');";
 
-//			print($query);
+$nooftools=count($toolid1);
+for($x=0;$x<$nooftools;$x++)
 
+{
+
+if($insertid1[$x]!=''){$ins1="Insert_ID_1='$insertid1[$x]',";}else{$ins1="";}
+if($toolid2[$x]!=''){$tid2="Tool_ID_2='$toolid2[$x]',";}else{$tid2="";}
+if($insertid2[$x]!=''){$ins2="Insert_ID_2='$insertid2[$x]',";}else{$ins2="";}
+if($tlife[$x]!=''){$tlif="Ope_Tool_Life='$tlife[$x]',";}else{$tlif="";}
+if($odrgfileNames[$x]!=''){$tpath="Ope_Tool_Image_Path='$odrgfileNames[$x]',";}else{$tpath="";}
+
+$query="UPDATE Ope_Tool SET
+			Tool_ID_1='$toolid1[$x]',
+			$ins1 $tid $ins2 $tlif $tpath
+				Holder_ID_1='$holderid1[$x]',
+				Ope_Tool_Desc='$mdesc[$x]',
+				Ope_Tool_OH='$toh[$x]'
+				WHERE Ope_Tool_ID='$opeid[$x]';";
+
+			print($query);
+			print("<br");
 			$res=mysql_query($query) or die(mysql_error());
 
 			$result=mysql_affected_rows();
@@ -76,6 +86,32 @@ $query="INSERT INTO Ope_Tool (
 					
 	
 				}
+
+}
+
+
+if($del!='')
+{
+$delids=count($del);
+
+$delid=array_values($del); //re-order array
+
+	for ($j=0; $j<$delids; $j++)
+	{
+//delete image is associated with tool
+		$qf="SELECT Ope_Tool_Image_Path FROM Ope_Tool WHERE Ope_Tool_ID=$delid[$j];";
+		$rf=mysql_query($qf) or die(mysql_error());
+		$rfr=mysql_fetch_assoc($rf);
+		if($rfr!=''){
+		$filepath=$uploadDir.$rfr['Ope_Tool_Image_Path'];
+		print($filepath);
+		unlink($filepath);
+		}	
+		$q="DELETE FROM Ope_Tool WHERE Ope_Tool_ID=$delid[$j];";
+		$rf=mysql_query($q) or die(mysql_error());
+		}
+}
+
 
 
 ?>

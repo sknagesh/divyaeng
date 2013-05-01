@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Divya Engineering Works Add New Excise Challen Details</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+	<script src="jquery.datetimeentry.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 10em; float: left; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+
+	$('#customerm').hide();	
+	$('#purchasedm').hide();
+	$('#cdrg').hide();
+	$('#beml').hide();
+	$("#inmaterial").validate();
+
+	$('input[type="radio"]').click(function(){
+
+	var msource=$(this).val();
+	console.log(msource);
+	if(msource=='customer')
+	{
+  	$("#customer").load('get_customer.php');
+	$('#cdrg').show();
+	$('#purchasedm').hide();
+	$('#customerm').show();
+	
+
+
+	}else	if(msource=='purchased')
+	{
+	$('#customerm').hide();	
+	$('#cdrg').show();
+  	$("#customer").load('get_customer.php');
+	$('#purchasedm').show();
+	}
+	});
+
+
+	$("#submit").click(function(event) {
+		 if($("#inmaterial").valid())
+		  	{
+		  		event.preventDefault();
+				$.ajax({
+      					data: $('#inmaterial').serializeArray(),
+      					type: "POST",
+      					url: "incomming_material.php",
+      					success: function(html) {
+		
+						document.getElementById("footer").innerHTML=html;
+      							}
+    								});
+  	
+		  	}
+
+	});
+
+
+$('#customer').click(function(){
+	
+var url='get_drawing.php?custid='+$('#Customer_ID').val();
+  		$("#Drawing_ID").load(url)
+  	});
+
+
+  });
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+  <form class="cmxform" id="inmaterial">
+ <fieldset>
+<legend>Add In comming Material Details</legend>
+   <p>
+     <label>Material Source</label>
+<input type="radio" id="source1" name="source" value="customer">Customer Material
+<input type="radio" id="source2" name="source" value="purchased">Purchased Material
+
+   </p>
+<div id="cdrg">
+   <p>
+     <label>Customer's Name</label>
+     <div id="customer"></div>
+   </p>
+   <p>
+     <div id="Drawing_ID"></div>
+   </p>
+   <p>
+     <label>Material Code</label>
+     <input id="mcode" name="mcode" size="25" class="required"/>
+   </p>
+
+   <p>
+     <label>Material Qty in Nos.</label>
+     <input id="mqty" name="mqty" size="25" class="required" class="number"/>
+   </p>
+
+</div>
+
+
+
+<div id="customerm">
+   <p>
+     <label>Challen Date</label>
+     <input id="cdate" name="cdate" size="25" class="required date"/>
+   </p>
+   <p>
+     <label>Challen Number</label>
+     <input id="cno" name="cno" size="25"  class="required" value="" />
+   </p>
+<div id="beml">
+   <p>
+     <label>Gatepass Date</label>
+     <input id="gpdate" name="gpdate" size="25" class="required date"/>
+   </p>
+   <p>
+     <label>Gatepass Number</label>
+     <input id="gpno" name="gpno" size="25"  class="required" value="" />
+   </p>
+
+   <p>
+     <label>DA Date</label>
+     <input id="dadate" name="dadate" size="25" class="required date"/>
+   </p>
+   <p>
+     <label>DA Number</label>
+     <input id="dano" name="dano" size="25"  class="required" value="" />
+   </p>
+</div>
+</div>
+
+<div id="purchasedm">
+   <p>
+     <label>Purchase Referance</label>
+     <input id="pref" name="pref" size="25"  class="required" value="" />
+   </p>
+
+</div>
+
+
+
+
+
+   <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"></div>
+
+
+</body>
+</html>
