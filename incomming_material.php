@@ -1,30 +1,41 @@
 <?php
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
-mysql_select_db('Invoice',$cxn) or die("error opening db: ".mysql_error());
-//print_r($_POST);
+mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
+print_r($_POST);
 
 $custid=$_POST['Customer_ID'];
-$excno=$_POST['excno'];
-$excdate=change_date_format_for_db($_POST['excdate']);
-if(isSet($_POST['gpno'])){$gpcno=$_POST['gpno'];}else{$gpcno="";}
-if(isSet($_POST['gpdate'])){$gpcdate=change_date_format_for_db($_POST['gpdate']);}else{$gpcdate="";}
+$drawid=$_POST['Drawing_ID'];
+$mcode=$_POST['mcode'];
+$mqty=$_POST['mqty'];
+if(isSet($_POST['cno'])){$cno=$_POST['cno'];}else{$cno="";}
+if(isSet($_POST['cdatedb'])){$cdate=$_POST['cdatedb'];}else{$cdate="";}
+if(isSet($_POST['gpno'])){$gpno=$_POST['gpno'];}else{$gpno="";}
+if(isSet($_POST['gpdatedb'])){$gpdate=$_POST['gpdatedb'];}else{$gpdatedb="";}
 if(isSet($_POST['dano'])){$dano=$_POST['dano'];}else {$dano="";}
-if(isSet($_POST['dadate'])){$dadate=change_date_format_for_db($_POST['dadate']);}else{$dadate="";}
-$noofcomp=$_POST['noofcomp'];
-$i=0; 
-while($i<=$noofcomp)
-{
-	$Drawing_ID[$i]=$_POST['Drawing_ID'.$i];
-	$Qty[$i]=$_POST['qty'.$i];
-	if(isSet($_POST['mdesc'.$i])){$mdesc[$i]=$_POST['mdesc'.$i];}else{$mdesc[$i]="";}
-$i++;	
-}
+if(isSet($_POST['dadatedb'])){$dadate=$_POST['dadatedb'];}else{$dadate="";}
 
-$query="INSERT INTO Incomming_Challans (Customer_ID,Ex_Challan_NO,Ex_Challan_Date,GP_NO,GP_Date,DA_NO,DA_Date,Open) ";
-$query.="VALUES('$custid','$excno','$excdate','$gpcno','$gpcdate','$dano','$dadate','1');";
+if(isSet($_POST['pref'])){$pref=$_POST['pref'];}else{$pref="";}
 
-//print($query);
+$query="INSERT INTO Material_Inward 
+		(Customer_ID,Drawing_ID,
+		Purchase_Ref,
+		Ex_Challan_NO,Ex_Challan_Date,
+		GP_NO,GP_Date,
+		DA_NO,DA_Date,
+		Material_Qty,
+		Open,
+		Material_Code)
+
+		VALUES('$custid','$drawid',
+				'$pref',
+				'$cno','$cdate',
+				'$gpno','$gpdate',
+				'$dano','$dadate',
+				'$mqty',
+				'1','$mcode');";
+
+print($query);
 
 $res=mysql_query($query) or die(mysql_error());
 
@@ -41,22 +52,6 @@ print("<br>Record ID=$challanid");
 
 
 
-$i=0;
-while($i<=$noofcomp)
-{
-$q="INSERT INTO Material_Incomming (Challan_ID,Drawing_ID,Qty,Outward_Qty,Material_Desc) ";
-$q.="VALUES('$challanid','$Drawing_ID[$i]','$Qty[$i]','$Qty[$i]','$mdesc[$i]');";
-//	print("<br>$q");
-$r=mysql_query($q) or die(mysql_error());
 
-$res=mysql_affected_rows();
-if($res!=0)
-{
-	$materialid=mysql_insert_id();
-print("<br>Material Insertion ID=$materialid");	
-}else{print("<br>error inserting Material");}
-$i++;
-
-}
 
 ?>
