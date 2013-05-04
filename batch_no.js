@@ -1,9 +1,44 @@
 $(document).ready(function() {
-var maxbqty=10;
+var maxbqty=0;
 
 $('#bdetails').hide();
 
-$('#batchno').validate(); //attach form to validation engine
+$('#batchno').validate({
+	
+		rules:{
+		Batch_Qty:{
+			required: true,
+			max: maxbqty
+			}
+		}
+	
+	
+}); //attach form to validation engine
+
+
+
+$('#Batch_Qty').keyup(function(){
+	
+	$.ajax({data: $('#batchno').serializeArray(),
+   			type: "post",
+   			url: "get_max_batch_qty.php",
+   			async:false,
+   			success: function(html) {
+          
+              //$('#batchno').rules('remove', 'Batch_Qty');
+    $('#batchno').rules('change', { Batch_Qty : { max: html } });
+              
+              
+console.log(maxbqty);
+      								}
+			});
+	
+	
+});	
+
+
+
+
 
 $('#customer').load("get_customer.php"); //load customer list on to div customer
 
@@ -31,11 +66,6 @@ $('#drawing').click(function() {     //populate drawing list based on customer
 
     });
 
-$('#Batch_Qty').keyup(function(){
-	var qty=$('#Batch_Qty').val();
-console.log(maxbqty);	
-	
-});
 
 
 $('#autobatch').live("click",function(){
@@ -68,14 +98,14 @@ $("form#batchno").live("submit",function(event) {
       								}
 			});
 
-$("#Batch_Qty").rules("add", {
- max: maxbqty
-});
-
-
 
 
 
 
 	});
+
+
+
+
+
 
