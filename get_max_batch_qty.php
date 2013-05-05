@@ -2,8 +2,9 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-$drawingid=$_POST['drawid'];
+//$drawingid=$_POST['drawid'];
 $mid=$_POST['Inward_ID'];
+$qty=$_POST['Batch_Qty'];
 
 $query="SELECT Material_Qty FROM Material_Inward WHERE Material_Inward_ID='$mid';";
 
@@ -19,16 +20,14 @@ $r=mysql_num_rows($res);
 $bqty=0;
 if($r!=0)
 {
-while($rowb = mysql_fetch_assoc($resa))
+while($rowb = mysql_fetch_assoc($res))
 {
 	$bqty+=$rowb['Batch_Qty'];
 	
 }
-}else{
-	$bqty=0;
 }
 $maxbqty=$inqty-$bqty;
 
-print($maxbqty);
+if($maxbqty>=$qty){print("true");}else{print("false");}
 
 ?>
