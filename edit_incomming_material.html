@@ -20,7 +20,7 @@ p { font-weight: bold; clear: both; }
 $(document).ready(function(){
 	$('#customer').load('get_customer.php');
 	$("#editmaterial").validate();
-	$('#smit').hide();
+	$("#editdetails").hide();
 	$('#customer').click(function(){
 	var cid=$('#Customer_ID').val();
 	var url='get_customer_challans.php?custid='+cid;
@@ -36,10 +36,51 @@ $(document).ready(function(){
 		
 		if(cid!='')
 		{
-			var url="get_challan_for_editing.php?miid="+cid;
-			$('#editdetails').load(url);
-			$('#smit').show();
+				$.ajax({
+      					type: "GET",
+      					url: "get_challan_for_editing.php?cid="+cid,
+      					success: function(html) {
+		if(html!='')
+		{
+		var data=html.split('<>');
+		var id=data[0];
+		if(id==1)
+		{
+		$('#micid').val(data[1]);
+		$('#cdate').val(data[3]);
+		$('#cno').val(data[2]);
+		$('#dano').val(data[4]);
+		$('#dadate').val(data[5]);
+		$('#gpno').val(data[6]);
+		$('#gpdate').val(data[7]);
+		$('#cdatedb').val(data[8]);
+		$('#dadatedb').val(data[9]);
+		$('#gpdatedb').val(data[10]);
+		$('#editdetails').show();
+		$('#purchased').hide();
+		$('#custmtl').show();			
 			
+		}else
+		if(id==2)
+		{
+		$('#micid').val(data[1]);
+		$('#pref').val(data[2]);
+		$('#prdate').val(data[3]);
+		$('#prdatedb').val(data[4]);
+		$('#editdetails').show();
+		$('#custmtl').hide();		
+		$('#purchased').show();
+		}
+var csid=$('#Customer_ID').val();
+var urlc="get_drg_qty_to_edit.php?cid="+data[1]+"&csid="+csid;
+$('#drgqty').load(urlc);
+
+
+		}
+
+
+      							}
+    								});
 		}
 		
 	});
@@ -70,7 +111,7 @@ $(document).ready(function(){
 $(function () {
 	$('#cdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#cdatedb', altFormat: 'Y-O-D'});
 	$('#dadate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#dadatedb', altFormat: 'Y-O-D'});
-	$('#gpadate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#gpadatedb', altFormat: 'Y-O-D'});
+	$('#gpdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#gpadatedb', altFormat: 'Y-O-D'});
 	$('#prdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#prdatedb', altFormat: 'Y-O-D'});
 	
 	});  
@@ -94,10 +135,52 @@ $(function () {
      <div id="customer"> </div>
      <div id="challans"> </div>
    </p>
-<div id="editdetails"> </div>
-<div id="smit">
-     <input class="submit" id="submit" type="submit" value="Submit"/>
+<div id="editdetails"> 
+<div id="custmtl">
+	<p>
+     <label>Challan Date</label>
+     <input id="cdate" name="cdate" size="25" class="required"/>
+     <input type="hidden" id="cdatedb" name="cdatedb"/>
+   </p>
+   <p>
+     <label>Challan Number</label>
+     <input id="cno" name="cno" size="25"  class="required"/>
+   </p>
+   <p>
+     <label>Gatepass Date</label>
+     <input id="gpdate" name="gpdate" size="25" class="required"/>
+     <input type="hidden" id="gpdatedb" name="gpdatedb" />
+   </p>
+   <p>
+     <label>Gatepass Number</label>
+     <input id="gpno" name="gpno" size="25"  class="required"/>
+   </p>
+
+   <p>
+     <label>DA Date</label>
+     <input id="dadate" name="dadate" size="25" class="required"/>
+     <input type="hidden" id="dadatedb" name="dadatedb" />
+   </p>
+   <p>
+     <label>DA Number</label>
+     <input id="dano" name="dano" size="25" class="required"/>
+   </p>
 </div>
+<div id="purchased">
+   <p>
+     <label>Purchase Referance</label>
+     <input id="pref" name="pref" size="25" class="required"/>
+   </p>
+   <p>
+     <label>Purchase Ref Date</label>
+     <input id="prdate" name="prdate" size="25" class="required"/>
+     <input type="hidden" id="prdatedb" name="prdatedb"/>
+   </p>
+</div>
+<div id="drgqty"> </div>
+     <input class="submit" id="submit" type="submit" value="Submit"/>	
+	</div>
+
    </p>
  </fieldset>
  </form>
