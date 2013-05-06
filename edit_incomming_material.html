@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Divya Engineering Works Edit Incomming Material Details</title>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 10em; float: left; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+	<script src="jquery.datetimeentry.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$('#customer').load('get_customer.php');
+	$("#editmaterial").validate();
+	$('#smit').hide();
+	$('#customer').click(function(){
+	var cid=$('#Customer_ID').val();
+	var url='get_customer_challans.php?custid='+cid;
+	if(cid!='')
+	{
+		$('#challans').load(url);
+	}	
+
+	});
+
+	$('#challans').click(function(){
+		var cid=$('#MI_ID').val();
+		
+		if(cid!='')
+		{
+			var url="get_challan_for_editing.php?miid="+cid;
+			$('#editdetails').load(url);
+			$('#smit').show();
+			
+		}
+		
+	});
+
+
+	$("#submit").click(function(event) {
+		 if($("#editmaterial").valid())
+		  	{
+
+		  		event.preventDefault();
+				$.ajax({
+      					data: $('#editmaterial').serializeArray(),
+      					type: "POST",
+      					url: "edit_incomming_material.php",
+      					success: function(html) {
+		
+						document.getElementById("footer").innerHTML=html;
+						$('#inmaterial').reset();
+      							}
+    								});
+  	
+		  	}
+
+	});
+
+
+
+$(function () {
+	$('#cdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#cdatedb', altFormat: 'Y-O-D'});
+	$('#dadate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#dadatedb', altFormat: 'Y-O-D'});
+	$('#gpadate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#gpadatedb', altFormat: 'Y-O-D'});
+	$('#prdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#prdatedb', altFormat: 'Y-O-D'});
+	
+	});  
+
+
+
+  });
+
+
+</script>
+
+
+    </head>
+    <body>
+  <form id="editmaterial" name="editmaterial">
+ <fieldset>
+<legend>Edit In comming Material Details</legend>
+
+   <p>
+     <label>Customer's Name</label>
+     <div id="customer"> </div>
+     <div id="challans"> </div>
+   </p>
+<div id="editdetails"> </div>
+<div id="smit">
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+</div>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"> </div>
+
+</body>
+</html>

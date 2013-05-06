@@ -18,11 +18,15 @@ p { font-weight: bold; clear: both; }
 <script type="text/javascript">
 
 $(document).ready(function(){
-
+var mlist=new Array();
+var mtlno=0;
 	$('#customerm').hide();	
 	$('#purchasedm').hide();
 	$('#cdrg').hide();
 	$('#beml').hide();
+	$('#addbutton').hide();
+	$('#addmaterial').hide();
+	$('#footer2').hide();
 	$("#inmaterial").validate();
 
 	$('input[type="radio"]').click(function(){
@@ -31,13 +35,10 @@ $(document).ready(function(){
 	console.log(msource);
 	if(msource=='customer')
 	{
-  	$("#customer").load('get_customer.php');
-	$('#cdrg').show();
+	$("#customer").load('get_customer.php');
 	$('#purchasedm').hide();
+	$('#cdrg').show();
 	$('#customerm').show();
-	
-
-
 	}else	if(msource=='purchased')
 	{
 	$('#customerm').hide();	
@@ -47,6 +48,16 @@ $(document).ready(function(){
 	}
 	});
 
+	$('#drawing').click(function(){
+	var did=$('#Drawing_ID').val();
+	if(did!='')
+	{
+	$('#addmaterial').show();
+	$('#addbutton').show();
+	}
+
+	
+  	});
 
 	$('#customer').click(function(){
 	var cid=$('#Customer_ID').val();
@@ -56,9 +67,35 @@ $(document).ready(function(){
 
 	});
 
+	$('#addmat').click(function(){
+		
+		var did=$('#Drawing_ID').val();
+		var mtqty=$('#mqty').val();
+		var hc=$('#mcode').val();
+		if(hc==''){hc="none";}
+
+		mlist[mtlno]=[did,mtqty,hc];
+		var newtr="<tr><td>"+$('#Drawing_ID :selected').text()+"</td><td>"+mtqty+"</td><td>"+hc+"</td></tr>";
+
+
+		$('#addedmaterial').append(newtr);
+		$('#footer2').show();
+			console.log(mlist[mtlno]);
+		mtlno+=1;
+		$('#mqty').val("");
+		$('#mcode').val("");
+		$('#addmaterial').hide();	
+		
+	});
+
+
+
 	$("#submit").click(function(event) {
 		 if($("#inmaterial").valid())
 		  	{
+  		$('#materials').val(mlist);
+  		$('#noofmaterials').val(mtlno);
+
 		  		event.preventDefault();
 				$.ajax({
       					data: $('#inmaterial').serializeArray(),
@@ -76,16 +113,12 @@ $(document).ready(function(){
 	});
 
 
-$('#customer').click(function(){
-	
-var url='get_drawing.php?custid='+$('#Customer_ID').val();
-  		$("#Drawing_ID").load(url)
-  	});
 
 $(function () {
 	$('#cdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#cdatedb', altFormat: 'Y-O-D'});
 	$('#dadate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#dadatedb', altFormat: 'Y-O-D'});
 	$('#gpadate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#gpadatedb', altFormat: 'Y-O-D'});
+	$('#prdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#prdatedb', altFormat: 'Y-O-D'});
 	
 	});  
 
@@ -113,18 +146,6 @@ $(function () {
      <label>Customer's Name</label>
      <div id="customer"> </div>
    </p>
-   <p>
-     <div id="drawing"> </div>
-   </p>
-   <p>
-     <label>Material Code</label>
-     <input id="mcode" name="mcode" size="25" class="required"/>
-   </p>
-
-   <p>
-     <label>Material Qty in Nos.</label>
-     <input id="mqty" name="mqty" size="25" class="required number"/>
-   </p>
 
 </div>
 
@@ -132,12 +153,12 @@ $(function () {
 
 <div id="customerm">
    <p>
-     <label>Challen Date</label>
+     <label>Challan Date</label>
      <input id="cdate" name="cdate" size="25" class="required"/>
      <input type="hidden" id="cdatedb" name="cdatedb" />
    </p>
    <p>
-     <label>Challen Number</label>
+     <label>Challan Number</label>
      <input id="cno" name="cno" size="25"  class="required" value="" />
    </p>
 <div id="beml">
@@ -161,6 +182,7 @@ $(function () {
      <input id="dano" name="dano" size="25"  class="required" value="" />
    </p>
 </div>
+
 </div>
 
 <div id="purchasedm">
@@ -168,10 +190,34 @@ $(function () {
      <label>Purchase Referance</label>
      <input id="pref" name="pref" size="25"  class="required" value="" />
    </p>
+   <p>
+     <label>Purchase Ref Date</label>
+     <input id="prdate" name="prdate" size="25" class="required"/>
+     <input type="hidden" id="prdatedb" name="prdatedb" />
+   </p>
 
 </div>
+   <p>
+     <div id="drawing"> </div>
+   </p>
 
+<div id="addmaterial">
+   <p>
+     <label>Material Code</label>
+     <input id="mcode" name="mcode" size="25" class="required"/>
+   </p>
 
+   <p>
+     <label>Material Qty in Nos.</label>
+     <input id="mqty" name="mqty" size="25" class="required number"/>
+   </p>
+
+</div>
+<div id="addbutton">
+<input type="button" id="addmat" name="addmat" value="add">
+</div>
+     <input type="hidden" id="materials" name="materials">
+     <input type="hidden" id="noofmaterials" name="noofmaterials">
 
 
 
@@ -180,8 +226,10 @@ $(function () {
    </p>
  </fieldset>
  </form>
-<div id="footer"></div>
-
+<div id="footer2"><table id="addedmaterial" name="addedmaterial" border="1" cellspacing="2">
+<tr><th>Drawing Name and No</th><th>Quantity</th><th>Heat Code</th></tr>
+</table> </div>
+<div id="footer"> </div>
 
 </body>
 </html>
