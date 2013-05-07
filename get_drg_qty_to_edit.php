@@ -17,13 +17,14 @@ $r=mysql_num_rows($res);
 if($r!='')
 {
 	$j=0;
-print("<table><tr><th>Comp No and Name</th><th>Quantity</th><th>Material Code</th></tr>");	
+print("<table><tr><th>Delete Entry</th><th>Comp No and Name</th><th>Quantity</th><th>Material Code</th></tr>");	
 while($row = mysql_fetch_assoc($res))
 {
 		$qs="SELECT * FROM Component WHERE Customer_ID='$csid';";
 $ress = mysql_query($qs, $cxn) or die(mysql_error($cxn));
 		
-	print("<tr><td>");
+	print("<tr><td><input type=\"checkbox\" id=\"del[$j]\" name=\"del[$j]\" value=\"$row[MI_Drg_Qty_ID]\"></td><td>");
+	print("<input type=\"hidden\" id=\"miqid[$j]\" name=\"miqid[$j]\" value=\"$row[MI_Drg_Qty_ID]\">");
 	print("<select name=\"Drawing_ID[$j]\" id=\"Drawing_ID[$j]\" class=\"required\">");
 print('<option value="">Select Drawing</option>');
 while ($rows = mysql_fetch_assoc($ress))

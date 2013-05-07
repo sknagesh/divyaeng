@@ -2,12 +2,12 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-print_r($_POST);
-/*
+//print_r($_POST);
+
 $custid=$_POST['Customer_ID'];
 
-$materials=$_POST['materials'];
-$noofmaterials=$_POST['noofmaterials'];
+$miid=$_POST['MI_ID'];
+
 
 if(isSet($_POST['cno'])){$cno=$_POST['cno'];}else{$cno="";}
 if(isSet($_POST['cdatedb'])){$cdate=$_POST['cdatedb'];}else{$cdate="";}
@@ -18,73 +18,53 @@ if(isSet($_POST['dadatedb'])){$dadate=$_POST['dadatedb'];}else{$dadate="";}
 
 if(isSet($_POST['pref'])){$pref=$_POST['pref'];}else{$pref="";}
 if(isSet($_POST['prdatedb'])){$prdate=$_POST['prdatedb'];}else{$prdate="";}
-$query="INSERT INTO Material_Inward 
-		(Customer_ID,
-		Open
-		)
+if(isSet($_POST['del'])){$del=$_POST['del'];}else{$del='';}
+if(isSet($_POST['Drawing_ID'])){$did=$_POST['Drawing_ID'];}else{$did='';}
+if(isSet($_POST['mqty'])){$mqty=$_POST['mqty'];}else{$mqty='';}
+if(isSet($_POST['mcode'])){$mcode=$_POST['mcode'];}else{$mcode='';}
+if(isSet($_POST['miqid'])){$miqid=$_POST['miqid'];}else{$miqid='';}
 
-		VALUES('$custid',
-				'1');";
+$query="UPDATE MI_Challans SET 
+			EX_Challan_NO='$cno',EX_Challan_Date='$cdate',
+			GP_NO='$gpno',GP_Date='$gpdate',
+			DA_NO='$dano',DA_Date='$dadate',
+			Purchase_Ref='$pref',Purchase_Ref_Date='$prdate' 
+			WHERE MI_Ch_ID='$miid';";
 
 //print($query);
 
 $res=mysql_query($query) or die(mysql_error());
 
 $result=mysql_affected_rows();
-if($result!=0)
+
+
+if($miqid!='')
 {
-	$challanid=mysql_insert_id();
-$querychallan="INSERT INTO MI_Challans (Material_Inward_ID,
-										EX_Challan_NO,EX_Challan_Date,
-										DA_NO,DA_Date,
-										GP_NO,GP_Date,
-										Purchase_Ref,Purchase_Ref_Date)
-							VALUES ('$challanid','$cno','$cdate',
-									'$dano','$dadate',
-									'$gpno','$gpdate','$pref','$prdate');";
 
-$reschallan=mysql_query($querychallan) or die(mysql_error());
-
-	$mlist=explode(",", $materials);
-
-	$j=0;
-	$k=0;
-	while($j<$noofmaterials)
+	
+	for($j=0;$j<count($miqid);$j++)
 	{
-		$Drawing_ID[$j]=$mlist[$k];
-		$k++;
-		$Material_Qty[$j]=$mlist[$k];
-		$k++;
-		$Material_Code[$j]=$mlist[$k];
-		$k++;
-		$j++;
+		$qup="UPDATE MI_Drg_Qty SET Drawing_ID='$did[$j]', Material_Qty='$mqty[$j]',Material_Code='$mcode[$j]' 
+				WHERE MI_Drg_Qty_ID='$miqid[$j]';";
+		$resq=mysql_query($qup) or die(mysql_error());
 	}
+	
+}
 
-	$j=0;
-	while($j<$noofmaterials)
+if($del!='')
+{
+	$del=array_values($del);
+	for($j=0;$j<count($del);$j++)
 	{
-
-$querymtl="INSERT INTO MI_Drg_Qty (Material_Inward_ID,Drawing_ID,Material_Qty,Material_Code)
-								VALUES('$challanid','$Drawing_ID[$j]','$Material_Qty[$j]','$Material_Code[$j]');";
-$resmaterial=mysql_query($querymtl) or die(mysql_error());
-										$j++;
+		$qd="DELETE FROM MI_Drg_Qty WHERE Mi_Drg_Qty_ID='$del[$j]';";
+		$resd=mysql_query($qd) or die(mysql_error());
+		
 	}
 	
 	
-	
-$nm=mysql_affected_rows();	
-
-	print("<br>Record ID=$challanid and Added $noofmaterials material Quantites");	
-
-
-	
-}else
-	{
-		print("<br>Error Adding New Data");
-	}
+}
 
 
 
-*/
 
 ?>

@@ -98,7 +98,20 @@ $('#drgqty').load(urlc);
       					success: function(html) {
 		
 						document.getElementById("footer").innerHTML=html;
-						$('#inmaterial').reset();
+		$('#micid').val('');
+		$('#cdate').val('');
+		$('#cno').val('');
+		$('#dano').val('');
+		$('#dadate').val('');
+		$('#gpno').val('');
+		$('#gpdate').val('');
+		$('#cdatedb').val('');
+		$('#dadatedb').val('');
+		$('#gpdatedb').val('');
+		$('#pref').val('');
+		$('#prdate').val('');
+		$('#prdatedb').val('');
+						$('#editmaterial').get(0).reset();
       							}
     								});
   	

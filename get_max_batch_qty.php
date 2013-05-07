@@ -6,7 +6,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $mid=$_POST['Inward_ID'];
 $qty=$_POST['Batch_Qty'];
 
-$query="SELECT Material_Qty FROM Material_Inward WHERE Material_Inward_ID='$mid';";
+$query="SELECT Material_Qty FROM MI_Drg_Qty WHERE Material_Inward_ID='$mid';";
 
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 $row = mysql_fetch_assoc($resa);
