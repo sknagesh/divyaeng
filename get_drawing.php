@@ -5,6 +5,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $custid=$_GET['custid'];
 if(isSet($_GET['did'])){$did=$_GET['did'];}else{$did="";}
 if(isSet($_GET['hcomp'])){$hcomp=$_GET['hcomp'];}else{$hcomp="";}
+if(isSet($_GET['rcr'])){$rcr="";}else{$rcr="class=\"required\"";}
 //print_r($_POST);
 if($hcomp!=1)
 {
@@ -14,7 +15,7 @@ $query="SELECT * FROM Component WHERE Customer_ID='$custid';";
 		$query="SELECT * FROM Component WHERE Customer_ID='$custid' AND Hide_In_Prod=0;";
 	}
 print("<label for=\"draw\">Select Drawing</label>");
-print("<select name=\"Drawing_ID\" id=\"Drawing_ID\" class=\"required\">");
+print("<select name=\"Drawing_ID\" id=\"Drawing_ID\" $rcr>");
 echo '<option value="">Select Drawing</option>';
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while ($row = mysql_fetch_assoc($resa))

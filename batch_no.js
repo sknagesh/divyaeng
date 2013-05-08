@@ -50,27 +50,18 @@ $('#drawing').click(function() {     //populate drawing list based on customer
 	{
 		url2="get_inward_material_id.php?drawid="+drawid;
 		$('#material').load(url2);
-	
+		$('#bdetails').show();
 	}
 
     });
 
-$('#material').click(function(){
-		var imid=$('#Inward_ID').val();
-
-if(imid!='')
-{
-	url="get_open_Batch_Nos.php?imid="+imid;
-	$('#bdetails').show();
-	$('#footer2').load(url);
-}else
-{
-	$('#bdetails').hide();
-}
-		
-	
+$('[id^="mqty"]').on("blur",function(){
+	alert();
+	console.log('here');
 	
 });
+
+
 
 $('#autobatch').live("click",function(){
 

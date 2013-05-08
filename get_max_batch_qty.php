@@ -13,7 +13,7 @@ $row = mysql_fetch_assoc($resa);
 
 $inqty=$row['Material_Qty'];
 
-$queryb="SELECT Batch_Qty From Batch_NO WHERE Material_Inward_ID='$mid';";
+$queryb="SELECT Qty_In_Batch From BNo_MI_Challans WHERE Material_Inward_ID='$imid';";
 
 $res = mysql_query($queryb, $cxn) or die(mysql_error($cxn));
 $r=mysql_num_rows($res);

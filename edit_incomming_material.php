@@ -6,7 +6,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
 $custid=$_POST['Customer_ID'];
 
-$miid=$_POST['MI_ID'];
+$miid=$_POST['Material_Inward_ID'];
 
 
 if(isSet($_POST['cno'])){$cno=$_POST['cno'];}else{$cno="";}
@@ -19,17 +19,23 @@ if(isSet($_POST['dadatedb'])){$dadate=$_POST['dadatedb'];}else{$dadate="";}
 if(isSet($_POST['pref'])){$pref=$_POST['pref'];}else{$pref="";}
 if(isSet($_POST['prdatedb'])){$prdate=$_POST['prdatedb'];}else{$prdate="";}
 if(isSet($_POST['del'])){$del=$_POST['del'];}else{$del='';}
-if(isSet($_POST['Drawing_ID'])){$did=$_POST['Drawing_ID'];}else{$did='';}
-if(isSet($_POST['mqty'])){$mqty=$_POST['mqty'];}else{$mqty='';}
-if(isSet($_POST['mcode'])){$mcode=$_POST['mcode'];}else{$mcode='';}
+if(isSet($_POST['Drawing_ID_OLD'])){$did=$_POST['Drawing_ID_OLD'];}else{$did='';}
+if(isSet($_POST['mqtyold'])){$mqty=$_POST['mqtyold'];}else{$mqty='';}
+if(isSet($_POST['mcodeold'])){$mcode=$_POST['mcodeold'];}else{$mcode='';}
 if(isSet($_POST['miqid'])){$miqid=$_POST['miqid'];}else{$miqid='';}
+if(isSet($_POST['materials'])){$materials=$_POST['materials'];}else{$materials='';}
+if(isSet($_POST['noofmaterials'])){$noofmaterials=$_POST['noofmaterials'];}else{$noofmaterials='';}
 
-$query="UPDATE MI_Challans SET 
+
+
+
+
+$query="UPDATE Material_Inward SET 
 			EX_Challan_NO='$cno',EX_Challan_Date='$cdate',
 			GP_NO='$gpno',GP_Date='$gpdate',
 			DA_NO='$dano',DA_Date='$dadate',
 			Purchase_Ref='$pref',Purchase_Ref_Date='$prdate' 
-			WHERE MI_Ch_ID='$miid';";
+			WHERE Material_Inward_ID='$miid';";
 
 //print($query);
 
@@ -63,6 +69,32 @@ if($del!='')
 	
 	
 }
+
+
+	$mlist=explode(",", $materials);  ///add new material
+
+	$j=0;
+	$k=0;
+	while($j<$noofmaterials)
+	{
+		$Drawing_ID[$j]=$mlist[$k];
+		$k++;
+		$Material_Qty[$j]=$mlist[$k];
+		$k++;
+		$Material_Code[$j]=$mlist[$k];
+		$k++;
+		$j++;
+	}
+
+	$j=0;
+	while($j<$noofmaterials)
+	{
+
+$querymtl="INSERT INTO MI_Drg_Qty (Material_Inward_ID,Drawing_ID,Material_Qty,Material_Code)
+								VALUES('$miid','$Drawing_ID[$j]','$Material_Qty[$j]','$Material_Code[$j]');";
+$resmaterial=mysql_query($querymtl) or die(mysql_error());
+										$j++;
+	}
 
 
 

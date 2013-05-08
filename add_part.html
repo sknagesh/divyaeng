@@ -52,7 +52,7 @@ var options = {  ///options for ajaxSubnit function
     </head>
     <body>
 <div id="adraw">
-  <form name ="adddrawing" id="adddrawing" action="add_part.php" method="POST" enctype="multipart/form-data">
+  <form name ="adddrawing" id="adddrawing" action="add_part.php" method="post" enctype="multipart/form-data">
  <fieldset>
 <legend>New Part Details</legend>
    <p>
@@ -90,6 +90,11 @@ var options = {  ///options for ajaxSubnit function
    <p>
      <label for="pmblank">Finish Size</label>
      <input id="fsize" name="fsize" size="25"  value="" />
+   </p>
+
+   <p>
+     <label>Scrap Weight</label>
+     <input id="sweight" name="sweight" size="25"  class="number"/>
    </p>
 
 

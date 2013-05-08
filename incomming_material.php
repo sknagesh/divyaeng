@@ -18,12 +18,20 @@ if(isSet($_POST['dadatedb'])){$dadate=$_POST['dadatedb'];}else{$dadate="";}
 
 if(isSet($_POST['pref'])){$pref=$_POST['pref'];}else{$pref="";}
 if(isSet($_POST['prdatedb'])){$prdate=$_POST['prdatedb'];}else{$prdate="";}
+
 $query="INSERT INTO Material_Inward 
 		(Customer_ID,
+		EX_Challan_NO,EX_Challan_Date,
+		DA_NO,DA_Date,
+		GP_NO,GP_Date,
+		Purchase_Ref,Purchase_Ref_Date,
 		Open
 		)
 
 		VALUES('$custid',
+				'$cno','$cdate',
+				'$dano','$dadate',
+				'$gpno','$gpdate','$pref','$prdate',
 				'1');";
 
 //print($query);
@@ -34,16 +42,6 @@ $result=mysql_affected_rows();
 if($result!=0)
 {
 	$challanid=mysql_insert_id();
-$querychallan="INSERT INTO MI_Challans (Material_Inward_ID,
-										EX_Challan_NO,EX_Challan_Date,
-										DA_NO,DA_Date,
-										GP_NO,GP_Date,
-										Purchase_Ref,Purchase_Ref_Date)
-							VALUES ('$challanid','$cno','$cdate',
-									'$dano','$dadate',
-									'$gpno','$gpdate','$pref','$prdate');";
-
-$reschallan=mysql_query($querychallan) or die(mysql_error());
 
 	$mlist=explode(",", $materials);
 

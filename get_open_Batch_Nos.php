@@ -11,7 +11,7 @@ $row = mysql_fetch_assoc($resa);
 
 $inqty=$row['Material_Qty'];
 
-$queryb="SELECT Batch_Qty From Batch_NO WHERE Material_Inward_ID='$imid';";
+$queryb="SELECT Qty_In_Batch From BNo_MI_Challans WHERE Material_Inward_ID='$imid';";
 
 $res = mysql_query($queryb, $cxn) or die(mysql_error($cxn));
 $r=mysql_num_rows($res);
@@ -26,15 +26,14 @@ while($rowb = mysql_fetch_assoc($res))
 }
 $maxbqty=$inqty-$bqty;
 
+print("Balance Quantity is $maxbqty Nos");
 
-
-
+/*
 $queryp="SELECT mdq.Drawing_ID,Material_Qty, EX_Challan_NO,EX_Challan_Date,Purchase_Ref,Purchase_Ref_Date,
 		Material_Code, Drawing_NO, Component_Name, 
-		(SELECT GROUP_CONCAT(Mfg_Batch_NO,' : ',Batch_Qty) FROM Batch_NO as bn WHERE bn.Material_Inward_ID=mi.Material_Inward_ID) AS Batches 
+		(SELECT GROUP_CONCAT(Mfg_Batch_NO,' - ',(SELECT GROUP_CONCAT(Qty_In_Batch) FROM BNo_MI_Challans as bmc WHERE bmc.Batch_ID=bn.Batch_ID)) FROM Batch_NO as bn WHERE bn.Material_Inward_ID=mi.Material_Inward_ID) AS Batches 
 		FROM Material_Inward as mi 
-		INNER JOIN MI_Challans as mc ON mc.Material_Inward_ID=mi.Material_Inward_ID  
-		INNER JOIN MI_Drg_Qty as mdq ON mdq.Material_Inward_ID=mi.Material_Inward_ID 
+		INNER JOIN MI_Drg_Qty as mdq ON mdq.Material_Inward_ID=mi.Material_Inward_ID
 		INNER JOIN Component as comp ON comp.Drawing_ID=mdq.Drawing_ID
 		WHERE mi.Material_Inward_ID='$imid';"; 
 
@@ -45,7 +44,7 @@ $queryp="SELECT mdq.Drawing_ID,Material_Qty, EX_Challan_NO,EX_Challan_Date,Purch
 $res=mysql_query($queryp) or die(mysql_error());
 $r=mysql_num_rows($res);
 
-print("Balance Quantity is $maxbqty Nos");
+
 
 if($r!=0)
 {
@@ -66,5 +65,5 @@ if($row['Purchase_Ref_Date']=='0000-00-00'){$pd='';}
 }
 print("</table>");
 }
-
+*/
 ?>				

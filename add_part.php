@@ -13,6 +13,7 @@ if(isSet($_POST['mspec'])){$mspec=$_POST['mspec'];}else{$mspec="";}
 if(isSet($_POST['cblank'])){$cblank=$_POST['cblank'];}else{$cblank="";}
 if(isSet($_POST['pmblank'])){$pmblank=$_POST['pmblank'];}else{$pmblank="";}
 if(isSet($_POST['fsize'])){$fsize=$_POST['fsize'];}else{$fsize="";}
+if(isSet($_POST['sweight'])){$sweight=$_POST['sweight'];}else{$sweight="";}
 
 
 if(isSet($_FILES['drg']['name']))
@@ -97,7 +98,8 @@ $query="INSERT INTO Component (Customer_ID,
 								Finish_Size,
 								Customer_Drawing,
 								Process_Sheet,
-								Preview_Image) ";
+								Preview_Image,
+								Scrap_Weight) ";
 $query.="VALUES('$custid',
 				'$drawingno',
 				'$revno',
@@ -108,7 +110,8 @@ $query.="VALUES('$custid',
 				'$fsize',
 				'$drgfileName',
 				'$profileName',
-				'$prefileName');";
+				'$prefileName',
+				'$sweight');";
 
 //print($query);
 

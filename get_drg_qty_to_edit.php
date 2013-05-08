@@ -25,7 +25,7 @@ $ress = mysql_query($qs, $cxn) or die(mysql_error($cxn));
 		
 	print("<tr><td><input type=\"checkbox\" id=\"del[$j]\" name=\"del[$j]\" value=\"$row[MI_Drg_Qty_ID]\"></td><td>");
 	print("<input type=\"hidden\" id=\"miqid[$j]\" name=\"miqid[$j]\" value=\"$row[MI_Drg_Qty_ID]\">");
-	print("<select name=\"Drawing_ID[$j]\" id=\"Drawing_ID[$j]\" class=\"required\">");
+	print("<select name=\"Drawing_ID_OLD[$j]\" id=\"Drawing_ID_OLD[$j]\" class=\"required\">");
 print('<option value="">Select Drawing</option>');
 while ($rows = mysql_fetch_assoc($ress))
 {
@@ -34,8 +34,8 @@ echo "<option value=".$rows['Drawing_ID']." $sel >";
 echo "$rows[Drawing_NO] - $rows[Component_Name]</option>";
 }
 print("</select></td><td>
-<input type=\"text\" name=\"mqty[$j]\" id=\"mqty[$j]\" value=\"$row[Material_Qty]\" class=\"required\"></td>
-<td><input type=\"text\" name=\"mcode[$j]\" id=\"mcode[$j]\" value=\"$row[Material_Code]\" class=\"required\"></td></tr>");
+<input type=\"text\" name=\"mqtyold[$j]\" id=\"mqtyold[$j]\" value=\"$row[Material_Qty]\" class=\"required\"></td>
+<td><input type=\"text\" name=\"mcodeold[$j]\" id=\"mcodeold[$j]\" value=\"$row[Material_Code]\" class=\"required\"></td></tr>");
 $j++;
 }
 
