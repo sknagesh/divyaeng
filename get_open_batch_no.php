@@ -6,9 +6,10 @@ $drawingd=$_GET['drawingid'];
 if(isSet($_GET['oid'])){$oid=$_GET['oid'];}else{$oid="";}
 //print_r($_POST);
 
-$query2="SELECT Mfg_Batch_NO,Batch_ID FROM Batch_NO as bn
-		INNER JOIN MI_Drg_Qty AS mdq ON mdq.Material_Inward_ID=bn.Material_Inward_ID 
-		WHERE bn.Batch_Under_Progress=1 AND mdq.Drawing_ID='$drawingd';";
+$query2="SELECT bn.Batch_ID,Mfg_Batch_NO FROM Batch_NO as bn
+		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=bn.Batch_ID
+		INNER JOIN MI_Drg_Qty AS mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID 
+		WHERE mdq.Drawing_ID='$drawingd' and Batch_Under_Progress='1';";
 
 //print($query2);
 

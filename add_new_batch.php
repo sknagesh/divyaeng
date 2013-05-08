@@ -2,13 +2,13 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-print_r($_POST);
+//print_r($_POST);
 
 $Drawing_ID=$_POST['Drawing_ID'];
 $miid=$_POST['MI_Drg_Qty_ID'];
 $mqty=$_POST['mqty'];
 $hcode=$_POST['hcode'];
-
+if(isSet($_POST['Batch_Remarks'])){$batchremarks=$_POST['Batch_Remarks'];}else{$batchremarks='';}
 $batchqty=0;
 for($j=0;$j<count($mqty);$j++)
 {
@@ -21,9 +21,9 @@ for($j=0;$j<count($mqty);$j++)
 	$Batch_Desc=$_POST['Batch_Desc'];	
 	} else{$Batch_Desc=$Drawing_ID."-".date("Y")."-".date("m")."-".date("d")."-".$batchqty;}
 
-$query="INSERT INTO Batch_NO (Mfg_Batch_NO) VALUES('$Batch_Desc');";
+$query="INSERT INTO Batch_NO (Mfg_Batch_NO,Batch_Remarks) VALUES('$Batch_Desc','$batchremarks');";
 
-print("<br>Query is '$query'");
+//print("<br>Query is '$query'");
 $result = mysql_query($query, $cxn) or die(mysql_error($cxn));
 
 $bid=mysql_insert_id();

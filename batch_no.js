@@ -3,32 +3,7 @@ var maxbqty=0;
 
 $('#bdetails').hide();
 
-$('#batchno').validate({
-	
-		rules:{
-		Batch_Qty:{
-			required: true,
-			number: true,
-			remote: {
-				url: "get_max_batch_qty.php",
-				type: "post",
-				data:{
-					Inward_ID: function(){return $('#Inward_ID').val();},
-					Batch_Qty: function(){return $('#Batch_Qty').val();}
-					}
-				}
-			}
-		},
-				messages:{
-			
-			Batch_Qty:{
-				remote:	"Please enter Correct Batch Quantity"
-			}
-		}
-		
-	
-	
-}); 
+$('#batchno').validate(); 
 
 
 $('#customer').load("get_customer.php"); //load customer list on to div customer
@@ -47,21 +22,14 @@ $('#drawing').click(function() {     //populate drawing list based on customer
 	var drawid=$('#Drawing_ID').val();
 	
 	if(drawid!='')
-	{
+	{	url="get_open_Batch_Nos.php?drawid="+drawid;
 		url2="get_inward_material_id.php?drawid="+drawid;
 		$('#material').load(url2);
+		$('#footer2').load(url);
 		$('#bdetails').show();
 	}
 
     });
-
-$('[id^="mqty"]').on("blur",function(){
-	alert();
-	console.log('here');
-	
-});
-
-
 
 $('#autobatch').live("click",function(){
 

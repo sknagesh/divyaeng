@@ -19,15 +19,16 @@ $noofrecords=mysql_affected_rows();
 if($noofrecords!=0)
 {
 print("<table cellspacing=\"5\" cellborder=\"2\" border=\"1\">");
-print("<tr><th>Activity</th><th>Drawing No</th><th>Desc</th><th>Start Date Time</th><th>End Date Time</th><th>Operator Name</th><th>Remarks</th></tr>");
+print("<tr><th>Activity</th><th>Drawing No</th><th>Desc</th><th>Batch NO</th><th>Start Date Time</th><th>End Date Time</th><th>Operator Name</th><th>Remarks</th></tr>");
 while ($row = mysql_fetch_assoc($resa))
 {
 		
 	if($row['Activity_ID']==1)
 	{
-		$sq="SELECT pro.Batch_ID,Component_Name, Operation_Desc FROM Production as pro 
-		INNER JOIN Batch_NO as bn ON bn.Batch_ID=pro.Batch_ID
-		INNER JOIN MI_Drg_Qty as mdq ON mdq.Material_Inward_ID=bn.Material_Inward_ID
+		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Operation_Desc FROM Production as pro 
+		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=pro.Batch_ID 
+		INNER JOIN Batch_NO as bn ON bn.Batch_ID=bmc.Batch_ID
+		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
 		INNER JOIN Component as comp ON comp.Drawing_ID=mdq.Drawing_ID
 		INNER JOIN Operation as ope ON ope.Operation_ID=pro.Operation_ID 
 		 WHERE pro.Activity_Log_ID=$row[Activity_Log_ID];";
@@ -36,13 +37,14 @@ while ($row = mysql_fetch_assoc($resa))
 		$dno=$rr['Drawing_NO'];
 		$compname=$rr['Component_Name'];
 		$operationdesc=$rr['Operation_Desc'];
-		
+		$batchno=$rr['Mfg_Batch_NO'];
 	}else
 		if($row['Activity_ID']==2)
 	{
-		$sq="SELECT pro.Batch_ID,Component_Name, Operation_Desc FROM Production as pro 
-		INNER JOIN Batch_NO as bn ON bn.Batch_ID=pro.Batch_ID
-		INNER JOIN MI_Drg_Qty as mdq ON mdq.Material_Inward_ID=bn.Material_Inward_ID
+		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Operation_Desc FROM Production as pro 
+		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=pro.Batch_ID 
+		INNER JOIN Batch_NO as bn ON bn.Batch_ID=bmc.Batch_ID
+		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
 		INNER JOIN Component as comp ON comp.Drawing_ID=mdq.Drawing_ID
 		INNER JOIN Operation as ope ON ope.Operation_ID=pro.Operation_ID 
 		 WHERE pro.Activity_Log_ID=$row[Activity_Log_ID];";
@@ -51,13 +53,15 @@ while ($row = mysql_fetch_assoc($resa))
 		$dno=$rr['Drawing_NO'];
 		$compname=$rr['Component_Name'];
 		$operationdesc=$rr['Operation_Desc'];
+		$batchno=$rr['Mfg_Batch_NO'];
 		 
 	}else
 		if($row['Activity_ID']==3)
 	{
-		$sq="SELECT pro.Batch_ID,Component_Name, Operation_Desc FROM Production as pro 
-		INNER JOIN Batch_NO as bn ON bn.Batch_ID=pro.Batch_ID
-		INNER JOIN MI_Drg_Qty as mdq ON mdq.Material_Inward_ID=bn.Material_Inward_ID
+		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Operation_Desc FROM Production as pro 
+		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=pro.Batch_ID 
+		INNER JOIN Batch_NO as bn ON bn.Batch_ID=bmc.Batch_ID
+		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
 		INNER JOIN Component as comp ON comp.Drawing_ID=mdq.Drawing_ID
 		INNER JOIN Operation as ope ON ope.Operation_ID=pro.Operation_ID 
 		 WHERE pro.Activity_Log_ID=$row[Activity_Log_ID];";
@@ -66,6 +70,7 @@ while ($row = mysql_fetch_assoc($resa))
 		$dno=$rr['Drawing_NO'];
 		$compname=$rr['Component_Name'];
 		$operationdesc=$rr['Operation_Desc'];
+		$batchno=$rr['Mfg_Batch_NO'];
 
 		 
 	}else
@@ -133,7 +138,7 @@ while ($row = mysql_fetch_assoc($resa))
 		$opename=$row['Operator_Name'];
 		$activity=$row['Activity_Name'];
 
-print("<tr><td>$activity</td><td>$dno - $compname</td><td>$operationdesc</td><td>$sdt</td><td>$edt</td><td>$opename</td><td>$row[Remarks]</td></tr>");
+print("<tr><td>$activity</td><td>$dno - $compname</td><td>$operationdesc</td><td>$batchno</td><td>$sdt</td><td>$edt</td><td>$opename</td><td>$row[Remarks]</td></tr>");
 
 }
 print("</table>");

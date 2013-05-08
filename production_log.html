@@ -69,7 +69,21 @@ p { font-weight: bold; clear: both; }
 	}
   	});
 
-
+	$('#batchno').click(function(){
+		var bid=$('#Batch_ID').val();
+		
+		if(bid!='')
+		{
+			var bid=$('#Batch_ID').val();
+			var url="get_batch_remarks.php?bid="+bid;
+			
+			$.get(url, function(data) {
+			$('#batchno').append(data);
+			});
+			
+		}
+		
+	});
 
   	$('#edate').focus(function(){
 	var mid=$('#Machine_ID').val();

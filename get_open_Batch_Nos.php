@@ -2,68 +2,33 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-$imid=$_GET['imid'];
+$drawid=$_GET['drawid'];
 
-$query="SELECT Material_Qty FROM MI_Drg_Qty WHERE Material_Inward_ID='$imid';";
+$query="SELECT EX_Challan_NO,EX_Challan_Date,Purchase_Ref,Purchase_Ref_Date,Material_Qty,Qty_In_Batch,
+		Mfg_Batch_NO,Batch_Remarks FROM Material_Inward AS mi
+		INNER JOIN MI_Drg_Qty AS mdq ON mdq.Material_Inward_ID=mi.Material_Inward_ID 
+		INNER JOIN BNo_MI_Challans AS bmc ON bmc.MI_Drg_Qty_ID=mdq.MI_Drg_Qty_ID 
+		INNER JOIN Batch_NO as bn ON bn.Batch_ID=bmc.Batch_ID WHERE mdq.Drawing_ID='$drawid' and Batch_Under_Progress='1';";
+//print($query);
 
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
-$row = mysql_fetch_assoc($resa);
-
-$inqty=$row['Material_Qty'];
-
-$queryb="SELECT Qty_In_Batch From BNo_MI_Challans WHERE Material_Inward_ID='$imid';";
-
-$res = mysql_query($queryb, $cxn) or die(mysql_error($cxn));
-$r=mysql_num_rows($res);
-$bqty=0;
-if($r!=0)
-{
-while($rowb = mysql_fetch_assoc($res))
-{
-	$bqty+=$rowb['Batch_Qty'];
-	
-}
-}
-$maxbqty=$inqty-$bqty;
-
-print("Balance Quantity is $maxbqty Nos");
-
-/*
-$queryp="SELECT mdq.Drawing_ID,Material_Qty, EX_Challan_NO,EX_Challan_Date,Purchase_Ref,Purchase_Ref_Date,
-		Material_Code, Drawing_NO, Component_Name, 
-		(SELECT GROUP_CONCAT(Mfg_Batch_NO,' - ',(SELECT GROUP_CONCAT(Qty_In_Batch) FROM BNo_MI_Challans as bmc WHERE bmc.Batch_ID=bn.Batch_ID)) FROM Batch_NO as bn WHERE bn.Material_Inward_ID=mi.Material_Inward_ID) AS Batches 
-		FROM Material_Inward as mi 
-		INNER JOIN MI_Drg_Qty as mdq ON mdq.Material_Inward_ID=mi.Material_Inward_ID
-		INNER JOIN Component as comp ON comp.Drawing_ID=mdq.Drawing_ID
-		WHERE mi.Material_Inward_ID='$imid';"; 
-
-
-//print($queryp);
-
-
-$res=mysql_query($queryp) or die(mysql_error());
-$r=mysql_num_rows($res);
-
-
-
-if($r!=0)
+$r=mysql_num_rows($resa);
+if($r!='')
 {
 print("<table border=\"1\" cellspacing=\"1\">");
-print("<tr><th>Comp Name & Drawing No</th><th>Challan No</th><th>Challan Date</th><th>Purchase Ref</th>
-	<th>Purchase Ref Date</th><th>Quantity Received</th>
-		<th>Batch No and Batch Quantity</th></tr>");
+print("<tr><th>Challan No</th><th>Challan Date</th><th>Purchase Ref</th>
+			<th>Purchase Ref Date</th><th>Quantity Received</th><th>Qty Used In Batch</th><th>Batch No</th><th>Batch Remarks</th></tr>");
 
-		
-while($row=mysql_fetch_assoc($res))
-{
-if($row['EX_Challan_Date']=='0000-00-00'){$cd='';}
-if($row['Purchase_Ref_Date']=='0000-00-00'){$pd='';}
-	print("<tr><td>$row[Drawing_NO] : $row[Component_Name]</td><td>$row[EX_Challan_NO]</td>
-			<td>$cd</td><td>$row[Purchase_Ref]</td><td>$pd</td><td>$row[Material_Qty]</td>
-		<td>$row[Batches]</td></tr>");
-	
-}
+	while($row = mysql_fetch_assoc($resa))
+	{
+print("<tr><td>$row[EX_Challan_NO]</td><td>$row[EX_Challan_Date]</td><td>$row[Purchase_Ref]</td>
+			<td>$row[Purchase_Ref_Date]</td><td>$row[Material_Qty]</td><td>$row[Qty_In_Batch]</th><th>$row[Mfg_Batch_NO]</th><td>$row[Batch_Remarks]</td></tr>");
+
+	}
 print("</table>");
+
+}else{
+	
+	print("No open batches for this Drawing");
 }
-*/
 ?>				
