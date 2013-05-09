@@ -4,17 +4,17 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 //print_r($_POST);
 
-$drawingid=$_POST['Drawing_ID'];
 $activityid=$_POST['Activity_ID'];
 $machineid=$_POST['Machine_ID'];
-$operationid=$_POST['Operation_ID'];
 $sdatetime=$_POST['sdatedb'];
 $edatetime=$_POST['edatedb'];
-$progno=$_POST['pno'];
 $operatorid=$_POST['Operator_ID'];
-$qty=$_POST['qty'];
-$bno=$_POST['Batch_ID'];
-if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remark="";}
+$maintid=$_POST['Maintenance_Type_ID'];
+$bddetails=$_POST['bddetail'];
+$wodetails=$_POST['wodetail'];
+if(isSet($_POST['mkengr'])){$mkengr=$_POST['mkengr'];}else{$mkengr="";}
+if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
+if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
 
 
 $query="INSERT INTO ActivityLog (Activity_ID,
@@ -35,32 +35,27 @@ $query.="VALUES('$activityid',
 $res=mysql_query($query) or die(mysql_error());
 $lastid=mysql_insert_id();
 
-$pquery="INSERT INTO Production (Activity_Log_ID,
-								Operation_ID,
-								Program_NO,
-								Quantity,
-								Batch_ID) ";
+$pquery="INSERT INTO Maintenance (Activity_Log_ID,
+								Service_Engr_Name,
+								Problem_Desc,
+								Maintenance_Desc,
+								Spares_Used,
+								Maintenance_Type_ID) ";
 $pquery.="VALUES('$lastid',
-				'$operationid',
-				'$progno',
-				'$qty',
-				'$bno');";
+				'$mkengr',
+				'$bddetails',
+				'$wodetails',
+				'$spares',
+				'$maintid');";
 
 //print("<br>$pquery");
-$result=mysql_query($pquery);
-if(!$result)
-{
-$q="DELETE FROM ActivityLog WHERE Activity_Log_ID='$lastid';";
-$rd=mysql_query($q) or die(mysql_error());
-	
-}else{
+$result=mysql_query($pquery) or die(mysql_error());
 $ok=mysql_affected_rows();
-}
 if($ok!=0)
 {
-	print("Added one Row in to Production Log with Batch ID $bno and Log ID is $lastid");
+	print("Added one Row in to Maintenance Log and Log ID is $lastid");
 }else{
-	print("Error adding into Production Log");
+	print("Error adding into Maintenance Log");
 }
 
 

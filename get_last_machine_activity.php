@@ -76,16 +76,18 @@ while ($row = mysql_fetch_assoc($resa))
 	}else
 		if($row['Activity_ID']==4)
 	{
-		$sq="SELECT Drawing_ID,Drawing_NO FROM NonProduction as np
-		INNER JOIN Components as comp ON comp.Drawing_ID=np.Drawing_ID 
+		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Operation_Description FROM NonProduction as np
+		INNER JOIN Component as comp ON comp.Drawing_ID=np.Drawing_ID 
+		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=np.Batch_ID 
 		WHERE Activity_Log_ID=$row[Activity_Log_ID];";
 		
 		$res = mysql_query($sq, $cxn) or die(mysql_error($cxn));
 		$rr=mysql_fetch_assoc($res);
 		$dno=$rr['Drawing_NO'];
-		$compname="";
-		$operationdesc="";		
-	}else
+		$compname=$rr['Component_Name'];
+		$operationdesc=$rr['Operation_Description'];		
+		$batchno=$rr['Mfg_Batch_NO'];
+		}else
 		if($row['Activity_ID']==5)
 	{
 		$sq="SELECT Problem_Desc FROM Maintenance WHERE Activity_Log_ID=$row[Activity_Log_ID];";
@@ -97,31 +99,33 @@ while ($row = mysql_fetch_assoc($resa))
 	}else
 		if($row['Activity_ID']==11)
 	{
-		$sq="SELECT Drawing_ID,Drawing_NO FROM NonProduction as np
-		INNER JOIN Components as comp ON comp.Drawing_ID=np.Drawing_ID 
+		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Operation_Description FROM NonProduction as np
+		INNER JOIN Component as comp ON comp.Drawing_ID=np.Drawing_ID 
+		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=np.Batch_ID 
 		WHERE Activity_Log_ID=$row[Activity_Log_ID];";
 
 		
 		$res = mysql_query($sq, $cxn) or die(mysql_error($cxn));
 		$rr=mysql_fetch_assoc($res);
 		$dno=$rr['Drawing_NO'];
-		$compname="";
-		$operationdesc="";		
-
+		$compname=$rr['Component_Name'];
+		$operationdesc=$rr['Operation_Description'];		
+		$batchno=$rr['Mfg_Batch_NO'];
 	}else
 		if($row['Activity_ID']==12)
 	{
-		$sq="SELECT Drawing_ID,Drawing_NO FROM NonProduction as np
-		INNER JOIN Components as comp ON comp.Drawing_ID=np.Drawing_ID 
+		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Operation_Description FROM NonProduction as np
+		INNER JOIN Component as comp ON comp.Drawing_ID=np.Drawing_ID 
+		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=np.Batch_ID 
 		WHERE Activity_Log_ID=$row[Activity_Log_ID];";
 
 		
 		$res = mysql_query($sq, $cxn) or die(mysql_error($cxn));
 		$rr=mysql_fetch_assoc($res);
 		$dno=$rr['Drawing_NO'];
-		$compname="";
-		$operationdesc="";		
-
+		$compname=$rr['Component_Name'];
+		$operationdesc=$rr['Operation_Description'];		
+		$batchno=$rr['Mfg_Batch_NO'];
 	}else
 		{
 
