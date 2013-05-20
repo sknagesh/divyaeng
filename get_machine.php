@@ -13,7 +13,7 @@ while ($row = mysql_fetch_assoc($resa))
 {
 	if($row['Machine_ID']==$mid){$sel="selected=\"selected\"";}else{$sel="";}
 echo "<option value=".$row['Machine_ID']." $sel >";
-echo "$row[Machine_Name] $row[MAchine_SLNO]</option>";
+echo "$row[Machine_Name] $row[Machine_SLNO]</option>";
 }
 print("</select></td>");
 

@@ -3,6 +3,8 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 //print_r($_POST);
+$uploadDir = '/home/www/logimages/';
+
 
 $drawingid=$_POST['Drawing_ID'];
 $activityid=$_POST['Activity_ID'];
@@ -15,6 +17,16 @@ $operatorid=$_POST['Operator_ID'];
 $qty=$_POST['qty'];
 $bno=$_POST['Batch_ID'];
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remark="";}
+
+
+if(isSet($_FILES['oimg']['name'])){
+	
+$oimgfiles=count($_FILES['oimg']['name']);	
+	
+}else{
+	$oimgfiles='';
+}
+
 
 
 $query="INSERT INTO ActivityLog (Activity_ID,
@@ -64,4 +76,45 @@ if($ok!=0)
 }
 
 
+if($oimgfiles!=0)
+{
+	foreach ($_FILES['oimg']['name'] as $key => $name) {
+		
+
+
+	$drgfileName = $lastid."-".$_FILES['oimg']['name'][$key];
+	$drgtmpName = $_FILES['oimg']['tmp_name'][$key];
+	$drgfileSize = $_FILES['oimg']['size'][$key];
+	$drgfileType = $_FILES['oimg']['type'][$key];
+	$drgfilePath = $uploadDir . $drgfileName;
+	$result = move_uploaded_file($drgtmpName, $drgfilePath);
+	if (!$result) {
+						echo "<br>Error uploading Activity Image $drgfileName";
+						exit;
+						}
+
+	if(!get_magic_quotes_gpc())
+						{
+						$drgfileNames[$key] = addslashes($drgfileName);
+						$drgfilePath = addslashes($drgfilePath);
+						}
+						}
+
+}else{$drgfileNames='';}
+
+
+
+
+
+if($oimgfiles!='')
+{
+
+		for ($i=0; $i < $oimgfiles; $i++) { 
+			$quef="INSERT INTO ActivityLog_Image (Activity_Log_ID,Image_Path) VALUES( $lastid,'$drgfileNames[$i]');";
+//			print($quef);
+			$resf=mysql_query($quef) or die(mysql_error());
+	}
+
+
+}
 ?>

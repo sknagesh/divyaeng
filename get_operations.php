@@ -3,7 +3,7 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawingid=$_GET['drawingid'];
-if(isSet($_GET['did'])){$did=$_GET['did'];}else{$did="";}
+if(isSet($_GET['oid'])){$did=$_GET['oid'];}else{$did="";}
 if(isSet($_GET['hcomp'])){$hcomp=$_GET['hcomp'];}else{$hcomp="";}
 //print_r($_POST);
 $query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid';";

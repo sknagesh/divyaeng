@@ -2,29 +2,34 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-//print_r($_POST);
+print_r($_POST);
 $uploadDir = '/home/www/logimages/';
 
-
+$custid=$_POST['Customer_ID'];
+$drawingid=$_POST['Drawing_ID'];
 $activityid=$_POST['Activity_ID'];
-$machineid=$_POST['Machine_ID'];
-$sdatetime=$_POST['sdatedb'];
-$edatetime=$_POST['edatedb'];
+$sdatetime=$_POST['edatedb'];
 $operatorid=$_POST['Operator_ID'];
-$maintid=$_POST['Maintenance_Type_ID'];
-$bddetails=$_POST['bddetail'];
-$wodetails=$_POST['wodetail'];
-if(isSet($_POST['mkengr'])){$mkengr=$_POST['mkengr'];}else{$mkengr="";}
-if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
+$bno=$_POST['Batch_ID'];
+$ncid=$_POST['NC_ID'];
+$statusid=$_POST['Status_ID'];
+$ncdesc=$_POST['ncdesc'];
+$rootca=$_POST['rootca'];
+$corract=$_POST['corract'];
+
+
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
 
-if(isSet($_FILES['oimg']['name'])){
+if(isSet($_POST['ncp'])){$ncp=$_POST['ncp'];}else{$ncp="";}
 
+if(isSet($_FILES['oimg']['name'])){
+	
 $oimgfiles=count($_FILES['oimg']['name']);	
 	
 }else{
 	$oimgfiles='';
 }
+
 
 $query="INSERT INTO ActivityLog (Activity_ID,
 								Machine_ID,
@@ -33,9 +38,9 @@ $query="INSERT INTO ActivityLog (Activity_ID,
 								Operator_ID,
 								Remarks) ";
 $query.="VALUES('$activityid',
-				'$machineid',
+				'1',
 				'$sdatetime',
-				'$edatetime',
+				'0-0-0 0:0:0',
 				'$operatorid',
 				'$remark');";
 
@@ -44,27 +49,33 @@ $query.="VALUES('$activityid',
 $res=mysql_query($query) or die(mysql_error());
 $lastid=mysql_insert_id();
 
-$pquery="INSERT INTO Maintenance (Activity_Log_ID,
-								Service_Engr_Name,
-								Problem_Desc,
-								Maintenance_Desc,
-								Spares_Used,
-								Maintenance_Type_ID) ";
+$pquery="INSERT INTO NonConformance (Activity_Log_ID,
+								Drawing_ID,
+								NC_ID,
+								Problem_Description,
+								Root_Cause,
+								Corr_Action,
+								NC_Status_ID,
+								NC_Percentage,
+								Batch_ID) ";
 $pquery.="VALUES('$lastid',
-				'$mkengr',
-				'$bddetails',
-				'$wodetails',
-				'$spares',
-				'$maintid');";
+				'$drawingid',
+				'$ncid',
+				'$ncdesc',
+				'$rootca',
+				'$corract',
+				'$statusid',
+				'$ncp',
+				'$bno');";
 
 //print("<br>$pquery");
 $result=mysql_query($pquery) or die(mysql_error());
 $ok=mysql_affected_rows();
 if($ok!=0)
 {
-	print("Added one Row in to Maintenance Log and Log ID is $lastid");
+	print("Added one Row in to Non Conformance Log with Batch ID $bno and Log ID is $lastid");
 }else{
-	print("Error adding into Maintenance Log");
+	print("Error adding into Non Conformance Log");
 }
 
 if($oimgfiles!=0)
@@ -106,7 +117,8 @@ if($oimgfiles!='')
 			$resf=mysql_query($quef) or die(mysql_error());
 	}
 
-
 }
+
+
 
 ?>

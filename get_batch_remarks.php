@@ -10,7 +10,7 @@ $query2="SELECT Batch_Remarks FROM Batch_NO WHERE Batch_ID='$bid';";
 
 $resa2 = mysql_query($query2, $cxn) or die(mysql_error($cxn));
 $row=mysql_fetch_assoc($resa2);
-print($row[Batch_Remarks]);
+print($row['Batch_Remarks']);
 
 
 

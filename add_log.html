@@ -6,6 +6,8 @@
         <title>Add New Log Entry To Database</title>
         <script src="jquery.js"></script>
         <script src="jquery.validate.js"></script>
+        <script src="jquery.form.js"></script>
+        <script src="jquery.MultiFile.pack.js"></script>
         <script src="add_log.js"></script>
 
  <style type="text/css">
@@ -20,7 +22,7 @@ p { font-weight: bold; clear: both; }
     </head>
     <body>
 <div id="adraw">
-  <form name ="addlog" id="addlog" >
+  <form name ="addlog" id="addlog" method="post" action="" enctype="multipart/form-data">
  <fieldset>
 <legend>Activity Details</legend>
    <p>
@@ -31,7 +33,7 @@ p { font-weight: bold; clear: both; }
 
 
    <p>
-     <input class="submit" id="submit" type="submit" value="Submit"/>
+     <input class="submit" id="Savelog" type="submit" value="Save Log"/>
    </p>
  </fieldset>
  </form>

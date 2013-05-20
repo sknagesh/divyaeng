@@ -6,25 +6,27 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $uploadDir = '/home/www/logimages/';
 
 
+$drawingid=$_POST['Drawing_ID'];
 $activityid=$_POST['Activity_ID'];
 $machineid=$_POST['Machine_ID'];
+$operationid=$_POST['Operation_ID'];
 $sdatetime=$_POST['sdatedb'];
 $edatetime=$_POST['edatedb'];
 $operatorid=$_POST['Operator_ID'];
-$maintid=$_POST['Maintenance_Type_ID'];
-$bddetails=$_POST['bddetail'];
-$wodetails=$_POST['wodetail'];
-if(isSet($_POST['mkengr'])){$mkengr=$_POST['mkengr'];}else{$mkengr="";}
-if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
-if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
+$qty=$_POST['qty'];
+$bno=$_POST['Batch_ID'];
+if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remark="";}
+
 
 if(isSet($_FILES['oimg']['name'])){
-
+	
 $oimgfiles=count($_FILES['oimg']['name']);	
 	
 }else{
 	$oimgfiles='';
 }
+
+
 
 $query="INSERT INTO ActivityLog (Activity_ID,
 								Machine_ID,
@@ -44,28 +46,34 @@ $query.="VALUES('$activityid',
 $res=mysql_query($query) or die(mysql_error());
 $lastid=mysql_insert_id();
 
-$pquery="INSERT INTO Maintenance (Activity_Log_ID,
-								Service_Engr_Name,
-								Problem_Desc,
-								Maintenance_Desc,
-								Spares_Used,
-								Maintenance_Type_ID) ";
+$pquery="INSERT INTO Production (Activity_Log_ID,
+								Operation_ID,
+								Program_NO,
+								Quantity,
+								Batch_ID) ";
 $pquery.="VALUES('$lastid',
-				'$mkengr',
-				'$bddetails',
-				'$wodetails',
-				'$spares',
-				'$maintid');";
+				'$operationid',
+				'',
+				'$qty',
+				'$bno');";
 
 //print("<br>$pquery");
-$result=mysql_query($pquery) or die(mysql_error());
+$result=mysql_query($pquery);
+if(!$result)
+{
+$q="DELETE FROM ActivityLog WHERE Activity_Log_ID='$lastid';";
+$rd=mysql_query($q) or die(mysql_error());
+	
+}else{
 $ok=mysql_affected_rows();
+}
 if($ok!=0)
 {
-	print("Added one Row in to Maintenance Log and Log ID is $lastid");
+	print("Recorded one Rejection Batch ID $bno and Log ID is $lastid");
 }else{
-	print("Error adding into Maintenance Log");
+	print("Error adding into Rejection Log");
 }
+
 
 if($oimgfiles!=0)
 {
@@ -108,5 +116,4 @@ if($oimgfiles!='')
 
 
 }
-
 ?>

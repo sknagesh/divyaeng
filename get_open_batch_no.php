@@ -3,7 +3,7 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawingd=$_GET['drawingid'];
-if(isSet($_GET['oid'])){$oid=$_GET['oid'];}else{$oid="";}
+if(isSet($_GET['bid'])){$oid=$_GET['bid'];}else{$bid="";}
 //print_r($_POST);
 
 $query2="SELECT bn.Batch_ID,Mfg_Batch_NO FROM Batch_NO as bn
@@ -19,8 +19,8 @@ echo '<option value="">Select Batch NO</option>';
 $resa2 = mysql_query($query2, $cxn) or die(mysql_error($cxn));
 while ($row2 = mysql_fetch_assoc($resa2))
 {
-	
-echo "<option value=".$row2['Batch_ID'].">".$row2['Mfg_Batch_NO']."</option>";
+if($row2['Batch_ID']==$oid){$sel=" selected=selected";}else{$sel='';}	
+echo "<option value=".$row2['Batch_ID'].$sel.">".$row2['Mfg_Batch_NO']."</option>";
 }
 print("</select>");
 

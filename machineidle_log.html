@@ -8,57 +8,45 @@
         <script src="jquery.datetimeentry.js"></script>
         <script src="jquery.form.js"></script>
         <script src="jquery.MultiFile.pack.js"></script>
+
  <style type="text/css">
 * { font-family: Verdana; font-size: 13px; }
-label { width: 15em; float: left; color:green;font-weight: bold; clear: both; }
+label { width: 10em; float: left; color:green;font-weight: bold; clear: both; }
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { font-weight: bold; clear: both; }
 .submit { margin-left: 12em; }
 </style>
   <script>
   $(document).ready(function(){
-  	var ledt="";
+	var ledt="";
+
+	$('#addlog').attr("action","machineidle_log.php");
+
   	$('#pfields').hide();
-	$('#footer').html("")
-		$('#footer2').html("");
-	$('#addlog').attr("action","breakdown_log.php");
+  	$('#footer').html("")
+	$('#footer2').html("");
   	$("#machine").load('get_machine.php');
 
-
   	$('#machine').click(function(){
+		var mid=$('#Machine_ID').val();
+		if(mid!="")
+		{
+			url="get_last_machine_activity.php?mid="+mid;
+			$('#operator').load("get_operator.php");
+		$('#footer').load(url);
+		}
 
-	var mid=$('#Machine_ID').val();
-	if(mid!="")
-	{
-		url="get_last_machine_activity.php?mid="+mid;
-	$('#footer').load(url);
-		$('#operator').load("get_operator.php");
-	}
+
   	});
-
 
   	$('#operator').click(function(){
-	var opid=$('#Operator_ID').val();
-	
-	if(opid!='')
-	{
-		$('#mainttype').load('get_maint_types.php');
-	}
-
-  	});
-
-  
-  	$('#operator').click(function(){
-	var oid=$('#Operator_ID').val();
-	if(oid!="")
-	{
-
-	$('#pfields').show();
-	}else{
-	$('#pfields').hide();
-	}
-  	});
-
+		var oid=$('#Operator_ID').val();
+		if(oid!=''){
+			$('#pfields').show();
+			}else{
+			$('#pfields').hide();
+			}
+});
 
 
   	$('#edate').focus(function(){
@@ -83,7 +71,7 @@ p { font-weight: bold; clear: both; }
 
 
 $(function () {
-	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma',altField: '#sdatedb', altFormat: 'Y-O-D H:M:S', defaultDatetime: ledt});
+	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma',altField: '#sdatedb', altFormat: 'Y-O-D H:M:S'});
 	
 	$('#edate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D H:M:S'});
 	
@@ -106,17 +94,15 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
 
 
  <fieldset>
-<legend>Production Details</legend>
+<legend>Idle time Details</legend>
    <p>
      <label for="machine">Select Machine</label>
      <div id="machine"> </div>
      <div id="operator"> </div>
-	 <div id="mainttype"> </div>
 	 <div id="pfields">
 	   <p>
-     <label for="sdate">Start Date and Time </label>
-     <input type="hidden" name="sdate" id="sdate" size="25">
-     <div id="sd"> </div>
+     <label for="edate">Start Date and Time</label>
+	  <input type="hidden" name="sdate" id="sdate" size="25">
       <input type="hidden" name="sdatedb" id="sdatedb" >
 	   <p>
 	
@@ -125,39 +111,13 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <input type="text" name="edate" id="edate" size="25" class="required">
      <input type="hidden" name="edatedb" id="edatedb" > 
 	   <p>
-
-	   <p>
-     <label for="drgop">Service Engineer's Name</label>
-     <input type="text" name="mkengr" id="mkengr" size="25" >
-	   <p>
-
-
-	   <p>
-     <label for="drgop">Problem Description</label>
-     <textarea name="bddetail" rows="4" cols="50" id="bddetail" class="required" maxlength="500"> </textarea>
-	   <p>
-
-	   <p>
-     <label for="drgop">Work Carried Out Details</label>
-     <textarea name="wodetail" rows="4" cols="50" id="wodetail" class="required" maxlength="1000"> </textarea>
-	   <p>
-
-	   <p>
-     <label for="remarks">Remarks</label>
-     <textarea name="remark" rows="4" cols="50" id="remarks" maxlength="500"> </textarea> 
-	   <p>
 		
 	   <p>
-     <label for="remarks">Spares Used</label>
-     <textarea name="spares" rows="4" cols="50" id="spares" maxlength="500"> </textarea> 
+     <label for="remarks">Remarks</label>
+     <textarea name="remark" rows="4" cols="50" id="remarks" > </textarea> 
 	   <p>
 
-   <p>
-     <label>Upload Images if any </label>
-     <input id="oimg" class="multi" name="oimg[]" type="file" />
-   </p>
-
-
+		
 	</div>
 
  </fieldset>

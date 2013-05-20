@@ -1,24 +1,27 @@
   $(document).ready(function(){
-	var phpfile="test.php";
+	$('#addlog').validate();
+	var phpfile='';
   	$("#activity").load('get_activity.php');  //load activity list from get_activity.php
 
-	$("#submit").click(function(event) {
+var options = {  ///options for ajaxSubnit function 
+        target:        '#footer2', 
+//      	data: $('#addlog').serializeArray(), 
+
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    };
+
+	$("#Savelog").click(function(event) {
 
 	 if($("#addlog").valid())
   	{
 	  	event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
-		$.ajax({
-      					data: $('#addlog').serializeArray(),
-      					type: "POST",
-      					url: phpfile,
-      					success: function(html) {
-				document.getElementById("footer2").innerHTML=html;
-				$('#addlog')[0].reset();
-      							}
-    							});
+		$('#addlog').ajaxSubmit(options)
   	}
 
 		});
+
+
 		
 	$('#activity').click(function(){
 	var aid=$('#Activity_ID').val();
