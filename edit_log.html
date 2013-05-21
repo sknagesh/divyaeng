@@ -28,23 +28,22 @@ p { font-weight: bold; clear: both; }
 	var data=new Array();
     $("#editlog").validate();  //attach validater to form
 	$('#elog').hide();
+
 	$('#edit').click(function(){
 		var lid=$('#lid').val();
 		if(lid!="")
 		{
-				$.ajax({
-      					type: "GET",
+				$.ajax({type: "GET",
       					url: "get_log_entry_for_editing.php?lid="+lid,
       					async:false,
       					success: function(html) {
-      									
       						if(html!="")
       						{
-					data=html.split("<|>");
-							}
-
-				if(data[0]==1||2)
+							console.log(html);
+							data=html.split("<|>");
+					if((data[0]==1)||(data[0]==2)||(data[0]==3)||(data[0]==14)) ///production,setup, rework and cmm logs
 				{
+					$('#maint').hide();
 					$('#machine').load("get_machine.php?mid="+data[1]);
 					$('#customer').load("get_customer.php?cid="+data[2]);
 					$('#drawing').load("get_drawing.php?did="+data[3]+"&custid="+data[2]);
@@ -75,20 +74,101 @@ p { font-weight: bold; clear: both; }
 						}
 						
 					}
-					$('#simg').html(simg);
-
+						$('#simg').html(simg);
 						$('#elog').show();
-						}else
+				}else
+				if(data[0]==5)   //maintenance log
+				{
+					
+					$('#prod').hide();						
+					$('#machine').load("get_machine.php?mid="+data[1]);
+					$('#operator').load("get_operator.php?opeid="+data[2]);
+					$('#sdate').val(data[3]);
+					$('#edate').val(data[4]);
+					$('#mkengr').val(data[5]);
+					$('#bddetail').val(data[6]);
+					$('#wodetail').val(data[7]);
+					$('#spares').val(data[8]);
+					$('#mtype').load("get_maint_types.php?mid="+data[9]);
+					$('#remark').val(data[10]);
+					$('#sdatedb').val(data[11]);
+					$('#edatedb').val(data[12]);
+					$('#activity').load("get_activity.php?aid="+data[13]);
+					if(data[14]!='')
+					{
+						var images=data[14].split(",");
+						var noofimages=images.length;
+						var simg='<p><label>Images Uploaded for this log, Check Images to be deleted</label><p>';
+						for(var i=0;i<noofimages;i+=2)
 						{
-							$('#footer').html("You can edit only Production, Set Up or Re Work Logs");
+							simg+='<input type="checkbox" name=simg['+i+'] id=simg['+i+'] value="'+images[i]+'">';
+							simg+=images[i+1]+'<p>';
 						}
-										}
-    							});
-	
-		}else
-		{
-			$('#footer').html("Please enter Log ID to Edit");
-		}
+					}
+					$('#simg').html(simg);
+						$('#elog').show();
+				}else
+				if(data[0]==8)  ///idle time log
+				{
+					
+						$('#prod').hide();
+						$('#images').hide();
+						$('#maint').hide();						
+						$('#machine').load("get_machine.php?mid="+data[1]);
+						$('#operator').load("get_operator.php?opeid="+data[2]);
+						$('#sdate').val(data[3]);
+						$('#edate').val(data[4]);
+						$('#remark').val(data[5]);
+						$('#sdatedb').val(data[6]);
+						$('#edatedb').val(data[7]);
+						$('#activity').load("get_activity.php?aid="+data[8]);
+						$('#elog').show();
+				}else
+				if((data[0]==4)||(data[0]==11)) ///fai, fixture logs
+				{
+					$('#maint').hide();
+					$('#operation').hide();
+					$('#machine').load("get_machine.php?mid="+data[1]);
+					$('#customer').load("get_customer.php?cid="+data[2]);
+					$('#drawing').load("get_drawing.php?did="+data[3]+"&custid="+data[2]);
+					$('#opdesc').val(data[4]);
+					$('#operator').load("get_operator.php?opeid="+data[5]);
+					$('#sdate').val(data[6]);
+					$('#edate').val(data[7]);
+					$('#qty').val(data[8]);
+					$('#remark').val(data[9]);
+					$('#pno').val(data[10]);
+					$('#sdatedb').val(data[11]);
+					$('#edatedb').val(data[12]);
+					$('#activity').load("get_activity.php?aid="+data[13]);
+					$('#batchid').load("get_open_batch_no.php?bid="+data[14]+"&drawingid="+data[3]);
+
+					if(data[15]!='')
+					{
+						var images=data[15].split(",");
+						var noofimages=images.length;
+						console.log(data[15]);
+						console.log(noofimages);
+						var simg='<p><label>Images Uploaded for this log, Check Images to be deleted</label><p>';
+						for(var i=0;i<noofimages;i+=2)
+						{
+							simg+='<input type="checkbox" name=simg['+i+'] id=simg['+i+'] value="'+images[i]+'">';
+							simg+=images[i+1]+'<p>';
+
+						}
+						
+					}
+					$('#simg').html(simg);
+					$('#elog').show();
+				}
+			}else{
+				$('#footer').html("You can edit only Production, Set Up or Re Work Logs");
+				}
+			}  //success end
+									
+    					});  //ajax end
+	}  //end if lid!=''
+	});  //function end
 		
 
 
@@ -100,12 +180,16 @@ p { font-weight: bold; clear: both; }
 
   	$('#drawing').click(function(){
 	var did=$('#Drawing_ID').val();
+	var url2='get_open_batch_no.php?drawingid='+did;
+
 	if(did!="")
 	{
-		var url="get_operation.php?drawingid="+did;
-	$('#operation').load(url);
+		$('#batchid').load(url2);
+		var url="get_operations.php?drawingid="+did;
+		$('#operation').load(url);
 	}
   	});
+
 
 var options = {  ///options for ajaxSubnit function 
         target:        '#footer2',
@@ -137,7 +221,7 @@ $(function () {
 	
 	});  
 
-  });
+
 
 function customRange() { 
 
@@ -170,7 +254,17 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <div id="operation"> </div>
      <div id="batchid"> </div>
      <div id="operator"> </div>
-		
+	 <div id="mtype"> </div>
+
+<div id="fai">
+	   <p>
+     <label for="pno">Operation Description</label>
+     <input type="text" name="opdesc" id="opdesc" size="25" class="required"> 
+	   <p>
+
+</div>
+
+
 			   <p>
      <label for="sdate">Start Date and Time </label>
      <input type="text" name="sdate" id="sdate" size="25" class="required">
@@ -182,7 +276,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <input type="text" name="edate" id="edate" size="25" class="required">
      <input type="hidden" name="edatedb" id="edatedb" > 
 	   <p>
-
+<div id="prod">
 	   <p>
      <label for="pno">Program No</label>
      <input type="text" name="pno" id="pno" size="25" class="required"> 
@@ -192,17 +286,44 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <label for="qty">Production Quantity</label>
      <input type="text" name="qty" id="qty" size="25" class="required number"> 
 	   <p>
+</div>
+
+<div id="maint">
+	   <p>
+     <label for="drgop">Service Engineer's Name</label>
+     <input type="text" name="mkengr" id="mkengr" size="25" >
+	   <p>
+
+
+	   <p>
+     <label for="drgop">Problem Description</label>
+     <textarea name="bddetail" rows="4" cols="50" id="bddetail" class="required" maxlength="500"> </textarea>
+	   <p>
+
+	   <p>
+     <label for="drgop">Work Carried Out Details</label>
+     <textarea name="wodetail" rows="4" cols="50" id="wodetail" class="required" maxlength="1000"> </textarea>
+	   <p>
+
+	   <p>
+     <label for="remarks">Spares Used</label>
+     <textarea name="spares" rows="4" cols="50" id="spares" maxlength="500"> </textarea> 
+	   <p>
+	
+
+</div>
 
 
 	   <p>
      <label for="remarks">Remarks</label>
      <textarea name="remark" rows="4" cols="50" id="remark" > </textarea> 
 	   <p>
+<div id="images">
    <p>
      <label>Upload Images if any </label>
      <input id="oimg" class="multi" name="oimg[]" type="file" /><div id="simg"> </div>
    </p>
-
+</div>
 
    <p>
      <input class="submit" id="submit" type="submit" value="Submit"/>

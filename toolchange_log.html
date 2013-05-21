@@ -18,12 +18,16 @@ p { font-weight: bold; clear: both; }
 </style>
   <script>
   $(document).ready(function(){
-	var ledt="";
+  	var ledt="";
   	$('#pfields').hide();
+	$('#tdia').hide();
   	$('#footer').html("")
 	$('#footer2').html("");
+	$('#addlog').attr("action","toolchange_log.php");
   	$("#machine").load('get_machine.php');
-	$('#addlog').attr("action","fixturework_log.php");
+  	$('#machine').click(function(){
+  	$('#customer').load("get_customer.php");
+  	});
 
   	$('#customer').click(function(){
   	var cid=$('#Customer_ID').val();
@@ -31,15 +35,14 @@ p { font-weight: bold; clear: both; }
   	$('#drawing').load(url);
   	});
 
+
   	$('#machine').click(function(){
 	var mid=$('#Machine_ID').val();
 	if(mid!="")
 	{
-	url="get_last_machine_activity.php?mid="+mid;
-  	$('#customer').load("get_customer.php");
+		url="get_last_machine_activity.php?mid="+mid;
 	$('#footer').load(url);
 	}
-
   	});
 
 
@@ -51,17 +54,17 @@ p { font-weight: bold; clear: both; }
 	if(did!="")
 	{
 		$('#batchno').load(url2);
-
+		var url="get_operations.php?drawingid="+did;
+		$('#operation').load(url);
 	}
   	});
-
-
   
-  	$('#operator').click(function(){
-	var oid=$('#Operator_ID').val();
+  	$('#operation').click(function(){
+	var oid=$('#Operation_ID').val();
 	if(oid!="")
 	{
-
+	$('#operator').load("get_operator.php");
+	$('#ttype').load("get_tool_types.php");
 	$('#pfields').show();
 	}else{
 	$('#pfields').hide();
@@ -75,14 +78,56 @@ p { font-weight: bold; clear: both; }
 		{
 			var bid=$('#Batch_ID').val();
 			var url="get_batch_remarks.php?bid="+bid;
+			
 			$.get(url, function(data) {
 			$('#batchno').append(data);
-			$('#operator').load('get_operator.php');
 			});
 			
 		}
 		
 	});
+
+
+	$('#ttype').click(function(){
+		var tid=$('#Tool_Type_ID').val();
+		
+		if(tid!='')
+		{
+			$('#tdia').show();
+		}else{
+			$('#tdia').hide();
+		}
+		
+	});
+
+
+	$('#tdia').keyup(function(){
+		var tdia=$('#tooldia').val();
+		var tid=$('#Tool_Type_ID').val();
+		if(tdia!='')
+		{
+			url="tools_of_type_dia.php?tdia="+tdia+"&ttype="+tid;
+			$('#tchange').load(url);
+		}else{
+			$('#tchange').hide();
+		}
+		
+	});
+
+
+	$('[id^="tid*"]').on("click",function(){
+		var tid=$('#Tool_ID_1').val();
+		if(tid!='')
+		{
+			url="get_tool_qty.php?tid="+tid;
+			$('#tid1').load(url);
+		}else{
+			$('#tid1').text("");
+		}
+		
+	});
+
+
 
 
   	$('#edate').focus(function(){
@@ -94,10 +139,7 @@ p { font-weight: bold; clear: both; }
       					success: function(html) {
 						
 						var data=html.split('<>');						
-												
-						$('#sd').text(data[0]);
-						$('#sdate').val(data[0]);
-						$('#sdatedb').val(data[1]);
+						$('#edatedb').val(data[1]);
 						$('#edate').val(data[0]);
 						console.log("back from ajax call data 0="+data[0]+"data 1="+data[1]);
 										}
@@ -107,19 +149,14 @@ p { font-weight: bold; clear: both; }
 
 
 $(function () {
-	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma',altField: '#sdatedb', altFormat: 'Y-O-D H:M:S'});
 	
-	$('#edate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D H:M:S'});
+	$('#edate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma', altField: '#edatedb', altFormat: 'Y-O-D H:M:S'});
 	
 	});  
 
 
 });
 
-function customRange() { 
-
-return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
-}
 
 
   </script>
@@ -130,51 +167,49 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
 
 
  <fieldset>
-<legend>Details</legend>
+<legend>Tool Change Details</legend>
    <p>
      <label for="machine">Select Machine</label>
      <div id="machine"> </div>
      <div id="customer"> </div>
      <div id="drawing"> </div>
      <div id="batchno"> </div>
+     <div id="operation"> </div>
      <div id="operator"> </div>
+
+	 <div id="ttype"> </div>
+	 <div id="tdia">
+     <label>Tool Diameter </label>
+     <input type="text" name="tooldia" id="tooldia" size="25" class="required">
+	</div>
+	<div id="tchange"> </div>
+
 	 <div id="pfields">
-
 	   <p>
-     <label for="drgop">Operation Details if Any</label>
-     <input type="text" name="op" id="op" size="25"> 
-	   <p>
-
-	   <p>
-     <label for="drgop">Quntity</label>
-     <input type="text" name="qty" id="qty" size="25" class="number"> 
-	   <p>
-
-	   <p>
-     <label for="drgop">Program No</label>
-     <input type="text" name="pgno" id="pgno" size="25" > 
-	   <p>
-
-     <label for="sdate">Start Date and Time </label>
-     <input type="hidden" name="sdate" id="sdate" size="25">
-     <div id="sd"> </div>
-      <input type="hidden" name="sdatedb" id="sdatedb" >
-	   <p>
-	
-	   <p>
-     <label for="edate">End Date and Time</label>
+     <label>Change Date and Time </label>
      <input type="text" name="edate" id="edate" size="25" class="required">
-     <input type="hidden" name="edatedb" id="edatedb" > 
+      <input type="hidden" name="edatedb" id="edatedb" >
 	   <p>
-		
+
+	   <p>
+     <label for="qty">Reason for Change</label>
+	<select name="reason" id="reason" class="required">
+	<option value="">Tool Change Reason</option>;
+	<option value="Poor Finish">Poor Surface finish</option>;
+	<option value="Tool Worn Out">Tool Worn Out</option>;
+	<option value="Edge Chip Off">Edge Chip Off</option>;
+	<option value="Hole Over Size">Hole Over Size</option>;
+	<option value="Insert Chip Off">Insert Chip Off</option>;
+	<option value="Tool Broken">Tool Broken</option>;
+	<option value="End of tool Life Reached">End of tool Life Reached</option>;
+	</select>
+	   <p>
+
 	   <p>
      <label for="remarks">Remarks</label>
      <textarea name="remark" rows="4" cols="50" id="remarks" > </textarea> 
 	   <p>
-   <p>
-     <label>Upload Images if any </label>
-     <input id="oimg" class="multi" name="oimg[]" type="file" />
-   </p>
+
 		
 	</div>
 

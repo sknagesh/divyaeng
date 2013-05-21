@@ -73,8 +73,8 @@ var options = {  ///options for ajaxSubnit function
 	}else
 		if(aid==11) //FAI
 	{
-		var url="fai_log.html";
-		phpfile="fai_log.php";
+		var url="fixturework_log.html";
+		phpfile="fixturework_log.php";
 	}else
 		if(aid==12) //one of job
 	{

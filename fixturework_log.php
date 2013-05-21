@@ -17,6 +17,15 @@ if(isSet($_POST['qty'])){$qty=$_POST['qty'];}else{$qty="";}
 if(isSet($_POST['pgno'])){$pgno=$_POST['pgno'];}else{$pgno="";}
 
 
+if(isSet($_FILES['oimg']['name'])){
+	
+$oimgfiles=count($_FILES['oimg']['name']);	
+	
+}else{
+	$oimgfiles='';
+}
+
+
 $query="INSERT INTO ActivityLog (Activity_ID,
 								Machine_ID,
 								Start_Date_Time,
@@ -57,6 +66,49 @@ if($ok!=0)
 }else{
 	print("Error adding into NonProduction Log");
 }
+
+if($oimgfiles!=0)
+{
+	foreach ($_FILES['oimg']['name'] as $key => $name) {
+		
+
+
+	$drgfileName = $lastid."-".$_FILES['oimg']['name'][$key];
+	$drgtmpName = $_FILES['oimg']['tmp_name'][$key];
+	$drgfileSize = $_FILES['oimg']['size'][$key];
+	$drgfileType = $_FILES['oimg']['type'][$key];
+	$drgfilePath = $uploadDir . $drgfileName;
+	$result = move_uploaded_file($drgtmpName, $drgfilePath);
+	if (!$result) {
+						echo "<br>Error uploading Activity Image $drgfileName";
+						exit;
+						}
+
+	if(!get_magic_quotes_gpc())
+						{
+						$drgfileNames[$key] = addslashes($drgfileName);
+						$drgfilePath = addslashes($drgfilePath);
+						}
+						}
+
+}else{$drgfileNames='';}
+
+
+
+
+
+if($oimgfiles!='')
+{
+
+		for ($i=0; $i < $oimgfiles; $i++) { 
+			$quef="INSERT INTO ActivityLog_Image (Activity_Log_ID,Image_Path) VALUES( $lastid,'$drgfileNames[$i]');";
+//			print($quef);
+			$resf=mysql_query($quef) or die(mysql_error());
+	}
+
+
+}
+
 
 
 ?>
