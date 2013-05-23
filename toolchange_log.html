@@ -20,7 +20,6 @@ p { font-weight: bold; clear: both; }
 </style>
   <script>
   $(document).ready(function(){
-  	var ledt="";
   	$('#pfields').hide();
 	$('#tid1').hide();
 	$('#tid2').hide();
@@ -93,10 +92,14 @@ p { font-weight: bold; clear: both; }
 
 	$('#reason').click(function(){
 		var reason=$('#Reason_ID').val();
-		
+		var it='2';
 		if(reason!='')
 		{
-		$('#ttype1').load("get_tool_types.php?id="+1);
+			if(reason==1||reason==2)
+			{
+				it=1;
+			}
+		$('#ttype1').load("get_tool_types.php?id="+1+"&it="+it);
 			$('#tid1').show();
 		}else{
 			$('#tid1').hide();
@@ -137,13 +140,16 @@ p { font-weight: bold; clear: both; }
 
 	$('#tlist1').click(function(){
 		var tid=$('#Tool_ID1').val();
+		var itid=$('#Tool_Type_ID1').val();
 		if(tid!='')
 		{
 			url="get_tool_qty.php?tid="+tid;
 			$('#tqty1').load(url);
 			$('#ttype2').load("get_tool_types.php?id="+2);
+			if(itid==5 ||itid==6){
 			url2="get_insert_for_tool.php?tid="+tid;
 			$('#insert1').load(url2);
+			}
 			$('#tid2').show();
 		}else{
 			$('#tid2').hide("");
@@ -183,13 +189,15 @@ p { font-weight: bold; clear: both; }
 
 	$('#tlist2').click(function(){
 		var tid=$('#Tool_ID2').val();
+		var itid=$('#Tool_Type_ID2').val();
 		if(tid!='')
 		{
 			url="get_tool_qty.php?tid="+tid;
 			$('#tqty2').load(url);
+			if(itid==5 ||itid==6){
 			url2="get_insert_for_tool.php?tid="+tid;
 			$('#insert2').load(url2);
-
+			}
 		}
 		
 	});
@@ -268,6 +276,7 @@ $(function () {
      <input type="text" name="tdia1" id="tdia1" size="25" class="required">
 	<div id="tlist1"> </div>
 	<div id="tqty1"> </div>
+	<div id="insert1"> </div>
 </fieldset>
 </div>
 	
@@ -278,6 +287,7 @@ $(function () {
      <input type="text" name="tdia2" id="tdia2" size="25" class="required">
      <div id="tlist2"> </div>
      <div id="tqty2"> </div>
+     <div id="insert2"> </div>
 </fieldset>
 </div>
 	   <p>
