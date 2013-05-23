@@ -2,10 +2,11 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
+if(isSet($_GET['id'])){$id=$_GET['id'];}else{$id='';}
 //print_r($_POST);
 $query="SELECT * FROM Tool_Type;";
 print("<p><label>Select Tool Type</label>");
-print("<select name=\"Tool_Type_ID\" id=\"Tool_Type_ID\" class=\"required\">");
+print("<select name=\"Tool_Type_ID$id\" id=\"Tool_Type_ID$id\" class=\"required\">");
 echo '<option value="">Select Tool Type</option>';
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while ($row = mysql_fetch_assoc($resa))

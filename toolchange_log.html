@@ -12,6 +12,8 @@
  <style type="text/css">
 * { font-family: Verdana; font-size: 13px; }
 label { width: 10em; float: left; color:green;font-weight: bold; clear: both; }
+label2 { width: 10em; float: left; color:blue;font-weight: bold; clear: both; }
+label3 { width: 10em; float: left; color:magenta;font-weight: bold; clear: both; }
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { font-weight: bold; clear: both; }
 .submit { margin-left: 12em; }
@@ -20,13 +22,21 @@ p { font-weight: bold; clear: both; }
   $(document).ready(function(){
   	var ledt="";
   	$('#pfields').hide();
-	$('#tdia').hide();
+	$('#tid1').hide();
+	$('#tid2').hide();
   	$('#footer').html("")
 	$('#footer2').html("");
 	$('#addlog').attr("action","toolchange_log.php");
   	$("#machine").load('get_machine.php');
   	$('#machine').click(function(){
-  	$('#customer').load("get_customer.php");
+	var mid=$('#Machine_ID').val();
+	if(mid!="")
+	{
+		url="get_last_machine_activity.php?mid="+mid;
+  		$('#customer').load("get_customer.php");
+		$('#footer').load(url);
+	}
+
   	});
 
   	$('#customer').click(function(){
@@ -35,15 +45,6 @@ p { font-weight: bold; clear: both; }
   	$('#drawing').load(url);
   	});
 
-
-  	$('#machine').click(function(){
-	var mid=$('#Machine_ID').val();
-	if(mid!="")
-	{
-		url="get_last_machine_activity.php?mid="+mid;
-	$('#footer').load(url);
-	}
-  	});
 
 
 
@@ -64,7 +65,7 @@ p { font-weight: bold; clear: both; }
 	if(oid!="")
 	{
 	$('#operator').load("get_operator.php");
-	$('#ttype').load("get_tool_types.php");
+	$('#reason').load("get_tool_change_reason.php");
 	$('#pfields').show();
 	}else{
 	$('#pfields').hide();
@@ -88,44 +89,112 @@ p { font-weight: bold; clear: both; }
 	});
 
 
-	$('#ttype').click(function(){
-		var tid=$('#Tool_Type_ID').val();
+
+
+	$('#reason').click(function(){
+		var reason=$('#Reason_ID').val();
 		
-		if(tid!='')
+		if(reason!='')
 		{
-			$('#tdia').show();
+		$('#ttype1').load("get_tool_types.php?id="+1);
+			$('#tid1').show();
 		}else{
-			$('#tdia').hide();
+			$('#tid1').hide();
 		}
 		
 	});
 
 
-	$('#tdia').keyup(function(){
-		var tdia=$('#tooldia').val();
-		var tid=$('#Tool_Type_ID').val();
-		if(tdia!='')
+///tool being replaced
+	$('#ttype1').click(function(){
+		var tdia=$('#tdia1').val();
+		var tid=$('#Tool_Type_ID1').val();
+		if(tdia!='' && tid!='')
 		{
-			url="tools_of_type_dia.php?tdia="+tdia+"&ttype="+tid;
-			$('#tchange').load(url);
+			url="tools_of_type_dia.php?tdia="+tdia+"&ttype="+tid+"&id=1";
+			$('#tlist1').load(url);
 		}else{
-			$('#tchange').hide();
+			$('#tlist1').text('');
 		}
 		
 	});
 
 
-	$('[id^="tid*"]').on("click",function(){
-		var tid=$('#Tool_ID_1').val();
+
+	$('#tdia1').keyup(function(){
+		var tdia=$('#tdia1').val();
+		var tid=$('#Tool_Type_ID1').val();
+		if(tdia!='' && tid!='')
+		{
+			url="tools_of_type_dia.php?tdia="+tdia+"&ttype="+tid+"&id=1";
+			$('#tlist1').load(url);
+		}else{
+			$('#tlist1').text('');
+		}
+		
+	});
+
+
+	$('#tlist1').click(function(){
+		var tid=$('#Tool_ID1').val();
 		if(tid!='')
 		{
 			url="get_tool_qty.php?tid="+tid;
-			$('#tid1').load(url);
+			$('#tqty1').load(url);
+			$('#ttype2').load("get_tool_types.php?id="+2);
+			url2="get_insert_for_tool.php?tid="+tid;
+			$('#insert1').load(url2);
+			$('#tid2').show();
 		}else{
-			$('#tid1').text("");
+			$('#tid2').hide("");
 		}
 		
 	});
+	
+	
+///replacement tool
+	$('#ttype2').click(function(){
+		var tdia=$('#tdia2').val();
+		var tid=$('#Tool_Type_ID2').val();
+		if(tdia!='' && tid!='')
+		{
+			url="tools_of_type_dia.php?tdia="+tdia+"&ttype="+tid+"&id=2";
+			$('#tlist2').load(url);
+		}else{
+			$('#tlist2').text('');
+		}
+		
+	});
+
+
+	$('#tdia2').keyup(function(){
+		var tdia=$('#tdia2').val();
+		var tid=$('#Tool_Type_ID2').val();
+		if(tdia!='' && tid!='')
+		{
+			url="tools_of_type_dia.php?tdia="+tdia+"&ttype="+tid+"&id=2";
+			$('#tlist2').load(url);
+		}else{
+			$('#tlist2').text('');
+		}
+		
+	});
+
+
+	$('#tlist2').click(function(){
+		var tid=$('#Tool_ID2').val();
+		if(tid!='')
+		{
+			url="get_tool_qty.php?tid="+tid;
+			$('#tqty2').load(url);
+			url2="get_insert_for_tool.php?tid="+tid;
+			$('#insert2').load(url2);
+
+		}
+		
+	});
+
+
 
 
 
@@ -178,11 +247,6 @@ $(function () {
      <div id="operator"> </div>
 
 	 <div id="ttype"> </div>
-	 <div id="tdia">
-     <label>Tool Diameter </label>
-     <input type="text" name="tooldia" id="tooldia" size="25" class="required">
-	</div>
-	<div id="tchange"> </div>
 
 	 <div id="pfields">
 	   <p>
@@ -192,26 +256,37 @@ $(function () {
 	   <p>
 
 	   <p>
-     <label for="qty">Reason for Change</label>
-	<select name="reason" id="reason" class="required">
-	<option value="">Tool Change Reason</option>;
-	<option value="Poor Finish">Poor Surface finish</option>;
-	<option value="Tool Worn Out">Tool Worn Out</option>;
-	<option value="Edge Chip Off">Edge Chip Off</option>;
-	<option value="Hole Over Size">Hole Over Size</option>;
-	<option value="Insert Chip Off">Insert Chip Off</option>;
-	<option value="Tool Broken">Tool Broken</option>;
-	<option value="End of tool Life Reached">End of tool Life Reached</option>;
-	</select>
+<div id="reason"> </div>
 	   <p>
+</div>
 
+<div id="tid1">
+
+<fieldset><legend><label2>Select Tool being replaced</label2></legend>
+	<div id="ttype1"> </div>		
+     <label>Present Tool Diameter </label>
+     <input type="text" name="tdia1" id="tdia1" size="25" class="required">
+	<div id="tlist1"> </div>
+	<div id="tqty1"> </div>
+</fieldset>
+</div>
+	
+<div id="tid2">
+	<fieldset><Legend><label3>Select Tool Replacement Tool</label3></Legend> 
+	<div id="ttype2"> </div>
+     <label>Replacement Tool Diameter </label>
+     <input type="text" name="tdia2" id="tdia2" size="25" class="required">
+     <div id="tlist2"> </div>
+     <div id="tqty2"> </div>
+</fieldset>
+</div>
 	   <p>
      <label for="remarks">Remarks</label>
      <textarea name="remark" rows="4" cols="50" id="remarks" > </textarea> 
 	   <p>
 
 		
-	</div>
+
 
  </fieldset>
 
