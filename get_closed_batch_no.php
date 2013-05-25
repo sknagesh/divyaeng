@@ -9,7 +9,7 @@ if(isSet($_GET['bid'])){$oid=$_GET['bid'];}else{$bid="";}
 $query2="SELECT DISTINCT(bn.Batch_ID),Mfg_Batch_NO FROM Batch_NO as bn
 		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=bn.Batch_ID
 		INNER JOIN MI_Drg_Qty AS mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID 
-		WHERE mdq.Drawing_ID='$drawingd' and Batch_Under_Progress='1';";
+		WHERE mdq.Drawing_ID='$drawingd' and Batch_Under_Progress='0';";
 
 //print($query2);
 

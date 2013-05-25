@@ -23,6 +23,8 @@ p { font-weight: bold; clear: both; }
   	$('#pfields').hide();
 	$('#tid1').hide();
 	$('#tid2').hide();
+	$('#iq1').hide();
+	$('#iq2').hide();
   	$('#footer').html("")
 	$('#footer2').html("");
 	$('#addlog').attr("action","toolchange_log.php");
@@ -147,7 +149,7 @@ p { font-weight: bold; clear: both; }
 			$('#tqty1').load(url);
 			$('#ttype2').load("get_tool_types.php?id="+2);
 			if(itid==5 ||itid==6){
-			url2="get_insert_for_tool.php?tid="+tid;
+			url2="get_insert_for_tool.php?tid="+tid+"&iid=1";
 			$('#insert1').load(url2);
 			}
 			$('#tid2').show();
@@ -157,6 +159,24 @@ p { font-weight: bold; clear: both; }
 		
 	});
 	
+
+	$('#insert1').click(function(){
+		var iid=$('#Insert_ID1').val();
+		if(iid!='')
+		{
+			url="get_insert_qty.php?iid="+iid;
+			$('#insertq1').load(url);
+			$('#insertq1').show();
+			$('#iq1').show();
+		}else{
+			$('#insertq1').hide();
+			$('#iq1').hide();
+			
+		}
+		
+	});
+
+
 	
 ///replacement tool
 	$('#ttype2').click(function(){
@@ -189,19 +209,35 @@ p { font-weight: bold; clear: both; }
 
 	$('#tlist2').click(function(){
 		var tid=$('#Tool_ID2').val();
-		var itid=$('#Tool_Type_ID2').val();
 		if(tid!='')
 		{
 			url="get_tool_qty.php?tid="+tid;
 			$('#tqty2').load(url);
+			var itid=$('#Tool_Type_ID2').val();
 			if(itid==5 ||itid==6){
-			url2="get_insert_for_tool.php?tid="+tid;
+			url2="get_insert_for_tool.php?tid="+tid+"&iid=2";
 			$('#insert2').load(url2);
 			}
 		}
 		
 	});
 
+	$('#insert2').click(function(){
+		var iid=$('#Insert_ID2').val();
+		if(iid!='')
+		{
+			url="get_insert_qty.php?iid="+iid;
+			$('#insertq2').load(url);
+			$('#insertq2').show();
+			$('#iq2').show();
+		}else{
+			$('#insertq2').hide();
+			$('#iq2').hide();
+			
+		}
+
+		
+	});
 
 
 
@@ -274,9 +310,16 @@ $(function () {
 	<div id="ttype1"> </div>		
      <label>Present Tool Diameter </label>
      <input type="text" name="tdia1" id="tdia1" size="25" class="required">
+	<input type="radio" name="newtool1" id="new1" class="required" value="New Tool">New Tool
+	<input type="radio" name="newtool1" id="old1" value="Old/Resharpened">Old/Resharpened
 	<div id="tlist1"> </div>
 	<div id="tqty1"> </div>
 	<div id="insert1"> </div>
+	<div id="insertq1"> </div>
+	<div id="iq1">
+		     <label>Insert Qty </label>
+     <input type="text" name="iqty1" id="iqty1" size="25" class="required">
+	</div>
 </fieldset>
 </div>
 	
@@ -285,10 +328,17 @@ $(function () {
 	<div id="ttype2"> </div>
      <label>Replacement Tool Diameter </label>
      <input type="text" name="tdia2" id="tdia2" size="25" class="required">
+	<input type="radio" name="newtool2" id="new2" class="required" value="New Tool">New Tool
+	<input type="radio" name="newtool2" id="old2" value="Old/Resharpened">Old/Resharpened
      <div id="tlist2"> </div>
      <div id="tqty2"> </div>
      <div id="insert2"> </div>
-</fieldset>
+     <div id="insertq2"> </div>
+     	<div id="iq2">
+		     <label>Insert Qty </label>
+     <input type="text" name="iqty2" id="iqty2" size="25" class="required">
+	</div>
+     </fieldset>
 </div>
 	   <p>
      <label for="remarks">Remarks</label>
