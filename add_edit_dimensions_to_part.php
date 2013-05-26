@@ -3,7 +3,7 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 print_r($_POST);
-
+/*
 $operationid=$_POST['Operation_ID'];
 $baloonno=$_POST['baloonno'];
 $basicdimn=$_POST['basicdimn'];
@@ -60,5 +60,5 @@ if($result!=0){$newdimn+=1;}
 $a++;	
 }
 print(" $updated Dimensions Updated and $newdimn New Dimensions Added");
-
+*/
 ?>

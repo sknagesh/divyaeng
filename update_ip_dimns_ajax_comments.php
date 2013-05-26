@@ -8,7 +8,7 @@ if($filter!=0)
 {
 	$ipd="<table border=\"1\" cellspacing=\"1\" id=\"inprocesstble\">";
 	$ipd.= "<tr><th>Baloon No</th><th>Dimn. Desc</th><th>Basic dimn</th><th>Tol. Lower</th><th>Tol Upper</th>
-			<th>Instrument ID</th><th>Stage Dimn?</th><th>Text Field?</th><th>Comment 1</th><th>Comment 2</th>
+			<th>Instrument ID</th><th>Stage Dimn?</th><th>Text Field?</th><th>Comment</th>
 			<th>Production Dimn?</th><th>Compulsary Dimn?</th><th>Delete Dimn?</th></tr>";
 
 	$qry="SELECT * FROM Dimension WHERE Operation_ID=$filter AND Deleted=0;";
@@ -51,8 +51,7 @@ $noofdimns=mysql_num_rows($resa);
 		$ipd.= "<input type=\"radio\" name=\"stagedimn[$i]\" value=\"0\" Checked/>N</input></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"1\" Checked />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"0\" />N</input></td>";
-		$ipd.= "<td><input type=\"text\" name=\"comm1[$i]\" id=\"comm1[$i]\" size=\"7\" /></td>";
-		$ipd.= "<td><input type=\"text\" name=\"comm2[$i]\" id=\"comm2[$i]\" size=\"7\" /></td>";
+		$ipd.= "<td><div id=\"comm$i\"/> </div></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"1\" />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"0\" Checked/>N</input></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"compulsary[$i]\" id=\"compulsary[$i]\" value=\"1\" />Y</input>";
@@ -104,8 +103,7 @@ $noofdimns=mysql_num_rows($resa);
 		$ipd.= "<input type=\"radio\" name=\"stagedimn[$i]\" value=\"0\" $sd0 />N</input></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"1\" $tf1 />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"0\" $tf0 />N</input></td>";
-		$ipd.= "<td><input type=\"text\" name=\"comm1[$i]\" id=\"comm1[$i]\" size=\"7\" value=\"$row[Comment_1]\" /></td>";
-		$ipd.= "<td><input type=\"text\" name=\"comm2[$i]\" id=\"comm2[$i]\" size=\"7\" value=\"$row[Comment_2]\" /></td>";
+		$ipd.= "<td><div id=\"comm$i\"/> </div></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"1\" $pd1 />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"0\" $pd0 />N</input></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"compulsary[$i]\" id=\"compulsary[$i]\" value=\"1\" $cd1 />Y</input>";

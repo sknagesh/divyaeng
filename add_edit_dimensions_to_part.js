@@ -39,7 +39,7 @@ $("#operation").click(function() {     //show inprocess dimensions based on oper
 $("form#add_ip_dimn").on("submit",function(event) {
 	event.preventDefault();
 	var $this = $(this);
-	if(validateipdimn()){
+	if($('#add_ip_dimn').valid()&&validateipdimn()){
 	
 		$.ajax({data: $this.serializeArray(),
    			dataType: "html",
@@ -58,8 +58,23 @@ $(document).on("click", '*[id^="textfield"]', function(event){
 	
 	
 	 var value=$(this).val();
-	  var colno=$('#inprocesstble td').size();
-	 console.log("value="+value+"col no="+colno);
+	 if(value==0){
+	 	tid=event.target.id;
+	 	var i=parseInt(tid.replace( /^\D+/g, ''));
+	 	var divid="#comm["+i+"]";
+		console.log(i+tid+divid);
+	 	$('#comm'+i).load("get_comments.php?id="+i);
+	 	
+	 }else{
+	 	tid=event.target.id;
+	 	var i=parseInt(tid.replace( /^\D+/g, ''));
+	 	var divid="#comm["+i+"]";
+	 	console.log(tid+divid);
+	 	$('#comm'+i).text("");
+	 	
+	 	
+	 }
+
 });
 
 
