@@ -36,7 +36,7 @@ $("#operation").click(function() {     //show inprocess dimensions based on oper
 	}
 });
 
-$("form#add_ip_dimn").live("submit",function(event) {
+$("form#add_ip_dimn").on("submit",function(event) {
 	event.preventDefault();
 	var $this = $(this);
 	if(validateipdimn()){
@@ -52,6 +52,16 @@ $("form#add_ip_dimn").live("submit",function(event) {
 			});
 		}
 	});
+
+
+$(document).on("click", '*[id^="textfield"]', function(event){
+	
+	
+	 var value=$(this).val();
+	  var colno=$('#inprocesstble td').size();
+	 console.log("value="+value+"col no="+colno);
+});
+
 
 });  ///end of document load function
 
@@ -107,6 +117,7 @@ if(tdif<0){alert("Lower Tolerance is more then Upper Tolerance: "+tollower+"::"+
 
 function delrow()
 {
+	console.log("inside delrow");
     $.ajax({
       data: $("form#add_ip_dimn").serializeArray(),
       dataType: "html",
