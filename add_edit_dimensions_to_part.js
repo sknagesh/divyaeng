@@ -54,26 +54,37 @@ $("form#add_ip_dimn").on("submit",function(event) {
 	});
 
 
-$(document).on("click", '*[id^="textfield"]', function(event){
+$(document).on("click", '*[id^="dimndesc"]', function(event){
 	
 	
 	 var value=$(this).val();
-	 if(value==0){
-	 	tid=event.target.id;
-	 	var i=parseInt(tid.replace( /^\D+/g, ''));
-	 	var divid="#comm["+i+"]";
-		console.log(i+tid+divid);
-	 	$('#comm'+i).load("get_comments.php?id="+i);
+	 	tid=this.id;
+	 	var j=tid.substring(9);
+	 	var i=parseInt(j);
+	 	console.log("j="+j+"i="+i+"id="+tid);
+	 		
+	 	var tfid='textfield['+i+']';
+	$.ajax({
+      					type: "GET",
+      					url: "get_comments.php?id="+i+"&value="+value,
+      					async:false,
+      					success: function(html) {
+//						console.log("back from ajax call html="+html);
+
+						$( '[name*="textfield[' + i + ']"]' ).val(html);
+//						console.log("text field="+$( '[name*="textfield[' + i + ']"]' ).val());
+						if(html==0){
+							$('#textfield'+i).text("Yes");
+					$( '[name*="basicdimn[' + i + ']"]' ).addClass("required number");
+							}else{
+							$('#textfield'+i).text("No");
+					$( '[name*="basicdimn[' + i + ']"]' ).removeClass("required number");
+							}
+										}
+    							});
 	 	
-	 }else{
-	 	tid=event.target.id;
-	 	var i=parseInt(tid.replace( /^\D+/g, ''));
-	 	var divid="#comm["+i+"]";
-	 	console.log(tid+divid);
-	 	$('#comm'+i).text("");
 	 	
-	 	
-	 }
+
 
 });
 

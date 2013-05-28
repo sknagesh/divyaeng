@@ -2,18 +2,20 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-$i=$_GET['id'];
-if(isSet($_GET['cid'])){$did=$_GET['did'];}else{$did='';}
-$query="SELECT * FROM Dimn_Comment;";
-print("<select name=\"Comment[$i]\" id=\"comment[$i]\" class=\"required\">");
-echo '<option value="">Select Comment</option>';
+$id=$_GET['id'];
+$value=$_GET['value'];
+
+$query="SELECT * FROM Dimn_Comment WHERE Desc_ID='$value';";
+
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
-while ($row = mysql_fetch_assoc($resa))
+$row = mysql_fetch_assoc($resa);
+$no=mysql_affected_rows();
+
+if($no!=0)
 {
-	if($row['Comment_ID']==$did){$sel="selected=\"selected\"";}else{$sel="";}
-echo "<option value=".$row['Comment_ID']." $sel >";
-echo "$row[Comment_Type]</option>";
+	print("1");
+}else{
+	print("0");
 }
-print("</select>");
 
 ?>

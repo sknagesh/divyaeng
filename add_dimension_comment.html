@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Add New Dimension Description</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 15em; float: left; color: green }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+    $("#dimndesc").validate();
+	$('#ddesc').load("get_dimn_description.php");
+	$("#submit").click(function(event) {
+
+	 if($("#dimndesc").valid())
+  	{
+  		event.preventDefault();
+		$.ajax({
+      					data: $('#dimndesc').serializeArray(),
+      					type: "POST",
+      					url: "add_dimnsion_comment.php",
+      					success: function(html) {
+
+				document.getElementById("footer").innerHTML=html;
+				$('#dimndesc')[0].reset();
+      							}
+      							    							});
+  	
+  	}
+
+		});
+  });
+  </script>
+
+
+
+
+    </head>
+    <body>
+<div id="acust">
+  <form id="dimndesc">
+ <fieldset>
+<legend>Dimension Description</legend>
+<div id="ddesc"> </div>
+   <p>
+     <label>Enter New Description</label>
+     <input id="dcomm" name="dcomm" size="25" class="required"/>
+   </p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"> </div>
+</div>
+
+</body>
+</html>

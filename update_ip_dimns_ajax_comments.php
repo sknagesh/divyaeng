@@ -8,7 +8,7 @@ if($filter!=0)
 {
 	$ipd="<table border=\"1\" cellspacing=\"1\" id=\"inprocesstble\">";
 	$ipd.= "<tr><th>Baloon No</th><th>Dimn. Desc</th><th>Basic dimn</th><th>Tol. Lower</th><th>Tol Upper</th>
-			<th>Instrument ID</th><th>Stage Dimn?</th><th>Text Field?</th><th>Comment</th>
+			<th>Instrument ID</th><th>Stage Dimn?</th><th>Text Field?</th>
 			<th>Production Dimn?</th><th>Compulsary Dimn?</th><th>Delete Dimn?</th></tr>";
 
 	$qry="SELECT * FROM Dimension WHERE Operation_ID=$filter AND Deleted=0;";
@@ -49,9 +49,7 @@ $noofdimns=mysql_num_rows($resa);
 		$ipd.="</select></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"stagedimn[$i]\" value=\"1\" />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"stagedimn[$i]\" value=\"0\" Checked/>N</input></td>";
-		$ipd.= "<td><input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"1\" Checked />Y</input>";
-		$ipd.= "<input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"0\" />N</input></td>";
-		$ipd.= "<td><div id=\"comm$i\"/> </div></td>";
+		$ipd.= "<td><div id=\"textfield$i\"/></div><input type=\"hidden\" name=\"textfield[$i]\"/></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"1\" />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"0\" Checked/>N</input></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"compulsary[$i]\" id=\"compulsary[$i]\" value=\"1\" />Y</input>";
@@ -101,9 +99,7 @@ $noofdimns=mysql_num_rows($resa);
 		$ipd.="</select></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"stagedimn[$i]\" value=\"1\" $sd1/>Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"stagedimn[$i]\" value=\"0\" $sd0 />N</input></td>";
-		$ipd.= "<td><input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"1\" $tf1 />Y</input>";
-		$ipd.= "<input type=\"radio\" name=\"textfield[$i]\" id=\"textfield[$i]\" value=\"0\" $tf0 />N</input></td>";
-		$ipd.= "<td><div id=\"comm$i\"/> </div></td>";
+		$ipd.= "<td><div id=\"textfield$i\"/>$row[Text_Field]</div><input type=\"hidden\" name=\"textfield[$i]\" value=\"$row[Text_Field]\"/></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"1\" $pd1 />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"0\" $pd0 />N</input></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"compulsary[$i]\" id=\"compulsary[$i]\" value=\"1\" $cd1 />Y</input>";
