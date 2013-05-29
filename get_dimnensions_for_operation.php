@@ -71,10 +71,6 @@ else {
 		$i++;
 		        }
 		$ipd.='</table>';
-		$ipd.="<table border=\"1px\" cellspacing=\"1px\" id=\"bottomtable\">";
-		$ipd.="<tr><td><input type=\"submit\" id=\"submit\"/></input></td>";
-		$ipd.="</table>";
-		$ipd.="</form>";
 
 			}
 

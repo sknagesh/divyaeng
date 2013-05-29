@@ -2,7 +2,7 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-print_r($_POST);
+//print_r($_POST);
 	
 $operationid=$_POST['Operation_ID'];
 $batchid=$_POST['Batch_ID'];
@@ -30,7 +30,7 @@ while($i<count($dimid))
 		{
 		$queryo="INSERT INTO Observations (Dimn_Observation_ID, Dimension_ID, Observed_Dimn,Comment_ID,Remarks) 
 		 VALUES('$observationid','$dimid[$i]','$oid','$cid','$remark[$i]');";
-print("<br>$queryo");
+//print("<br>$queryo");
 		$reso = mysql_query($queryo, $cxn) or die(mysql_error($cxn));
 		$j++;
 		}
@@ -40,7 +40,7 @@ print("<br>$queryo");
 			Comment_ID='$cid',
 			Remarks='$remark[$i]' 
 		 	WHERE Observation_ID='$obserid[$i]';";
-print("<br>$queryo");
+//print("<br>$queryo");
 $reso = mysql_query($queryo, $cxn) or die(mysql_error($cxn));
 $k++;
 	}

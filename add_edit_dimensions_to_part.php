@@ -2,7 +2,7 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-print_r($_POST);
+//print_r($_POST);
 
 $operationid=$_POST['Operation_ID'];
 $baloonno=$_POST['baloonno'];
@@ -47,7 +47,7 @@ if($result!=0){$updated+=1;}
 	{
 $qry="INSERT INTO Dimension (Baloon_NO,Basic_Dimn,Desc_ID,Tol_Lower,Tol_Upper,Instrument_ID,Prod_Dimn,Text_Field,Operation_ID,Compulsary_Dimn,Stage_Dimension) ";
 $qry.="VALUES('$baloonno[$a]','$basicdimn[$a]','$dimndesc[$a]','$tollower[$a]','$tolupper[$a]','$instrumentid[$a]','$proddimn[$a]','$textfield[$a]','$operationid','$compulsary[$a]','$stagedimn[$a]');";
-print("$qry");
+//print("$qry");
 $resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 $result=mysql_affected_rows($cxn);
 if($result!=0){$newdimn+=1;}

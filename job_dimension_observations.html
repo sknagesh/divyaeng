@@ -20,7 +20,7 @@ color: #ffffff;
 <script type="text/javascript" src="job_dimension_observations.js"></script>
 </head>
 <body>
-<form name="inputdimn" id="inputdimn" method="post" action="job_dimension_observations.php" >
+<form name="inputdimn" id="inputdimn" >
 <fieldset><legend>Drawing and Operation</legend>
 <table border="0" width = "100%" cellspacing="10">		
 <tr><td><div id="customer"> </div></td>		
@@ -45,6 +45,11 @@ color: #ffffff;
 </table>
 </fieldset>
 <div id="ipdimns"> </div> <!--place to input display dimensions-->		
+<div id="s">
+<table border="1px" cellspacing="1px" id="bottomtable">
+		<tr><td><input type="submit" id="submit" value="Submit"/></td>
+		</table></div>
+
 </form>
 <div id="footer"> </div> <!--place show errors, results etc-->
 

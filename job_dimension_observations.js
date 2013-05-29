@@ -1,6 +1,6 @@
 $(document).ready(function() {
 $('#inputdimn').validate(); //attach form to validation engine
-
+$('#s').hide();
 $('#customer').load("get_customer.php"); //load customer list on to div customer
 
 $('#insp').hide();
@@ -73,11 +73,13 @@ $("#batch").change(function() {      //populate operation list based on drawing 
 	$('#ipdimns').empty();
 	$('#inspector').load("get_operator.php?insp=1"); //load customer list on to div customer
 	$('#insp').show();
+
 		}
 		else
 		{
 			$('#ipdimns').empty();
 			$('#insp').hide();
+
 		}
 	});
 
@@ -99,33 +101,31 @@ $('input[id^="fai"]').click(function() {      //show dimensions based on selecti
 //console.log(fai);
 	var url="get_dimnensions_for_operation.php?opid="+opid+'&fai='+fai;
 	$('#ipdimns').load(url);
-
+	$('#s').show();
 	});
 
 
+$("#submit").click(function(event) {
+
+		event.preventDefault();
+		$.ajax({
+      					data: $('#inputdimn').serializeArray(),
+      					type: "POST",
+   						url: "job_dimension_observations.php",
+      					success: function(html) {
+
+				document.getElementById("footer").innerHTML=html;
+//				$('#inputdimn')[0].reset();
+					$('#ipdimns').text(' ');
+      							}
+	});
+
+});
 
 
 
 });
 
-$("form#inputdimn").on("submit",function(event) {
-
-	event.preventDefault();
-	var $this = $(this);
-	
-	$.ajax({data: $this.serializeArray(),
-   			dataType: "html",
-   			type: $this.attr("method"),
-   			url: $this.attr("action"),
-   			success: function(html) {
-								$('#footer').text(html);
-//								$('#ipdimns').text('');
-								$('#form#inputdimn')[0].reset();
-								$('#insp').hide("");
-      								}
-			});
-
-	});
 
 
 $(function () {

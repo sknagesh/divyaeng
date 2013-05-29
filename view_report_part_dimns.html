@@ -3,8 +3,9 @@
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 	<head>
-		<title>Edit Job Observations for Opeation</title>
-<style type="text/css">
+		<title>View And Create Report In Process Dimensions</title>
+<link rel="stylesheet" href="validationEngine.jquery.css" type="text/css">
+ <style type="text/css">
 * { font-family: Verdana; font-size=10; }
 label {padding-right:1em;float: left; color: green}
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
@@ -16,28 +17,34 @@ color: #ffffff;
 </style>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="jquery.validate.js"></script>
-<script src="jquery.form.js"></script>
-<script src="jquery.datetimeentry.js"></script>
-<script type="text/javascript" src="edit_job_dimension_observations.js"></script>
+<script type="text/javascript" src="view_report_part_dimns.js"></script>
 </head>
 <body>
-<form name="inputdimn" id="inputdimn">
+<form name="viewipdimn" id="viewipdimn" action="dimension_report.php" method="post">
 <fieldset><legend>Drawing and Operation</legend>
 <table border="0" width = "100%" cellspacing="10">		
 <tr><td><div id="customer"> </div></td>		
 <td><div id="drawing"> </div></td>
 <td><div id="operation"> </div></td>
 <td><div id="batch"> </div></td>
-<td><div id="inspector"> </div></td>
-<td><div id="jobno"> </div></td></tr>
+<td>
+	<div id="reptype"><label>Report Type</label>
+	<select name="rtype" id="rtype">
+		<option value="">Select Report Type</option>
+		<option value="1">Final Inspection Report</option>
+		<option value="2">In Process Report</option>
+	</select>
+</div></td></tr>
+<tr><td><input type="radio" name="pdfxl" value="0" checked>PDF</input>
+	<input type="radio" name="pdfxl" value="1">XLS</input></td>
+<td>Report Date</td><td><input type="text" name="rdate" id="rdate"></td>
+<td>Comment</td><td><input type="text" name="comment" id="comment" class="required"></td></tr>
 </table>
+<input type="submit" id="submit" value="Generate Report">
 </fieldset>
 <div id="ipdimns"> </div> <!--place to input display dimensions-->		
-<div id="s">
-<table border="1px" cellspacing="1px" id="bottomtable">
-		<tr><td><input type="submit" id="submit"/></td>
-		</table></div>
 </form>
+
 <div id="footer"> </div> <!--place show errors, results etc-->
 
 </body>

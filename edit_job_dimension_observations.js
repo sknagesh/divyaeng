@@ -1,6 +1,6 @@
 $(document).ready(function() {
 $('#inputdimn').validate(); //attach form to validation engine
-
+$('#s').hide();
 $('#customer').load("get_customer.php"); //load customer list on to div customer
 
 
@@ -99,37 +99,37 @@ $('#jobno').click(function() {      //show dimensions based on selection
 if(jobno!='')
 {
 	$('#ipdimns').load(url);
+	$('#s').show();
 }else{
 	$('#ipdimns').text(' ');
+	$('#s').hide();
 }
 	
 
 	});
 
 
+$("#submit").click(function(event) {
 
 
+
+
+ 		event.preventDefault();
+		$.ajax({
+      					data: $('#inputdimn').serializeArray(),
+      					type: "POST",
+   						url: "update_job_dimension_observations.php",
+      					success: function(html) {
+
+				document.getElementById("footer").innerHTML=html;
+//				$('#inputdimn')[0].reset();
+					$('#ipdimns').text(' ');
+      							}
+	});
 
 });
 
-$("form#inputdimn").on("submit",function(event) {
-
-	event.preventDefault();
-	var $this = $(this);
-	
-	$.ajax({data: $this.serializeArray(),
-   			dataType: "html",
-   			type: "POST",
-   			url: "update_job_dimension_observations.php",
-   			success: function(html) {
-				document.getElementById("footer").innerHTML=html;
-				$('#inputdimn')[0].reset();
-
-      								}
-			});
-
-	});
-
+});
 
 $(function () {
 	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#dbdate', altFormat: 'Y-O-D'});
