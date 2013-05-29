@@ -29,7 +29,6 @@ $('#present').load('show_supplier.php');
       					type: "POST",
       					url: "add_supplier.php",
       					success: function(html) {
-
 				document.getElementById("footer").innerHTML=html;
 				$('#supplier')[0].reset();
       							}

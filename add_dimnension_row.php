@@ -36,7 +36,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 		$ipd.="</select></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"stagedimn[$i]\" value=\"1\" />Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"stagedimn[$i]\" value=\"0\" Checked />N</input></td>";
-		$ipd.= "<td><div id=\"textfield$i\"/></div><input type=\"hidden\" name=\"textfield[$i]\"/></td>";		$ipd.= "<td><div id=\"comm$i\"/> </div></td>";
+		$ipd.= "<td><div id=\"textfield$i\"/></div><input type=\"hidden\" name=\"textfield[$i]\"/></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"1\"/>Y</input>";
 		$ipd.= "<input type=\"radio\" name=\"proddimn[$i]\" id=\"proddimn[$i]\" value=\"0\"  Checked/>N</input></td>";
 		$ipd.= "<td><input type=\"radio\" name=\"compulsary[$i]\" id=\"compulsary[$i]\" value=\"1\"/>Y</input>";

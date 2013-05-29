@@ -77,9 +77,9 @@ $noofdimns=mysql_num_rows($resa);
 		$res = mysql_query($qdd, $cxn) or die(mysql_error($cxn));
 		$ipd.="<td><select name=\"dimndesc[$i]\" id=\"dimndesc[$i]\" class=\"required\">";
 		while ($r = mysql_fetch_assoc($res))
-		{if($r['Desc_ID']==$row['Desc_ID']){$ipd.="Selected=Selected";}
+		{if($r['Desc_ID']==$row['Desc_ID']){$sel="Selected=Selected";}else{$sel='';}
 		$ipd.="<option value=\"$r[Desc_ID]\"";
-		$ipd.=" >";
+		$ipd.="$sel >";
 		$ipd.="$r[Dimn_Desc]</option>";
  		}
 		$ipd.="</select></td>";
