@@ -17,24 +17,25 @@ color: #ffffff;
 </style>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="jquery.validate.js"></script>
+<script src="jquery.form.js"></script>
 <script type="text/javascript" src="view_report_part_dimns.js"></script>
 </head>
 <body>
-<form name="viewipdimn" id="viewipdimn" action="dimension_report.php" method="post">
+<form name="viewipdimn" id="viewipdimn" method="post" action="dimension_report.php">
 <fieldset><legend>Drawing and Operation</legend>
 <table border="0" width = "100%" cellspacing="10">		
 <tr><td><div id="customer"> </div></td>		
 <td><div id="drawing"> </div></td>
-<td><div id="operation"> </div></td>
 <td><div id="batch"> </div></td>
 <td>
 	<div id="reptype"><label>Report Type</label>
-	<select name="rtype" id="rtype">
+	<select name="Report_Type" id="Report_Type">
 		<option value="">Select Report Type</option>
 		<option value="1">Final Inspection Report</option>
 		<option value="2">In Process Report</option>
 	</select>
-</div></td></tr>
+</div></td>
+<td><div id="operation"> </div></td></tr>
 <tr><td><input type="radio" name="pdfxl" value="0" checked>PDF</input>
 	<input type="radio" name="pdfxl" value="1">XLS</input></td>
 <td>Report Date</td><td><input type="text" name="rdate" id="rdate"></td>

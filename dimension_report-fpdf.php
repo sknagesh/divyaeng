@@ -1,6 +1,7 @@
 <?php
 include('dewdb.inc');
-require_once('../tcpdf/tcpdf.php');
+require('fpdf.php');
+require('cellfit.php');
 require (dirname (__FILE__) . "/class-excel-xml.inc.php");
 
 //print_r($_POST);
@@ -17,12 +18,8 @@ $rtype=$_POST['Report_Type'];
 $comment=$_POST['comment'];
 
 if($rtype==1){
-$docref="DEW/QA/R/01";	
-$reptype="Final Inspection Report";
-}else{
-	$docref="DEW/PRD/R/06";
-	$reptype="Inprocess Inspection Report";
-}
+$docref="Final Inspection Report";	
+}else{$docref="Inprocess Inspection Report";}
 
 if(isSet($_POST['rdate'])){$rdate=$_POST['rdate'];}else{$rdate="";}
 
@@ -43,15 +40,6 @@ while($rrs=mysql_fetch_assoc($rr))
 	$partno=$rrs['Drawing_NO'];
 	$custname=$rrs['Customer_Name'];
 }
-
-
-$jo="SELECT * FROM Operation WHERE Operation_ID='$opid';";
-	$rro = mysql_query($jo, $cxn) or die(mysql_error($cxn));
-while($rrso=mysql_fetch_assoc($rro))
-{
-	$opdesc=$rrso['Operation_Desc'];
-}
-
 
 
 $kj="SELECT Heat_Code,Mfg_Batch_NO,Material_Code FROM Batch_NO as bn 
@@ -83,7 +71,7 @@ while($krrs=mysql_fetch_assoc($krr))
 	$resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 	while ($row = mysql_fetch_assoc($resa))  //get all dimensions for thi operation and store them in an array
         		{
-	$lrows[$j]=array($row['Baloon_NO'],$row['Dimn_Desc'],$row['Basic_Dimn'],$row['Tol_Lower'].'/'.$row['Tol_Upper'],$row['Instrument_SLNO'].' '.$row['Instrument_Description']);		
+	$lrows[$j]=array($row['Baloon_NO'],$row['Dimn_Desc'],$row['Basic_Dimn'],$row['Tol_Lower'].'/'.$row['Tol_Upper'],$row['Instrument_SLNO'].'-'.$row['Instrument_Description']);		
 	$j++;
 		        }
 //print("<br>lrows");
@@ -93,7 +81,7 @@ while($krrs=mysql_fetch_assoc($krr))
 	while($z<sizeof($jobno))  //loop through each job inspected
 	{
 $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,Insp_Date, 
-					Basic_Dimn, ob.Dimn_Observation_ID, Batch_ID,Remarks,
+					Basic_Dimn, ob.Dimn_Observation_ID, Batch_ID,
 					Job_NO, Observed_Dimn,ob.Comment_ID,Comment FROM Observations as ob
 					INNER JOIN Dimn_Observation as do ON do.Dimn_Observation_ID=ob.Dimn_Observation_ID
 					LEFT OUTER JOIN Dimn_Comment AS dc ON dc.Comment_ID=ob.Comment_ID 
@@ -108,7 +96,7 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,Insp_Date,
 		while($row=mysql_fetch_assoc($res))  //for each job get dimensions measured and store it in an array
 		{
 			if($row['Comment']==''){$ob=$row['Observed_Dimn'];}else{$ob=$row['Comment'];}
-			$rrow[$z][$x]=$ob.' '.$row['Remarks'];
+			$rrow[$z][$x]=$ob.' , '.$row['Remarks'];
 			$jdate=$row['Insp_Date'];
 			$x+=1;
 		}
@@ -119,7 +107,8 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,Insp_Date,
 //print("<br>rrows<br>");
 //print_r($rrow);
 
-class PDF_SKN extends TCPDF {
+class PDF_SKN extends PDF_CellFit
+{
 // Page header
 function Header()
 {
@@ -129,32 +118,29 @@ function Header()
 	$jdate=$GLOBALS['jdate'];
 	$heatcode=$GLOBALS['heatcode'];
 	$materialcode=$GLOBALS['materialcode'];
-    $reptype=$GLOBALS['reptype'];
+    $rtype=$GLOBALS['rtype'];
     $comment=$GLOBALS['comment'];
     $rdate=$GLOBALS['rdate'];
     $docref=$GLOBALS['docref'];
     $batchdesc=$GLOBALS['batchdesc'];
-    $opdesc=$GLOBALS['opdesc'];
-        
-    if($rdate!=""){$jdate=$rdate;}
     
-    $this->SetFont('helvetica','',12);
-    $this->Cell(80,18,'Divya Engineering Works (P) Ltd, Mysore',1,0,'C');
-	$this->Cell(110,18,$reptype,1,0,'C');
-	$this->SetFont('helvetica','', 10);
-	$this->Cell(85,6,'RECORD REF: '.$docref,'T R',2,'L');
-	$this->Cell(85,6,'DATE: 01-06-2003','R',2,'L');
-	$this->Cell(85,6,'REV NO: 00','B R',0,'L');
+    if($rdate!=""){$jdate=$rdate;}else{$jdate=change_date_format_for_dispaly($jdate);}
+    
+    $this->SetFont('Arial','',16);
+    $this->CellFitScale(100,18,'Divya Engineering Works (P) Ltd, Mysore',1,0,'C');
+	$this->CellFitScale(100,18,$rtype,1,0,'C');
+	$this->SetFont('Arial','', 10);
+	$this->Cell(75,6,'RECORD REF: '.$docref,'T R',2,'L');
+	$this->Cell(75,6,'DATE: 01-06-2003','R',2,'L');
+	$this->Cell(75,6,'REV NO: 00','B R',0,'L');
 	$this->ln();
-    $this->Cell(80,6,'ITEM: '.$cname,'L T R',0,'L');
-    $this->Cell(110,6,'Material Stock NO: '.$materialcode,'R',0,'L');
-    $this->Cell(85,6,'Batch NO: '.$batchdesc,'T R',1,'L');
-    $this->Cell(80,6,'Customer: '.$custname,'L R',0,'L');
-	$this->Cell(110,6,'HEAT NO: '.$heatcode,'T R',0,'L');
-    $this->Cell(85,6,'DATE: '.$jdate,'L B R',1,'L');
-    $this->Cell(80,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
-	$this->Cell(110,6,"Qty:",'B R',0,'L');
-    $this->Cell(85,6,"Operation No: ".$opdesc. "  Note: ".$comment,'B R',0,'L');
+    $this->Cell(200,6,'ITEM: '.$cname,'L T R',0,'L');
+    $this->Cell(75,6,'HEAT NO: '.$heatcode,'T R',1,'L');
+    $this->Cell(200,6,'Customer: '.$custname,'L R',0,'L');
+    $this->Cell(75,6,'Material Stock NO: '.$materialcode,'R',1,'L');
+    $this->Cell(100,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
+	$this->Cell(100,6,$comment,'B R',0,'L');
+    $this->Cell(75,6,'DATE: '.$jdate.' | Batch No: '.$batchdesc,'L B R',1,'L');
 
 	}
 
@@ -163,31 +149,29 @@ function Footer()
     // Position at 1.5 cm from bottom
     $this->SetY(-35);
 	// Arial italic 8
-    $this->SetFont('helvetica','',16);
+    $this->SetFont('Arial','',16);
 	$this->Cell(220,10,"Inspected By: G.S ",'0',0,'L');
 	$this->Cell(140,10,"Approved By: U.S",'0',1,'L');
 	
     // Page number
     $this->SetY(-10);
-    $this->SetFont('helvetica','',6);
+    $this->SetFont('Arial','',6);
 	$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 }
 }
 
 
-$pdf = new PDF_SKN(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-//$pdf->AliasNbPages();
+
+$pdf = new PDF_SKN();
+$pdf->AliasNbPages();
 $pdf->setAutoPageBreak(1,35);
 $pdf->AddPage('L','A4');
-$pdf->SetFont('helvetica','',10);
-
-
+$pdf->SetFont('Arial','',10);
 if(!isSet($rrow))
 { //if no jobs are measured for this operation
 	print("<br>No Dimensions entered for this operation for this batch number");
 }
 else {
-		$pdf->SetY(36);
 		$pdf->Cell(20,8,'Baloon No',1,0,'L');
 		$pdf->Cell(20,8,'Desc',1,0,'L');
 		$pdf->Cell(20,8,'Dimension',1,0,'L');
@@ -202,7 +186,7 @@ else {
 		{
 			if($z<$jbs)
 			{
-		$pdf->Cell(35,8,'Comp. No'.$jobno[$z],1,0,'L');
+		$pdf->Cell(35,8,$jobno[$z],1,0,'L');
 		array_push($xldata[0],$jobno[$z]);
 			}else{
 				$pdf->Cell(35,8,'',1,0,'L');
@@ -214,8 +198,6 @@ else {
 		$z=0;
 		$bna=0; //baloon no counter
 		$xy=1;
-		$xp=0;
-		$yp=42;
 		while($z<count($lrows))  //while no of dimensions defined for this operation
 		{
 		$oktodisplay=0;
@@ -224,12 +206,11 @@ else {
 					
 				if($x==$bno[$bna] || $oktodisplay==1)  //if baloon no is the one selected to be displayed
 				{
-					$pdf->MultiCell(20,8,$x,1,0,$xp,$yp);   //multi
+					$pdf->CellFitScale(20,8,$x,1,0,'L');
 					$xldata[$xy]=$lrows[$z];
 					$oktodisplay=1;
 				}else{break;}
 			$x+=1;
-			$xp+=20;
 			}
 			if($oktodisplay==1)
 			{
@@ -238,8 +219,7 @@ else {
 				{
 					if($s<$jbs)
 					{
-						//$pdf->MultiCell(35,8,$rrow[$s][$z],1,0,'L');
-						$pdf->MultiCell(35, 8, $rrow[$s][$z],1,0,$xp,$yp);   //multi
+						$pdf->CellFitScale(35,8,$rrow[$s][$z],1,0,'L');
 						array_push($xldata[$xy],$rrow[$s][$z]);
 					
 					}else{
@@ -263,14 +243,11 @@ else {
 
   }        				
 
-
 if(!$pdfxl)
 {
 		$name="$opid".".pdf";
 //		$name="temp.pdf";
-//		header("Content-type: application/pdf");
-//		header("Content-Disposition: attachment; filename=$name");
-		$pdf->Output($name,'I');
+		$pdf->Output($name,'F');
 }else{
 $xls = new Excel_XML;
 $xls->addArray ( $xldata );

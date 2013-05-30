@@ -2,7 +2,7 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-$opid = $_GET['opid'];
+$opid = $_GET['oid'];
 $batchid=$_GET['batchid'];
 $reptype=$_GET['reptype'];
 
@@ -17,45 +17,45 @@ $i=mysql_fetch_assoc($r);
 	$jobq="SELECT Job_NO FROM Dimn_Observation WHERE Operation_ID='$opid' AND Batch_ID='$batchid';";
 	$r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
 
-	$qry="SELECT ip.Operation_ID, Basic_Dimn,Desc_ID,Tol_Lower,Tol_Upper,ip.Instrument_ID,Instrument_Description, 
-			Baloon_NO FROM Dimension as dimn 
+	$qry="SELECT dimn.Operation_ID, Basic_Dimn,dimn.Desc_ID,Tol_Lower,Tol_Upper,dimn.Instrument_ID,Instrument_Description, 
+			Baloon_NO,Dimn_Desc FROM Dimension as dimn 
 			INNER JOIN Instrument AS inst ON inst.Instrument_ID=dimn.Instrument_ID 
-			
-			
-			
-			
-			INNER JOIN Operation AS op ON ip.Operation_ID=op.Operation_ID ";
-	$qry.="INNER JOIN Components AS comp ON op.Drawing_ID=comp.Drawing_ID ";
-	$qry.="WHERE ip.Operation_ID='$opid' ORDER BY Baloon_NO ASC;";
+			INNER JOIN Operation AS op ON dimn.Operation_ID=op.Operation_ID
+			INNER JOIN Dimn_Desc as dd ON dd.Desc_ID=dimn.Desc_ID  
+			INNER JOIN Component AS comp ON op.Drawing_ID=comp.Drawing_ID 
+			WHERE dimn.Operation_ID='$opid' ORDER BY Baloon_NO ASC;";
 //print("<br>$qry");
 	$j=0;
 	$resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 	while ($row = mysql_fetch_assoc($resa))  //get all dimensions for thi operation and store them in an array
         		{
-	$lrows[$j]=array($row['Baloon_NO'],$row['Dimn_Desc'],$row['Basic_Dimn'],$row['Tol_Lower'].'/'.$row['Tol_Upper'],$row['Instrument_Desc']);		
+	$lrows[$j]=array($row['Baloon_NO'],$row['Dimn_Desc'],$row['Basic_Dimn'],$row['Tol_Lower'].'/'.$row['Tol_Upper'],$row['Instrument_Description']);		
 	$j++;
 		        }
 //print("<br>lrows");
 //print_r($lrows);
 
-$jobq="SELECT DISTINCT(Job_NO) FROM InprocessDimns WHERE Operation_ID='$opid' AND Batch_ID='$batchid';";
+$jobq="SELECT DISTINCT(Job_NO) FROM Dimn_Observation WHERE Operation_ID='$opid' AND Batch_ID='$batchid';";
 $r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
 
 	$z=0;
 	while($i=mysql_fetch_assoc($r))  //loop through each job inspected
 	{
-	$qry="SELECT InProcess_ID, InprocessDimns.Operation_ID, 
-					Basic_Dimn, InProcessDimn_ID, IP_ID, Batch_ID,
-					Job_NO, Dimn_Measured FROM InProcess
-					LEFT OUTER JOIN InprocessDimns
-					ON InProcess.InProcess_ID = InprocessDimns.IP_ID AND InprocessDimns.Job_NO='$i[Job_NO]'  AND Batch_ID='$batchid'
-					WHERE InProcess.Operation_ID = '$opid' ORDER BY Baloon_NO ASC";
-//		print($qry);
+	$qry="SELECT dimn.Dimension_ID, dimn.Operation_ID, 
+					Basic_Dimn, ob.Dimn_Observation_ID, Batch_ID,
+					Job_NO, Observed_Dimn,ob.Comment_ID,Comment FROM Observations as ob
+					INNER JOIN Dimn_Observation as do ON do.Dimn_Observation_ID=ob.Dimn_Observation_ID
+					LEFT OUTER JOIN Dimn_Comment AS dc ON dc.Comment_ID=ob.Comment_ID 
+					LEFT OUTER JOIN Dimension as dimn ON dimn.Dimension_ID = ob.Dimension_ID 
+					AND do.Job_NO='$i[Job_NO]'  AND Batch_ID='$batchid'
+					WHERE dimn.Operation_ID = '$opid' ORDER BY Baloon_NO ASC";
+//		print("$qry<br>");
 		$res = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 		$x=0;
 		while($row=mysql_fetch_assoc($res))  //for each job get dimensions measured and store it in an array
 		{
-			$rrow[$z][$x]=$row['Dimn_Measured'];
+			if($row['Comment']==''){$ob=$row['Observed_Dimn'];}else{$ob=$row['Comment'];}
+			$rrow[$z][$x]=$ob;
 			$x+=1;
 		}
 //	$jobno[$z]=$i['Job_NO'];	
@@ -65,7 +65,7 @@ $r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
 //print("<br>rrows<br>");
 //print_r($rrow);
 
-/*
+
 if(!isSet($rrow))
 { //if no jobs are measured for this operation
 	print("<br>No Dimensions entered for this operation for this batch number");
@@ -113,7 +113,7 @@ else {
   
   }        				
 
-*/
+
 
 
 
