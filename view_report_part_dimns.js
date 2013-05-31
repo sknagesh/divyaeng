@@ -51,9 +51,10 @@ $('#reptype').click(function(){
 		$('#operation').load(url);
 		}else
 		if(rtype==1){
-			var url="view_report_part_dimns.php?batchid="+batchid+"&reptype="+rtype;
+			var url="view_report_part_dimns.php?batchid="+batchid+"&reptype="+rtype+"&drawingid="+drawingid;
+			$('#operation').text(' ');
 			$('#ipdimns').load(url);
-		
+			$('#ipdimns').show();		
 		}else
 		{
 			$('#ipdimns').hide();

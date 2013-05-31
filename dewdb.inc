@@ -53,4 +53,13 @@ $mins=$h*60+$m+$s/60;
 return $mins;
 }
 
+
+function clean_num( $num ){
+	$pos = strpos($num, '.');
+	if($pos === false) { // it is integer number
+		return $num;
+	}else{ // it is decimal number
+		return rtrim(rtrim($num, '0'), '.');
+	}
+}
 ?>

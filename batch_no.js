@@ -31,7 +31,7 @@ $('#drawing').click(function() {     //populate drawing list based on customer
 
     });
 
-$('#autobatch').live("click",function(){
+$('#autobatch').on("click",function(){
 
 	if($('#autobatch').is(':checked'))
 	{
@@ -46,7 +46,7 @@ $('#autobatch').live("click",function(){
 
 });
 
-$("form#batchno").live("submit",function(event) {
+$("form#batchno").on("submit",function(event) {
 	event.preventDefault();
 	var $this = $(this);
 	
