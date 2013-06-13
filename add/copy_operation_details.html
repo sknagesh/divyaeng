@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Edit an Operation</title>
+        <script src="../jquery.js"></script>
+        <script src="../jquery.validate.js"></script>
+        <script src="../jquery.form.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 15em; float: left; color:green }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+  	$("#scustomer").load('sget_customer.php');  //load customer list from get_customer.php
+	$('#dest').hide();
+	$('#scustomer').click(function(){
+	var custid=$('#sCustomer_ID').val();
+	var url='sget_drawing.php?custid='+custid;
+  		$("#sdrawing").load(url)
+  		});
+
+	$('#sdrawing').click(function(){
+	var drawingid=$('#sDrawing_ID').val();
+	var url='sget_operations.php?drawingid='+drawingid;
+	$('#soperations').load(url);
+  		});
+
+		$('#soperations').click(function(){
+
+	var opid=$('#sOperation_ID').val();
+
+		if(opid!='')
+		{
+			$('#dcustomer').load("dget_customer.php");
+			$('#dest').show();
+		}
+
+		});
+	
+
+
+
+
+
+	$('#dcustomer').click(function(){
+	var custid=$('#dCustomer_ID').val();
+	var url='dget_drawing.php?custid='+custid;
+  		$("#ddrawing").load(url)
+  		});
+
+	$('#ddrawing').click(function(){
+	var drawingid=$('#dDrawing_ID').val();
+	var url='dget_operations.php?drawingid='+drawingid;
+	$('#doperations').load(url);
+  		});
+
+		$('#doperations').click(function(){
+
+	var dopid=$('#dOperation_ID').val();
+	var sopid=$('#sOperation_ID').val();
+
+		if(dopid!='')
+		{
+var url="copy_op_details.php?sopid="+sopid+"&dopid="+dopid;
+
+$('#footer').load(url);
+
+
+		}
+
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+	});
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+  <form name ="addoperation" id="addoperation" action="update_operation.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>Select Source Operation</legend>
+
+   <p>
+     <div id="scustomer"> </div>
+   <p>
+     <div id="sdrawing"> </div>
+   <p>
+
+   <p>
+     <div id="soperations"> </div>
+   <p>
+
+ </fieldset>
+ 
+<div id="dest">
+ <fieldset>
+
+<legend>Select Destination Operation</legend>
+
+   <p>
+     <div id="dcustomer"> </div>
+   <p>
+     <div id="ddrawing"> </div>
+   <p>
+
+   <p>
+     <div id="doperations"> </div>
+   <p>
+
+ </fieldset>
+</div>
+
+
+    <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+
+ </form>
+<div id="footer"> </div>
+
+</body>
+</html>
