@@ -31,7 +31,7 @@ $noofdimns=mysql_num_rows($resa);
 		{
 		$ipd.="<option value=\"$r[Desc_ID]\"";
 		$ipd.=" >";
-		$ipd.="$r[Dimn_Desc]</option>";
+		$ipd.="$r[Detailed_Desc]</option>";
  		}
 		$ipd.="</select></td>";
 		$ipd.= "<td><input type=\"text\" name=\"basicdimn[$i]\" id=\"basicdimn[$i]\" class=\"required number\" size=\"7\"/></td>";
@@ -80,7 +80,7 @@ $noofdimns=mysql_num_rows($resa);
 		{if($r['Desc_ID']==$row['Desc_ID']){$sel="Selected=Selected";}else{$sel='';}
 		$ipd.="<option value=\"$r[Desc_ID]\"";
 		$ipd.="$sel >";
-		$ipd.="$r[Dimn_Desc]</option>";
+		$ipd.="$r[Detailed_Desc]</option>";
  		}
 		$ipd.="</select></td>";
 		$ipd.= "<td><input type=\"text\" name=\"basicdimn[$i]\" id=\"basicdimn[$i]\" value=\"$row[Basic_Dimn]\" class=\"required number\"size=\"7\"/></td>";

@@ -17,7 +17,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 		{
 		$ipd.="<option value=\"$r[Desc_ID]\"";
 		$ipd.=" >";
-		$ipd.="$r[Dimn_Desc]</option>";
+		$ipd.="$r[Detailed_Desc]</option>";
  		}
 		$ipd.="</select></td>";
 		$ipd.= "<td><input type=\"text\" name=\"basicdimn[$i]\" id=\"basicdimn[$i]\" class=\"required number\" size=\"7\"/></td>";
