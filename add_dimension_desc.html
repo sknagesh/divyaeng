@@ -9,7 +9,7 @@
 
  <style type="text/css">
 * { font-family: Verdana; font-size: 96%; }
-label { width: 15em; float: left; color: green }
+label { width: 30em; float: left; color: green }
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { font-weight: bold; clear: both; }
 .submit { margin-left: 12em; }
@@ -17,7 +17,50 @@ p { font-weight: bold; clear: both; }
   <script>
   $(document).ready(function(){
     $("#dimndesc").validate();
+	$('#dc').hide();
 	$('#footer').load("show_dimn_description.php");
+
+
+	$('input[type="radio"]').click(function(){
+
+	var action=$(this).val();
+	if(action=='add')
+	{
+		$('#rdesc').val('');
+		$('#ddesc').val('');
+		$('#dcomm').val('');
+		$('#comment').show();
+		$('#editcomment').hide();
+		$('#edit').text('');
+	$("#dc").show();
+	}else	if(action=='edit')
+	{
+	$('#edit').load("get_dimn_description.php");
+	$("#dc").hide();
+	}
+	});
+
+	$('#edit').click(function(){
+		var dcid=$('#Desc_ID').val();
+if(dcid!=''){
+	
+
+		$.ajax({
+      					type: "GET",
+      					url: "get_dimn_desc_to_edit.php?dcid="+dcid,
+      					success: function(html) {
+					data=html.split("<|>");
+					$('#rdesc').val(data[0]);
+					$('#ddesc').val(data[1]);
+				document.getElementById("editcomment").innerHTML=data[2];
+					$('#comment').hide();
+					$('#dc').show();
+      							}
+      							    							});
+		
+}		
+	});
+
 	$("#submit").click(function(event) {
 
 	 if($("#dimndesc").valid())
@@ -28,10 +71,10 @@ p { font-weight: bold; clear: both; }
       					type: "POST",
       					url: "add_dimnsion_desc.php",
       					success: function(html) {
-
 				document.getElementById("footer").innerHTML=html;
 				$('#dimndesc')[0].reset();
-				$('#footer').load("show_dimn_description.php");
+				$('#editcomment').text('');
+				$('#footer2').load("show_dimn_description.php");
       							}
       							    							});
   	
@@ -50,15 +93,37 @@ p { font-weight: bold; clear: both; }
   <form id="dimndesc">
  <fieldset>
 <legend>Dimension Description</legend>
-   <p>
-     <label>Enter New Description</label>
-     <input id="ddesc" name="ddesc" size="25" class="required"/>
+     <label>Material Source</label>
+<input type="radio" id="atype1" name="atype" value="add">Add Dimension Description
+<input type="radio" id="atype2" name="atype" value="edit">Edit Dimension Description
+
    </p>
+<div id="edit"> </div>
+
+<div id="dc">
+   <p>
+     <label>Enter Description as Displayed in Report</label>
+     <input id="rdesc" name="rdesc" size="25" class="required"/>
+   </p>
+   <p>
+     <label>Enter Detailed Description to be Displayed in add/Edit</label>
+     <input id="ddesc" name="ddesc" size="25"/>
+   </p>
+
+<div id="comment">
+   <p>
+     <label>Enter Description Comments seperated by "/"</label>
+     <input id="dcomm" name="dcomm" size="50"/>
+   </p>
+   </div>
+   <div id="editcomment"> </div>
      <input class="submit" id="submit" type="submit" value="Submit"/>
    </p>
+   </div>
  </fieldset>
  </form>
 <div id="footer"> </div>
+<div id="footer2"> </div>
 </div>
 
 </body>

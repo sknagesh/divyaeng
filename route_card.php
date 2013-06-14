@@ -76,7 +76,9 @@ function Header()
     $batchdesc=$GLOBALS['batchdesc'];
 	$challanno=$GLOBALS['challanno'];
    	$bqty=$GLOBALS['bqty'];
-   	$y=$GLOBALS['y'];
+	$cdate=$GLOBALS['cdt'];
+	$hcode=$GLOBALS['heatcode'];
+	$y=$GLOBALS['y'];
     $this->SetFont('helvetica','',12);
     $this->MultiCell(70, 12, 'Divya Engineering Works (P) Ltd, Mysore', 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 	$this->Cell(70,12,"Route Card",1,0,'C');
@@ -92,7 +94,8 @@ function Header()
     $this->Cell(58,6,'DATE Material Received: '.$cdate,1,1,'L');
     $this->Cell(70,6,'P.O NO & Date: '.$jdate,1,0,'L');
     $this->Cell(128,6,'DEW Batch NO: '.$batchdesc. '   Batch Qty: '.$bqty,1,1,'L');
-    $this->MultiCell(198,6,'D.C/Challan NO, Date & Qty: '.$challanno, 1, 'L', 0, 1, '', '', true,0,false,true,8,'M',true);
+    $this->MultiCell(198,6,'D.C/Challan : '.$challanno, 1, 'L', 0, 1, '', '', true,0,false,true,8,'M',true);
+	$this->MultiCell(198,6,'Heat Code & Qty: '.$hcode, 1, 'L', 0, 1, '', '', true,0,false,true,8,'M',true);
 	}
 
 function Footer()
@@ -115,7 +118,7 @@ function Footer()
 $pdf = new PDF_SKN(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 //$pdf->AliasNbPages();
 $pdf->setAutoPageBreak(1,29);
-$pdf->SetMargins(5,36,10,29);
+$pdf->SetMargins(5,42,10,29);
 $pdf->AddPage('P','A4');
 $pdf->SetFont('helvetica','',10);
 

@@ -15,7 +15,7 @@ echo '<option value="">Select Challan to Edit</option>';
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while ($row = mysql_fetch_assoc($resa))
 {
-echo "<option value=".$row['Material_Inward_ID']." $sel >";
+echo "<option value=".$row['Material_Inward_ID']." >";
 if($row['EX_Challan_NO']!=''){$desc=$row['EX_Challan_NO'].' - '.$row['ecd'];}else{$desc=$row['Purchase_Ref'].' - '.$row['prd'];}
 echo "$desc</option>";
 }

@@ -12,8 +12,8 @@ $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while ($row = mysql_fetch_assoc($resa))
 {
 
-echo "<option value=".$row['Desc_ID'] ." $sel>";
-echo "$row[Dimn_Desc]</option>";
+echo "<option value=".$row['Desc_ID'] ." >";
+echo "$row[Detailed_Desc]</option>";
 }
 print("</select></td>");
 

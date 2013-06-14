@@ -3,7 +3,7 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawingd=$_GET['drawingid'];
-if(isSet($_GET['bid'])){$oid=$_GET['bid'];}else{$bid="";}
+if(isSet($_GET['bid'])){$oid=$_GET['bid'];}else{$oid="";}
 //print_r($_POST);
 
 $query2="SELECT DISTINCT(bn.Batch_ID),Mfg_Batch_NO FROM Batch_NO as bn

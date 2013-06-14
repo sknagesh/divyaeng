@@ -63,6 +63,7 @@ if($del!='')
 	for($j=0;$j<count($del);$j++)
 	{
 		$qd="DELETE FROM MI_Drg_Qty WHERE Mi_Drg_Qty_ID='$del[$j]';";
+	//	print($qd);
 		$resd=mysql_query($qd) or die(mysql_error());
 		
 	}

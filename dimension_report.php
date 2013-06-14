@@ -546,7 +546,7 @@ $name=$partno;
 if(!$pdfxl)
 {
 	$pdfname=$name.'.pdf';
-		$pdf->Output($pdfnamename,'I');
+	$pdf->Output($pdfname,'I');
 }else{
 	
 $xls = new Excel_XML;

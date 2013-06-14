@@ -27,7 +27,7 @@ if($row['EX_Challan_NO']!=''){$cno=$row['EX_Challan_NO'].' - '.$row['EX_Challan_
 print("<tr><td>$cno , Max Batch Qty is $maxbqty: </td>");
 print("<td><input type=\"hidden\" name=\"MI_Drg_Qty_ID[$j]\" id=\"MI_Drg_Qty_ID[$j]\" value=\"$row[MI_Drg_Qty_ID]\">");
 print("<input type=\"text\" name=\"mqty[$j]\" id=\"mqty[$j]\" class=\"number\" max=\"$maxbqty\"></td>");
-print("<td><input type=\"text\" name=\"hcode[$j]\" id=\"hcode[$j]\" ></td>");
+print("<td><input type=\"text\" name=\"hcode[$j]\" id=\"hcode[$j]\" maxlength=\"100\" ></td>");
 $j++;
 }
 

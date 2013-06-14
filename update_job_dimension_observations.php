@@ -10,7 +10,7 @@ $jobno=$_POST['Job_NO'];
 $dimid=$_POST['dimid'];
 $observation=$_POST['observation'];
 $remark=$_POST['remarks'];
-$comment=$_POST['comment'];
+if(isSet($_POST['comment'])){$comment=$_POST['comment'];}else{$comment='';}
 
 $obserid=$_POST['obserid']; //id for old measured dimensions, we need to update these dimensions
 
