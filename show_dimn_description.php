@@ -25,7 +25,7 @@ while($row=mysql_fetch_assoc($res))
 				$c.=$r['Comment'].'/';
 			}
 			$co=substr($c,0,strlen($c)-1);
-		}
+		}else{$co='';}
 	print("<tr><td>$row[Desc_ID]</td><td>$row[Dimn_Desc]</td><td>$co</td></tr>");
 	
 	
