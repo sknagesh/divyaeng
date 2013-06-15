@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Move Dimension From One Operation to Another</title>
+		<script type="text/javascript" src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+		<script type="text/javascript" src="move_dimns_to_another_op.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 12px;}
+label { width: 10em; float: left; color: green }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+
+	</head>
+	<body>
+<form name="add_ip_dimn" id="add_ip_dimn" method="post" action="move_dimns_to_another_op.php" >
+<fieldset> Select Drawing Details
+<div id="customer"> </div>		
+<div id="drawing"> </div>
+<div id="op">
+<fieldset>Select Source Operation
+	<div id="soperation"> </div>
+</fieldset>
+<fieldset>Select Destination Operation
+	<div id="doperation"> </div>
+</fieldset>
+</div>
+</fieldset>
+	
+
+</table>
+
+<div id="ipdimns"> </div> <!--place add new rows and existing rows-->		
+
+<div id="footer"> </div> <!--place add new rows and existing rows-->
+
+</body>
+</html>
