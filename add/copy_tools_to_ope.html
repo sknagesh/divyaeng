@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Edit an Operation</title>
+        <title>Copy tools to operation</title>
         <script src="../jquery.js"></script>
         <script src="../jquery.validate.js"></script>
         <script src="../jquery.form.js"></script>
@@ -27,14 +27,8 @@ p { font-weight: bold; clear: both; }
 
 	$('#sdrawing').click(function(){
 	var drawingid=$('#sDrawing_ID').val();
-//	var url='sget_operations.php?drawingid='+drawingid;
-//	$('#soperations').load(url);
-		if(drawingid!='')
-		{
-			$('#dcustomer').load("dget_customer.php");
-			$('#dest').show();
-		}
-
+	var url='sget_operations.php?drawingid='+drawingid;
+	$('#soperations').load(url);
 
   		});
 
@@ -64,38 +58,9 @@ p { font-weight: bold; clear: both; }
 	$('#ddrawing').click(function(){
 	var sdrawingid=$('#sDrawing_ID').val();
 	var ddrawingid=$('#dDrawing_ID').val();
-//	var url='dget_operations.php?drawingid='+drawingid;
-//	$('#doperations').load(url);
-
-
-
-		if(ddrawingid!='')
-		{
-var url="copy_op_details.php?sdid="+sdrawingid+"&ddid="+ddrawingid;
-
-$('#fields').load(url);
-
-
-		}
-
-
+	var url='dget_operations.php?drawingid='+ddrawingid;
+	$('#doperations').load(url);
   		});
-
-		$('#doperations').click(function(){
-
-	var dopid=$('#dOperation_ID').val();
-	var sopid=$('#sOperation_ID').val();
-
-		if(dopid!='')
-		{
-var url="copy_op_details.php?sopid="+sopid+"&dopid="+dopid;
-
-$('#fields').load(url);
-
-
-		}
-
-		});
 
 	$("#submit").click(function(event) {
 
@@ -105,7 +70,7 @@ $('#fields').load(url);
 		$.ajax({
       					data: $('#addoperation').serializeArray(),
 						method:"POST",
-						url:"copy_operation_det.php",
+						url:"copy_tools_to_operation.php",
 
       					success: function(html) {
 				document.getElementById("footer").innerHTML=html;
