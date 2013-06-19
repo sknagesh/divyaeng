@@ -1,8 +1,8 @@
 <?php
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
-//mysql_select_db('ShopLog',$cxn) or die("error opening db: ".mysql_error());
-mysql_select_db('Process',$cxn) or die("error opening db: ".mysql_error());
+mysql_select_db('ShopLog',$cxn) or die("error opening db: ".mysql_error());
+//mysql_select_db('Process',$cxn) or die("error opening db: ".mysql_error());
 $drawingid=$_GET['drawingid'];
 //print_r($_POST);
 $query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid';";

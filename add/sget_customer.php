@@ -2,8 +2,8 @@
 include('dewdb.inc');
 if(isSet($_GET['cid'])){$cid=$_GET['cid'];}else{$cid='';}
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
-//mysql_select_db('ShopLog',$cxn) or die("error opening db: ".mysql_error());
-mysql_select_db('Process',$cxn) or die("error opening db: ".mysql_error());
+mysql_select_db('ShopLog',$cxn) or die("error opening db: ".mysql_error());
+//mysql_select_db('Process',$cxn) or die("error opening db: ".mysql_error());
 //print_r($_POST);
 $query="SELECT * FROM Customer;";
 print("<label>Select Customer</label>");
