@@ -41,7 +41,7 @@ $noofdimns=mysql_num_rows($resa);
 		$ipd.="$r[Detailed_Desc]</option>";
  		}
 		$ipd.="</select></td>";
-		$ipd.= "<td><input type=\"text\" name=\"basicdimn[$i]\" id=\"basicdimn[$i]\" value=\"$row[Basic_Dimn]\" class=\"required number\"size=\"7\"/></td>";
+		$ipd.= "<td><input type=\"text\" name=\"basicdimn[$i]\" id=\"basicdimn[$i]\" value=\"$row[Basic_Dimn]\" size=\"7\"/></td>";
 		$ipd.= "<td><input type=\"checkbox\" name=\"movedimn[$i]\" id=\"movedimn[$i]\" value=\"1\" /></input></td></tr>";
 		$ipd.="<input type=\"hidden\" name=\"Dimension_ID[$i]\" id=\"Dimension_ID[$i]\" value=\"$row[Dimension_ID]\"/>";
 		$i++;
