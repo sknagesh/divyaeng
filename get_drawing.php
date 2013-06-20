@@ -9,7 +9,7 @@ if(isSet($_GET['rcr'])){$rcr="";}else{$rcr="class=\"required\"";}
 //print_r($_POST);
 if($hcomp!=1)
 {
-$query="SELECT * FROM Component WHERE Customer_ID='$custid';";
+$query="SELECT * FROM Component WHERE Customer_ID='$custid' ORDER BY Drawing_NO;";
 }else
 	{
 		$query="SELECT * FROM Component WHERE Customer_ID='$custid' AND Hide_In_Prod=0;";

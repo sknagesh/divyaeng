@@ -7,7 +7,7 @@ if(isSet($_GET['oid'])){$did=$_GET['oid'];}else{$did="";}
 if(isSet($_GET['hcomp'])){$hcomp=$_GET['hcomp'];}else{$hcomp="";}
 if(isSet($_GET['id'])){$id=$_GET['id'];}else{$id="";}
 //print_r($_POST);
-$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid';";
+$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' ORDER BY Operation_Desc;";
 
 print("<label for=\"draw\">Select Operation</label>");
 print("<select name=\"Operation_ID$id\" id=\"Operation_ID$id\" class=\"required\">");
