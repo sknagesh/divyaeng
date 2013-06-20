@@ -16,8 +16,11 @@ $q="SELECT * FROM Ope_Tools WHERE Operation_ID='$soid';";
 print("<br>$q");
 $res = mysql_query($q, $cxn1) or die(mysql_error($cxn1));
 $n=0;
-while($row=mysql_fetch_assoc($res))
+$nr=mysql_num_rows($res);
+if($nr!=0)
 {
+	while($row=mysql_fetch_assoc($res))
+	{
 	$qd="INSERT INTO Ope_Tool 
 	(Operation_ID,
 	Tool_ID_1,
@@ -33,9 +36,32 @@ while($row=mysql_fetch_assoc($res))
 	print("<br>$qd");
 	$resd = mysql_query($qd, $cxn2) or die(mysql_error($cxn2));
 	$n++;
+	}
+}else{
+	print("<br>no tools added for this operation");
 }
 
 
 print("<br>added $n tools");
+
+$qd="SELECT * FROM Operation WHERE Operation_ID='$soid';";
+
+print("<br>$qd");
+$resd = mysql_query($qd, $cxn1) or die(mysql_error($cxn1));
+
+$rowd=mysql_fetch_assoc($resd);
+
+	$qd="UPDATE Operation SET 
+	Clamping_Time='$rowd[Clamping_Time]',
+	Machining_Time='$rowd[Machining_Time]',
+	Program_NO='$rowd[Program_NO]',
+	NC_Prog_Path='$rowd[P_Path]',
+	Operation_Notes='$rowd[Operation_Notes]',
+	Stage_Drawing_Path='$rowd[Operation_Drawing]' WHERE Operation_ID='$doid';";
+	print("<br>$qd");
+	$resd = mysql_query($qd, $cxn2) or die(mysql_error($cxn2));
+
+
+
 
 ?>

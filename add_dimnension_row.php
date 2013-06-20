@@ -28,7 +28,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 		$ipd.="<td><select name=\"Instrument_ID[$i]\" id=\"Instrument_ID[$i]\" class=\"required\" >";
 		while ($r = mysql_fetch_assoc($res))
 		{
-			if($r[Instrument_ID]==10){$seli='Selected=Selected';}else{$seli='';}
+			if($r['Instrument_ID']==10){$seli='Selected=Selected';}else{$seli='';}
 		$ipd.="<option value=\"$r[Instrument_ID]\"";
 		 $ipd.=" $seli>\"";
 		$ipd.="$r[Instrument_SLNO]-$r[Instrument_Description]</option>";

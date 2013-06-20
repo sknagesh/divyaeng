@@ -5,6 +5,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $uploadDir = '/home/www/drawings/';
 //print_r($_POST);
 //print_r($_FILES);
+$drgid=$_POST['Drawing_ID'];
 $custid=$_POST['Customer_ID'];
 $drawingno=$_POST['drawingno'];
 if(isSet($_POST['revno'])){$revno=$_POST['revno'];}else{$revno="";}
@@ -23,6 +24,11 @@ if((isSet($_FILES['drg']['name']))&&$_FILES['drg']['name']!='')
 	$drgfileSize = $_FILES['drg']['size'];
 	$drgfileType = $_FILES['drg']['type'];
 	$drgfilePath = $uploadDir . $drgfileName;
+	 if(file_exists($drgfilePath))
+                {
+						print("deleting old file...<br>");
+                        unlink($drgfilePath);
+                }
 	$result = move_uploaded_file($drgtmpName, $drgfilePath);
 	chmod($drgfilePath, 777);
 	if (!$result) {
@@ -45,6 +51,14 @@ if((isSet($_FILES['process']['name']))&&($_FILES['process']['name']!=''))
 	$profileSize = $_FILES['process']['size'];
 	$profileType = $_FILES['process']['type'];
 	$profilePath = $uploadDir . $profileName;
+
+ if(file_exists($profilePath))
+                {
+                        print("Deleting old Process sheet...<br>");
+                        unlink($profilePath);
+                }
+
+
 	$result = move_uploaded_file($protmpName, $profilePath);
 		chmod($profilePath, 777);
 	if (!$result) {
@@ -68,6 +82,14 @@ if((isSet($_FILES['preview']['name']))&&($_FILES['preview']['name']!=''))
 	$prefileSize = $_FILES['preview']['size'];
 	$prefileType = $_FILES['preview']['type'];
 	$prefilePath = $uploadDir . $prefileName;
+
+ if(file_exists($prefilePath))
+                {
+                		print("Deleting old preview image...<br>");
+                        unlink($prefilePath);
+                }
+
+
 	$result = move_uploaded_file($pretmpName, $prefilePath);
 		chmod($prefilePath, 0777);
 	if (!$result) {
@@ -88,30 +110,17 @@ if((isSet($_FILES['preview']['name']))&&($_FILES['preview']['name']!=''))
 
 
 
-$query="INSERT INTO Component (Customer_ID,
-								Drawing_NO,
-								Drawing_Rev,
-								Component_Name,
-								Component_Material,
-								Raw_Material_Size,
-								Pre_Machined_Blank_Size,
-								Finish_Size,
-								Customer_Drawing,
-								Process_Sheet,
-								Preview_Image,
-								Scrap_Weight) ";
-$query.="VALUES('$custid',
-				'$drawingno',
-				'$revno',
-				'$componentname',
-				'$mspec',
-				'$cblank',
-				'$pmblank',
-				'$fsize',
-				'$drgfileName',
-				'$profileName',
-				'$prefileName',
-				'$sweight');";
+$query="UPDATE Component SET 	Drawing_NO='$drawingno',
+								Drawing_Rev='$revno',
+								Component_Name='$componentname',
+								Component_Material='$mspec',
+								Raw_Material_Size='$cblank',
+								Pre_Machined_Blank_Size='$pmblank',
+								Finish_Size='$fsize',
+								Customer_Drawing='$drgfileName',
+								Process_Sheet='$profileName',
+								Preview_Image='$prefileName',
+								Scrap_Weight='$sweight' WHERE Drawing_ID='$drgid';";
 
 //print($query);
 
@@ -120,12 +129,15 @@ $res=mysql_query($query) or die(mysql_error());
 $result=mysql_affected_rows();
 if($result!=0)
 {
-print("Added new Component $componentname - $drawingno");	
+print("<br>Updated Component $componentname - $drawingno");	
 	
 }else
 	{
-		print("Error Adding");
+		print("<br>Error Updating");
 	}
+
+
+
 
 
 ?>

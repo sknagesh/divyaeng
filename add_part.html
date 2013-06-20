@@ -19,7 +19,14 @@ p { font-weight: bold; clear: both; }
   $(document).ready(function(){
   	$("#customer").load('get_customer.php');  //load customer list from get_customer.php
     $("#adddrawing").validate();  //attach validater to form
-
+	$('#customer').click(function(){
+		var cid=$('#Customer_ID').val();
+		if(cid!=''){
+			
+			$('#footer2').load("get_drawing_list.php?cid="+cid);
+		}
+		
+	});
 var options = {  ///options for ajaxSubnit function 
         target:        '#footer',   // target div id to update result of submit 
 //        success:       showResponse  // post-submit callback 
@@ -27,7 +34,7 @@ var options = {  ///options for ajaxSubnit function
         resetForm: true        // reset the form after successful submit 
     };
 
-	$("#submit").click(function(event) {
+	$("#addp").click(function(event) {
 
 	 if($("#adddrawing").valid())
   	{
@@ -115,11 +122,12 @@ var options = {  ///options for ajaxSubnit function
 
 
    <p>
-     <input class="submit" id="submit" type="submit" value="Submit"/>
+     <input class="submit" id="addp" type="submit" value="Submit"/>
    </p>
  </fieldset>
  </form>
 <div id="footer"> </div>
+<div id="footer2"> </div>
 </div>
 
 </body>

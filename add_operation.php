@@ -72,7 +72,7 @@ if($oimgfiles!=0)
 }else{$drgfileNames='';}
 
 
-if(isSet($_FILES['odwg']['name']))
+if((isSet($_FILES['odwg']['name']))&&($_FILES['odwg']['name']!=''))
 {
 	$odrgfileName = $drawid."-".$_FILES['odwg']['name'];
 	$odrgtmpName = $_FILES['odwg']['tmp_name'];
