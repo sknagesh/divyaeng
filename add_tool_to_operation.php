@@ -16,7 +16,7 @@ if(isSet($_POST['toh'])){$toh=$_POST['toh'];}else{$toh='';}
 if(isSet($_POST['tlife'])){$tlife=$_POST['tlife'];}else{$tlife='';}
 
 
-if(isSet($_FILES['timg']['name']))
+if((isSet($_FILES['timg']['name']))&&($_FILES['timg']['name']!=''))
 {
 	$odrgfileName = $opid."-".$_FILES['timg']['name'];
 	$odrgtmpName = $_FILES['timg']['tmp_name'];

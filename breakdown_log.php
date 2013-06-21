@@ -18,7 +18,7 @@ if(isSet($_POST['mkengr'])){$mkengr=$_POST['mkengr'];}else{$mkengr="";}
 if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
 
-if(isSet($_FILES['oimg']['name'])){
+if((isSet($_FILES['oimg']['name']))&&($_FILES['oimg']['name']!='')){
 
 $oimgfiles=count($_FILES['oimg']['name']);	
 	

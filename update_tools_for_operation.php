@@ -20,7 +20,7 @@ if(isSet($_POST['tlife'])){$tlife=$_POST['tlife'];}else{$tlife='';}
 if(isSet($_POST['del'])){$del=$_POST['del'];}else{$del='';}
 
 
-if(isSet($_FILES['timg']['name']))
+if((isSet($_FILES['timg']['name']))&&($_FILES['timg']['name']!=''))
 {
 
 $timgfiles=count($_FILES['timg']['name']);

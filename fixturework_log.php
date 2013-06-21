@@ -17,7 +17,7 @@ if(isSet($_POST['qty'])){$qty=$_POST['qty'];}else{$qty="";}
 if(isSet($_POST['pgno'])){$pgno=$_POST['pgno'];}else{$pgno="";}
 
 
-if(isSet($_FILES['oimg']['name'])){
+if((isSet($_FILES['oimg']['name']))&&($_FILES['oimg']['name']!='')){
 	
 $oimgfiles=count($_FILES['oimg']['name']);	
 	

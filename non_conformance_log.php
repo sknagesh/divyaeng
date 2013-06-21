@@ -22,7 +22,7 @@ if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
 
 if(isSet($_POST['ncp'])){$ncp=$_POST['ncp'];}else{$ncp="";}
 
-if(isSet($_FILES['oimg']['name'])){
+if((isSet($_FILES['oimg']['name']))&&($_FILES['oimg']['name']!='')){
 	
 $oimgfiles=count($_FILES['oimg']['name']);	
 	

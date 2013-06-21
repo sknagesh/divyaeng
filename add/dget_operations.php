@@ -4,7 +4,7 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawingid=$_GET['drawingid'];
 //print_r($_POST);
-$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid';";
+$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' order by Operation_Desc;";
 
 print("<label for=\"draw\">Select Operation</label>");
 print("<select name=\"dOperation_ID\" id=\"dOperation_ID\" class=\"required\">");

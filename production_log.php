@@ -19,7 +19,7 @@ $bno=$_POST['Batch_ID'];
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remark="";}
 
 
-if(isSet($_FILES['oimg']['name'])){
+if((isSet($_FILES['oimg']['name']))&&($_FILES['oimg']['name']!='')){
 	
 $oimgfiles=count($_FILES['oimg']['name']);	
 	
