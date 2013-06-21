@@ -13,7 +13,8 @@ $r=mysql_num_rows($res);
 if($r!=0)
 {
 echo "<table border=\"1\" cellspacing=\"1\" bgcolor=\"#7FFFD4\">";
-echo "<tr><th>Delete Tool</th><th>Preferred Tool</th><th>Alternate Tool</th><th>Holder</th><th>Tool Overhang</th><th>Work Description</th</tr>";
+echo "<tr><th>Delete Tool</th><th>Preferred Tool</th><th>Alternate Tool</th><th>Holder</th>
+		<th>Work Description</th><th>Tool Overhang</th><th>Tool Life</th><th>Tool Image</th></tr>";
 $i=0;
 
 while($row=mysql_fetch_assoc($res))
@@ -61,10 +62,12 @@ if($ins1[Insert_ID]==$row[Insert_ID_1]){$sel="selected=selected";}else{$sel="";}
 echo '<option value="'.$ins1[Insert_ID].'"'. $sel.'>';
 echo $ins1[Insert_Part_NO].' - '.$ins1[Insert_Description].'</option>';
 }
-echo '</select></td>';
-
-
+echo '</select>';
 }
+echo '</td>';
+
+
+
 
 
 
@@ -110,10 +113,10 @@ if($ins2[Insert_ID]==$row[Insert_ID_2]){$sel="selected=selected";}else{$sel="";}
 echo '<option value="'.$ins2[Insert_ID].'"'. $sel.'>';
 echo $ins2[Insert_Part_NO].' - '.$ins2[Insert_Description].'</option>';
 }
-echo '</select></td>';
-
-
+echo '</select>';
 }
+echo '</td>';
+
 
 
 $qhol="SELECT * FROM Holder;";
@@ -131,9 +134,9 @@ echo '</select></td>';
 
 echo '<td><input type="text" name="mdesc['.$i.']" id="mdesc['.$i.']" value="'.$row[Ope_Tool_Desc].'"></td>';
 
-echo '<td><input type="text" name="toh['.$i.']" id="toh['.$i.']" value="'.$row[Ope_Tool_OH].'"></td>';
-echo '<td><input type="text" name="tlife['.$i.']" id="tlife['.$i.']" value="'.$row[Ope_Tool_Life].'"></td>';
-echo '<td><input type="file" name="timg['.$i.']" id="timg['.$i.']" >'.$row[Ope_Tool_Image_Path].'</td></tr>';
+echo '<td><input type="text" name="toh['.$i.']" id="toh['.$i.']" size="10" value="'.$row[Ope_Tool_OH].'"></td>';
+echo '<td><input type="text" name="tlife['.$i.']" id="tlife['.$i.']" size="10" value="'.$row[Ope_Tool_Life].'"></td>';
+echo '<td><input type="file" name="timg['.$i.']"  size="10" id="timg['.$i.']" >'.$row[Ope_Tool_Image_Path].'</td></tr>';
 
 $i++;
 

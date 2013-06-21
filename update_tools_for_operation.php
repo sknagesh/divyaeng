@@ -3,7 +3,7 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $uploadDir = '/home/www/drawings/';
-print_r($_POST);
+//print_r($_POST);
 
 //print_r($_FILES);
 $opid=$_POST['Operation_ID'];
@@ -20,16 +20,16 @@ if(isSet($_POST['tlife'])){$tlife=$_POST['tlife'];}else{$tlife='';}
 if(isSet($_POST['del'])){$del=$_POST['del'];}else{$del='';}
 
 
-if((isSet($_FILES['timg']['name']))&&($_FILES['timg']['name']!=''))
-{
-
 $timgfiles=count($_FILES['timg']['name']);
 
+if($timgfiles!='')
+{
 
 
 foreach ($_FILES['timg']['name'] as $key => $name) {
 		
-
+if($_FILES['timg']['name'][$key]!='')
+{
 	$drgfileName = $opid."-".$_FILES['timg']['name'][$key];
 	$drgtmpName = $_FILES['timg']['tmp_name'][$key];
 	$drgfileSize = $_FILES['timg']['size'][$key];
@@ -37,7 +37,7 @@ foreach ($_FILES['timg']['name'] as $key => $name) {
 	$drgfilePath = $uploadDir . $drgfileName;
 	$result = move_uploaded_file($drgtmpName, $drgfilePath);
 	if (!$result) {
-						echo "<br>Error uploading Drawing $drgfileName";
+						echo "<br>Error uploading Tool Image $drgfileName";
 						exit;
 						}
 
@@ -47,8 +47,7 @@ foreach ($_FILES['timg']['name'] as $key => $name) {
 						$drgfilePath = addslashes($drgfilePath);
 						}
 						}
-
-
+}
 
 
 }else{$odrgfileNames='';}
@@ -74,8 +73,8 @@ $query="UPDATE Ope_Tool SET
 				Ope_Tool_OH='$toh[$x]'
 				WHERE Ope_Tool_ID='$opeid[$x]';";
 
-			print($query);
-			print("<br");
+//			print($query);
+//			print("<br");
 			$res=mysql_query($query) or die(mysql_error());
 
 			$result=mysql_affected_rows();

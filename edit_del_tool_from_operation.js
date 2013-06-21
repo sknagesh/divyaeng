@@ -38,10 +38,11 @@
 
 var options = {  
         target:        '#footer',   // target div id to update result of submit 
-success: function(html) {
-				var urlo="get_tools_for_operation.php?opid="+opeid;
-		  		$("#footer2").load(urlo)
 
+success: function(html) {
+//				var urlo="get_tools_for_operation.php?opid="+opeid;
+//		  		$("#footer2").load(urlo)
+		  		
       							},
         clearForm: true,        // clear all form fields after successful submit 
         resetForm: true        // reset the form after successful submit 
@@ -52,6 +53,7 @@ success: function(html) {
   	{
 	  	event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
 	    $("#toolsoperation").ajaxSubmit(options);
+
 
   	}
 
