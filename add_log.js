@@ -61,10 +61,10 @@ var options = {  ///options for ajaxSubnit function
 		var url="machineidle_log.html";
 		phpfile="machineidle_log.php";
 	}else
-	if(aid==9) //rejection log
+	if(aid==9) //CMM Programing
 	{
-		var url="rejection_log.html";
-		phpfile="rejection_log.php";
+		var url="fixturework_log.html";
+		phpfile="fixturework_log.php";
 	}else
 	if(aid==10) //rejection log
 	{

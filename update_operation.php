@@ -7,6 +7,7 @@ $uploadDir = '/home/www/drawings/';
 $drawid=$_POST['Drawing_ID'];
 $opid=$_POST['Operation_ID'];
 $opedesc=$_POST['opdesc'];
+$itl=$_POST['itl'];
 if(isSet($_POST['stime'])){$stime=$_POST['stime'];}else{$stime="";}
 if(isSet($_POST['ctime'])){$ctime=$_POST['ctime'];}else{$ctime="";}
 if(isSet($_POST['mtime'])){$mtime=$_POST['mtime'];}else{$mtime="";}
@@ -110,11 +111,12 @@ $query="UPDATE Operation
 				Machining_Time='$mctime',
 				Program_NO='$progno',
 				NC_Prog_Path='$ppath',
+				In_tool_List='$itl',
 				Operation_Notes='$onote'
 				$stagedrg
 			WHERE Operation_ID=$opid;";
 
-print($query);
+//print($query);
 
 $res=mysql_query($query) or die(mysql_error());
 

@@ -16,16 +16,10 @@ $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 print('<table name="ptable" id="ptable">');
 $row = mysql_fetch_assoc($resa);
 
-	$dpath='/drawings/'.$row['Drawing_File'];
+	$dpath='/drawings/'.$row['Customer_Drawing'];
 	$ppath='/drawings/'.$row['Process_Sheet'];
-	$pinpath='/drawings/'.$row['Gage_List'];
-	print("<tr><td height=\"35\"><a href=\"$dpath\" target=\"_NEW\" title=\"Opens Part Drawing in a new TAB\">Part Drawing</a></td>");
-	print("<td height=\"35\"><a href=\"$ppath\" target=\"_NEW\" title=\"Opens Process Sheet in a new TAB\">Process Sheet</a></td>");
-	
-	if($row['Gage_List']!='')
-	{
-		print("<td height=\"35\"><a href=\"$pinpath\" target=\"_NEW\"  title=\"Opens Pin and Gage List in a new TAB\">Pin and Gage List</a></td>");
-	}
+	print("<tr><td height=\"35\"><a class=\"pdf\" href=\"$dpath\" target=\"_NEW\" title=\"Opens Part Drawing in a new TAB\">Part Drawing</a></td>");
+	print("<td height=\"35\"><a class=\"pdf\" href=\"$ppath\" target=\"_NEW\" title=\"Opens Process Sheet in a new TAB\">Process Sheet</a></td>");
 	print("</tr>");
 	
 	print('</table>');
@@ -34,8 +28,8 @@ print('<table border=\"1\" cellspacing=\"1\">');
 
 //	print("<tr><td><label>Total Clamping Time (h:m:s)</label></td><td height=\"55\">$cltime</td>
 //			<td><label>Total Machining Time (h:m:s)</label></td><td height=\"35\">$mctime</td></tr>");
-	print("<tr><td><label>Cut Blank size</label></td><td height=\"35\">$row[Cut_Blank]</td>");
-	print("<td><label>Pre Machined Blank size</label></td><td height=\"10\">$row[Pre_Machined_Blank]</td></tr>");
+	print("<tr><td><label>Cut Blank size</label></td><td height=\"35\">$row[Raw_Material_Size]</td>");
+	print("<td><label>Pre Machined Blank size</label></td><td height=\"10\">$row[Pre_Machined_Blank_Size]</td></tr>");
 
 
 print('</table>');

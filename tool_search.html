@@ -13,6 +13,9 @@
 label { width: 10em; float: left; }
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { font-weight: bold; clear: both; }
+.q { clear: both; background-color:#CCCCCD; color:blue;}
+.s { clear: both; background-color:#F0F0F0; color:blue;}
+.t { font-weight: bold; clear: both; background-color:lightgrey; color:#F67A00}
 .submit { margin-left: 12em; }
 </style>
   <script>
@@ -24,8 +27,11 @@ p { font-weight: bold; clear: both; }
 		var tdia=$('#tdia').val();
 		var crnr=$('#crnr').val();
 		var fl=$('#fl').val();
+		if(ttypeid!='')
+		{
 		var url='get_all_tools_of_type.php?ttypeid='+ttypeid+'&tdia='+tdia+'&crnr='+crnr+'&fl='+fl;
 		$('#footer').load(url);
+		}
 		
 	});
 	

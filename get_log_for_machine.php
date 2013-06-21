@@ -173,7 +173,8 @@ while ($row = mysql_fetch_assoc($resa))
 		$remarks=$row['Remarks'];
 		$machine=$row['Machine_Name'];
 print("<tr class=\"$c\"><td>$id</td><td>$machine</td><td>$activity</td><td>$dno  $compname</td><td>$operationdesc</td><td>$batchno</td><td>$sdt</td><td>$edt</td><td align=\"center\">$td</td>
-		<td align=\"center\">$qty</td><td>$pno</td><td>$opename</td><td>$remarks</td></tr>");
+		<td align=\"center\">$qty</td><td>$pno</td><td>$opename</td>
+		<td><span style=\"max-width:150px;\">$remarks</span></td></tr>");
 if($c=="q"){$c="s";}else{$c="q";}
 }
 print("</table>");

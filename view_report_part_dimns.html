@@ -6,12 +6,12 @@
 		<title>View And Create Report In Process Dimensions</title>
 <link rel="stylesheet" href="validationEngine.jquery.css" type="text/css">
  <style type="text/css">
-* { font-family: Verdana; font-size=10; }
+* { font-family: Verdana; font-size:10; }
 label {padding-right:1em;float: left; color: green}
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { font-weight: bold; clear: both; }
 .submit { margin-left: 12em; }
-.drawingqty{border-spacing=2px;
+.drawingqty{border-spacing:2px;
 color: #ffffff;
 } 
 </style>
@@ -40,6 +40,7 @@ color: #ffffff;
 	<input type="radio" name="pdfxl" value="1">XLS</input></td>
 <td>Report Date</td><td><input type="text" name="rdate" id="rdate"></td>
 <td>Comment</td><td><input type="text" name="comment" id="comment" class="required"></td></tr>
+<tr><td>Job Specific Comment</td><td><input type="text" name="jcomment" id="jcomment" maxlength="100"></td></tr>
 </table>
 <input type="submit" id="submit" value="Generate Report">
 </fieldset>

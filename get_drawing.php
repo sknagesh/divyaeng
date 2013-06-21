@@ -12,7 +12,7 @@ if($hcomp!=1)
 $query="SELECT * FROM Component WHERE Customer_ID='$custid' ORDER BY Drawing_NO;";
 }else
 	{
-		$query="SELECT * FROM Component WHERE Customer_ID='$custid' AND Hide_In_Prod=0;";
+		$query="SELECT * FROM Component WHERE Customer_ID='$custid' AND Hide_In_Prod=0 ORDER BY Drawing_NO;";
 	}
 print("<label for=\"draw\">Select Drawing</label>");
 print("<select name=\"Drawing_ID\" id=\"Drawing_ID\" $rcr>");

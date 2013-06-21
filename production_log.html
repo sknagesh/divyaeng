@@ -82,7 +82,7 @@ p { font-weight: bold; clear: both; }
 			var url="get_batch_remarks.php?bid="+bid;
 			
 			$.get(url, function(data) {
-			$('#batchno').append(data);
+			$('#br').text(data);
 			});
 			
 		}

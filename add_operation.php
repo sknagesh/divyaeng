@@ -6,6 +6,7 @@ $uploadDir = '/home/www/drawings/';
 print_r($_POST);
 $drawid=$_POST['Drawing_ID'];
 $opedesc=$_POST['opdesc'];
+$itl=$_POST['itl'];
 if(isSet($_POST['stime'])){$stime=$_POST['stime'];}else{$stime="";}
 if(isSet($_POST['ctime'])){$ctime=$_POST['ctime'];}else{$ctime="";}
 if(isSet($_POST['mtime'])){$mtime=$_POST['mtime'];}else{$mtime="";}
@@ -108,7 +109,8 @@ $query="INSERT INTO Operation (Drawing_ID,
 								Program_NO,
 								NC_Prog_Path,
 								Operation_Notes,
-								Stage_Drawing_Path) 
+								Stage_Drawing_Path,
+								In_Tool_List) 
 	 						VALUES('$drawid',
 									'$opedesc',
 									'$sltime',
@@ -117,7 +119,8 @@ $query="INSERT INTO Operation (Drawing_ID,
 									'$progno',
 									'$ppath',
 									'$onote',
-									'$odrgfileName');";
+									'$odrgfileName',
+									'$itl');";
 
 //print($query);
 

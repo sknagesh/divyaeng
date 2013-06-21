@@ -16,6 +16,7 @@ $pdfxl=$_POST['pdfxl'];
 $rtype=$_POST['Report_Type'];
 $comment=$_POST['comment'];
 $drawingid=$_POST['Drawing_ID'];
+if(isSet($_POST['jcomment'])){$jcomment=$_POST['jcomment'];}else{$jcomment='';}
 if($rtype==1){
 $docref="DEW/QA/R/01";	
 $reptype="Final Inspection Report";
@@ -167,12 +168,13 @@ function Header()
 
 function Footer()
 {
+   	$jcomment=$GLOBALS['jcomment'];
     // Position at 1.5 cm from bottom
     $this->SetY(-35);
 	// Arial italic 8
     $this->SetFont('helvetica','',16);
-	$this->Cell(220,10,"Inspected By: G.S ",'0',0,'L');
-	$this->Cell(140,10,"Approved By: U.S",'0',1,'L');
+	$this->Cell(220,10,"Note: ".$jcomment,'0',0,'L');
+	$this->Cell(140,10,"Verified By: U.S",'0',1,'L');
 	
     // Page number
     $this->SetY(-10);
@@ -421,25 +423,27 @@ function Header()
 	$this->Cell(110,6,'HEAT NO: '.$heatcode,'T R',0,'L');
     $this->Cell(85,6,'DATE: '.$jdate,'L B R',1,'L');
     $this->Cell(80,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
-	$this->Cell(110,6,"Qty:",'B R',0,'L');
+	$this->Cell(110,6,"",'B R',0,'L');
     $this->Cell(85,6,"Note: ".$comment,'B R',0,'L');
 
 	}
 
 function Footer()
 {
+   	$jcomment=$GLOBALS['jcomment'];
     // Position at 1.5 cm from bottom
     $this->SetY(-35);
 	// Arial italic 8
     $this->SetFont('helvetica','',16);
-	$this->Cell(220,10,"Inspected By: G.S ",'0',0,'L');
-	$this->Cell(140,10,"Approved By: U.S",'0',1,'L');
+	$this->Cell(220,10,"Note: ".$jcomment,'0',0,'L');
+	$this->Cell(140,10,"Verified By: U.S",'0',1,'L');
 	
     // Page number
     $this->SetY(-10);
     $this->SetFont('helvetica','',6);
 	$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 }
+
 }
 
 

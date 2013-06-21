@@ -22,7 +22,7 @@ while ($row2 = mysql_fetch_assoc($resa2))
 if($row2['Batch_ID']==$oid){$sel=" selected=selected";}else{$sel='';}	
 echo "<option value=".$row2['Batch_ID'].$sel.">".$row2['Mfg_Batch_NO']."</option>";
 }
-print("</select>");
+print("</select><div id=\"br\"> </div>");
 
 
 

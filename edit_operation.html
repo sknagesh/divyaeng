@@ -77,7 +77,13 @@ p { font-weight: bold; clear: both; }
 					$('#simg').html(simg);
 					$('#sdrg').html(data[8]);
 					$('#stime').val(data[9]);
-
+					if(data[10]==1)
+					{
+					$('#itl1').prop("checked",true);	
+					}else{
+						$('#itl2').prop("checked",true);
+					}
+					
 
 			$('#eop').show();
 						}
@@ -180,6 +186,14 @@ var options = {  ///options for ajaxSubnit function
      <label for="drg">Upload Stage Drawing </label>
      <input id="odwg" name="odwg" type="file" /><div id="sdrg"> </div>
    </p>
+
+   <p>
+     <label>Required In Tool List?</label>
+	<input type="radio" id="itl1" name="itl" value="1">Required
+	<input type="radio" id="itl2" name="itl" value="0">Not Required
+   </p>
+
+
 
    <p>
      <input class="submit" id="submit" type="submit" value="Submit"/>

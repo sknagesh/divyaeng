@@ -13,8 +13,8 @@ $operatorid=$_POST['Operator_ID'];
 $reason=$_POST['Reason_ID'];
 $bno=$_POST['Batch_ID'];
 
-$oldtid=$_POST['Tool_Type_ID1'];
-$newtid=$_POST['Tool_Type_ID2'];
+$oldtid=$_POST['Tool_ID1'];
+$newtid=$_POST['Tool_ID2'];
 
 if(isSet($_POST['Insert_ID1'])){$oldinsid=$_POST['Insert_ID1'];}else{$oldinsid="";}
 if(isSet($_POST['Insert_ID2'])){$newinsid=$_POST['Insert_ID2'];}else{$newinsid="";}
@@ -71,7 +71,7 @@ $pquery.="VALUES('$lastid',
 				'$tconditionnew',
 				'$reason');";
 
-//print("<br>$pquery");
+print("<br>$pquery");
 $result=mysql_query($pquery) or die(mysql_error());
 $ok=mysql_affected_rows();
 if($ok!=0)
