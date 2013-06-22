@@ -13,6 +13,8 @@ $operatorid=$_POST['Operator_ID'];
 $reason=$_POST['Reason_ID'];
 $bno=$_POST['Batch_ID'];
 
+if(isSet($_POST['jobno'])){$jobno=$_POST['jobno'];}else{$jobno="";}
+
 $oldtid=$_POST['Tool_ID1'];
 $newtid=$_POST['Tool_ID2'];
 
@@ -57,7 +59,8 @@ $pquery="INSERT INTO ToolChange (Activity_Log_ID,
 								Changed_Ins_Qty,
 								Original_Tool_Condition,
 								New_Tool_Condition,
-								Reason_ID) ";
+								Reason_ID,
+								Job_NO) ";
 $pquery.="VALUES('$lastid',
 				'$bno',
 				'$operationid',
@@ -69,7 +72,8 @@ $pquery.="VALUES('$lastid',
 				'$iqty2',
 				'$tconditionold',
 				'$tconditionnew',
-				'$reason');";
+				'$reason',
+				'$jobno');";
 
 print("<br>$pquery");
 $result=mysql_query($pquery) or die(mysql_error());

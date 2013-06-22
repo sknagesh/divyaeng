@@ -67,13 +67,14 @@ $("#drawing").click(function() {      //populate operation list based on drawing
 
 $("#batch").change(function() {      //populate operation list based on drawing no
 	var drawingid=$('#Drawing_ID').val();
+	var oid=$('#Operation_ID').val();
 	var batchid=$('#Batch_ID').val();
 	if(batchid!="")
   		{
 	$('#ipdimns').empty();
 	$('#inspector').load("get_operator.php?insp=1"); //load customer list on to div customer
 	$('#insp').show();
-
+	$('#sdrg').load("get_stage_drawing.php?opid="+oid);
 		}
 		else
 		{

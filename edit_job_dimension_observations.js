@@ -71,6 +71,7 @@ $("#batch").change(function() {      //populate operation list based on drawing 
   		{
 	$('#ipdimns').empty();
 	$('#jobno').load("get_jobno_for_batchid.php?bid="+batchid+"&opid="+oid);
+	$('#sdrg').load("get_stage_drawing.php?opid="+oid);
 	$('#insp').show();
 		}
 		else

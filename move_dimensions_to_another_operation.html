@@ -19,21 +19,23 @@ p { font-weight: bold; clear: both; }
 	</head>
 	<body>
 <form name="add_ip_dimn" id="add_ip_dimn" method="post" action="move_dimns_to_another_op.php" >
-<fieldset> Select Drawing Details
-<div id="customer"> </div>		
-<div id="drawing"> </div>
-<div id="op">
-<fieldset>Select Source Operation
-	<div id="soperation"> </div>
+
+<fieldset>Select Action Type
+<input type="radio" id="act1" name="move" value="move">Move Dimensions
+<input type="radio" id="act2" name="move" value="copy">Copy Dimensions
 </fieldset>
+<div id="act">
+<fieldset> Select Source Drawing Details
+<div id="customer"> </div>		
+<div id="sdrawing"> </div>
+<div id="soperation"> </div>
+</fieldset>
+
 <fieldset>Select Destination Operation
-	<div id="doperation"> </div>
+<div id="ddrawing"> </div>
+<div id="doperation"> </div>
 </fieldset>
 </div>
-</fieldset>
-	
-
-</table>
 
 <div id="ipdimns"> </div> <!--place add new rows and existing rows-->		
 

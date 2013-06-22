@@ -1,31 +1,59 @@
 $(document).ready(function() {
 	$('#add_ip_dimn').validate();
 	$('#customer').load("get_customer.php"); //load customer list on to div customer
-	$('#op').hide();
+	$('#act').hide();
+	var action='';
+	$('input[type="radio"]').click(function(){
+		
+			action=$(this).val();
+		$('#sdrawing').text(' ');
+		$('#ddrawing').text(' ');
+		$('#soperation').text(' ');
+		$('#doperation').text(' ');
+		$('#act').show();		
+
+
+	});
+
+
 $('#customer').click(function() {     //populate drawing list based on customer
 	var custid=$('#Customer_ID').val();
 	if(custid!=''){
-		var url="get_drawing.php?custid="+custid;
-		$('#drawing').load(url);	
+		var urls="get_drawing.php?custid="+custid+"&id=S";
+		var urld="get_drawing.php?custid="+custid+"&id=D";
+		$('#sdrawing').load(urls);	
+		if(action=='copy')
+		{
+		$('#ddrawing').load(urld);	
+		$('#ddrawing').show();
+		}else{
+			$('#ddrawing').hide();
+		}
+		
 	}else
 		{
-		$('#drawing').text('');
+		$('#sdrawing').text('');
+		$('#ddrawing').text('');
 		}
     });
 
-$("#drawing").click(function() {      //populate operation list based on drawing no
-	var drawingid=$('#Drawing_ID').val();
+$("#sdrawing").click(function() {      //populate operation list based on drawing no
+	var drawingid=$('#Drawing_IDS').val();
 	if(drawingid!='')
 		{
 		var urls="get_operations.php?drawingid="+drawingid+"&id=S";
 		var urld="get_operations.php?drawingid="+drawingid+"&id=D";
-		$('#soperation').load(urls);
-		$('#doperation').load(urld);
-		$('#op').show();
+			if(action=='move')
+			{
+			$('#soperation').load(urls);
+			$('#doperation').load(urld);
+			}else{
+				$('#soperation').load(urls);
+			}
+			
 		}else{
-		$('#soperation').text('');
-		$('#doperation').text('');
-		$('#op').hide();
+			$('#soperation').text('');
+			$('#doperation').text('');
 		}
 });
 
@@ -40,6 +68,22 @@ $("#soperation").click(function() {     //show inprocess dimensions based on ope
 	}
 });
 
+
+$("#ddrawing").click(function() {      //populate operation list based on drawing no
+	var drawingid=$('#Drawing_IDD').val();
+	if(drawingid!='')
+		{
+		var urld="get_operations.php?drawingid="+drawingid+"&id=D";
+		$('#doperation').load(urld);
+		}else{
+			$('#doperation').text('');
+		}
+});
+
+
+
+
+
 $("form#add_ip_dimn").on("submit",function(event) {
 	event.preventDefault();
 	var $this = $(this);
@@ -52,6 +96,11 @@ $("form#add_ip_dimn").on("submit",function(event) {
    			success: function(html) {
 							document.getElementById('footer').innerHTML=html;
 							$('#ipdimns').empty();
+							$('#sdrawing').text(' ');
+							$('#ddrawing').text(' ');
+							$('#soperation').text(' ');
+							$('#doperation').text(' ');
+							
       							}
 			});
 		}

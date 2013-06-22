@@ -4,16 +4,16 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $opid=$_GET['opid'];
 
-$qop="SELECT * FROM Operation WHERE Operation_ID='$opid';";
+$qop="SELECT Program_NO,NC_Prog_Path,Operation_Notes,Stage_Drawing_Path,
+		(SELECT GROUP_CONCAT(Fixture_NO) FROM Ope_Fixt_Map WHERE Operation_ID='$opid') as fixt 
+		FROM Operation WHERE Operation_ID='$opid';";
 $r=mysql_query($qop) or die(mysql_error());
 $rope=mysql_fetch_assoc($r);
 
-$ctime=$rope['Clamping_Time'];
-$mtime=$rope['Machining_Time'];
-$fno=$rope['Fixture_NO'];
+$fno=$rope['fixt'];
 $opnote=$rope['Operation_Notes'];
-$odpath='/drawings/'.$rope['Operation_Drawing'];
-$ppath=$rope['P_Path'].$rope['Program_NO'];
+$odpath='/drawings/'.$rope['Stage_Drawing_Path'];
+$ppath=$rope['NC_Prog_Path'].$rope['Program_NO'];
 print("<table cellspacing=\"5\">");
 print("<tr><td><label>Fixture No:</label></td><td>$fno</td></tr>");
 //print("<td><label>Clamping Time For This OP:</label></td><td height=\"35\">$ctime</td>");
@@ -23,7 +23,7 @@ if($rope['Operation_Drawing']!='')
 {
 print("<tr><td><a href=\"$odpath\" target=\"_NEW\">Stage Drawing</a></td>");
 }
-if($rope['P_Path']!='')
+if($rope['NC_Prog_Path']!='')
 {
 print("<td><a href=\"$ppath\" target=\"_NEW\">NC Program</a></td></tr>");	
 }else{
