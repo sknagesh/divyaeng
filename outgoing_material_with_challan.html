@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Outward Delivery Challan</title>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 10em; float: left; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+	<script src="jquery.datetimeentry.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+		var data='';
+		
+	$("#customer").load('get_customer.php');
+	$('#outmaterial').validate();
+
+	$('#drawing').click(function(){
+	var did=$('#Drawing_ID').val();
+	if(did!='')
+	{
+		url="get_open_challans_for_drawing.php?drawingid="+did;
+	$('#addmaterial').load(url);
+	$('#addmaterial').show();
+	}
+
+	
+  	});
+
+	$('#customer').click(function(){
+	var cid=$('#Customer_ID').val();
+	var url='get_drawing.php?custid='+cid;
+	
+	$('#drawing').load(url);	
+
+	});
+
+	$('#addmat').click(function(){
+		
+valu=$('*[id^="dqty"]').filter(function(){
+    return $(this).val() != "";
+}).val();   ///findout if at least one quantity is entered
+console.log(valu);
+if (!valu){
+		alert("Please Enter Quantity to Be Dispatched");
+		return false;
+	}else{
+	
+				$.ajax({
+      					data: $('#addmaterial :input').serialize(),
+      					type: "POST",
+      					url: "add_materials_to_dc_list.php",
+      					success: function(html) {
+						data+=html;
+						$('#mlist').val(data);
+						$('#addmaterial').text('');
+      							}
+    								});
+	
+	
+	
+	}
+
+		
+	});
+
+
+
+	$("#submit").click(function(event) {
+		 if($("#outmaterial").valid())
+		  	{
+		  		event.preventDefault();
+				$.ajax({
+      					data: $('#outmaterial').serializeArray(),
+      					type: "POST",
+      					url: "outgoing_material_with_challan.php",
+      					success: function(html) {
+		
+						document.getElementById("footer").innerHTML=html;
+						$('#outmaterial').get(0).reset();
+      							}
+    								});
+  	
+		  	}
+
+	});
+
+
+
+$(function () {
+	$('#dcdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#dcdatedb', altFormat: 'Y-O-D'});
+	$('#refdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#refdatedb', altFormat: 'Y-O-D'});
+	
+	});  
+
+
+
+  });
+
+
+</script>
+
+
+    </head>
+    <body>
+  <form id="outmaterial" name="outmaterial">
+ <fieldset>
+<legend>Select Out Going Material Details</legend>
+     <div id="customer"> </div>
+     <label>DC Date</label>
+     <input id="dcdate" name="dcdate" size="25" class="required"/>
+     <input type="hidden" id="dcdatedb" name="dcdatedb" />
+   </p>
+   <p>
+     <label>DC Type</label>
+     <select id="dctype" name="dctype" class="required">
+     <option value="">Select DC Type</option>
+     <option value="Non Returnable">Non Returnable</option>
+     <option value="Returnable">Returnable</option>
+     </select>
+   </p>
+   <p>
+     <label>Customer Referance</label>
+     <input id="cref" name="cref" size="25"/>
+   </p>
+   <p>
+     <label>Ref Date</label>
+     <input id="refdate" name="refdate" size="25" />
+     <input type="hidden" id="refdatedb" name="refdatedb" />
+   </p>
+
+   <p>
+     <label>Mode Of Dispatch</label>
+     <select id="dmode" name="dmode" class="required">
+     <option value="">Select Mode Of Dispatch</option>
+     <option value="Your Vehicle">Your Vehicle</option>
+     <option value="By Courier">By Courier</option>
+     <option value="By Person">By Person</option>
+     </select>
+
+<input type="hidden" id="mlist" name="mlist">
+   <p>
+     <div id="drawing"> </div>
+   </p>
+
+<div id="addmaterial">
+
+</div>
+<div id="addbutton">
+<input type="button" id="addmat" name="addmat" value="add">
+</div>
+    <input type="hidden" id="noofmaterials" name="noofmaterials">
+
+
+
+   <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer2"><table id="addedmaterial" name="addedmaterial" border="1" cellspacing="2">
+<tr><th>Drawing Name and No</th><th>Quantity</th><th>Material Code</th></tr>
+</table> </div>
+<div id="footer"> </div>
+
+</body>
+</html>
