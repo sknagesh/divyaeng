@@ -8,16 +8,18 @@ $dqty=$_POST['dqty'];
 $remarks=$_POST['remark'];
 $miid=$_POST['miid'];
 $add='';
+$tqty=0;
 for($i=0;$i<count($miid);$i++)
 {
 		if($dqty[$i]!='')
 		{
 		$add.=$miid[$i].'<|>'.$dqty[$i].'<|>'.$remarks[$i].'<||>';		
-			
+		$tqty+=$dqty[$i];	
 		}
 	
 	
 }
+$add.='@'.$tqty;
 print($add);
 
 ?>

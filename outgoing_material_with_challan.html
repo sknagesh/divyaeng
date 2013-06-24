@@ -19,7 +19,9 @@ p { font-weight: bold; clear: both; }
 
 $(document).ready(function(){
 		var data='';
-		
+		var dqty='';		
+	$('#submit').prop('disabled',true);
+	$('#previewok').prop('disabled',true);
 	$("#customer").load('get_customer.php');
 	$('#outmaterial').validate();
 
@@ -45,32 +47,62 @@ $(document).ready(function(){
 
 	$('#addmat').click(function(){
 		
-valu=$('*[id^="dqty"]').filter(function(){
-    return $(this).val() != "";
-}).val();   ///findout if at least one quantity is entered
-console.log(valu);
-if (!valu){
-		alert("Please Enter Quantity to Be Dispatched");
-		return false;
-	}else{
+		valu=$('*[id^="dqty"]').filter(function(){
+    	return $(this).val() != "";
+		}).val();   ///findout if at least one quantity is entered
+			if (!valu){
+				alert("Please Enter Quantity to Be Dispatched");
+				return false;
+		}else{
 	
 				$.ajax({
       					data: $('#addmaterial :input').serialize(),
       					type: "POST",
       					url: "add_materials_to_dc_list.php",
       					success: function(html) {
-						data+=html;
-						$('#mlist').val(data);
+						var data_wo_tq=html.split('@');  //split total qty and each challan qty in to an array
+						console.log(data_wo_tq[1]);
+						var did=$('#Drawing_ID').val();  //get current drawing id
+						dqty+=did+'<|>'+data_wo_tq[1]+'<@>';  //add drawing id and total qty						
+						data+=data_wo_tq[0];
+						$('#mlist').val(data); //update challan list and individual qty to mlist for POST
+						$('#drglist').val(dqty); //updata drglist data for POST
 						$('#addmaterial').text('');
+						
+   		var newtr="<tr><td>"+$('#Drawing_ID option:selected').text()+"</td><td>"+data_wo_tq[1]+"</td></tr>";
+		$('#addedmaterial').append(newtr);
+		$('#addedmaterial').show();
+			if(data!='')
+			{
+					$('#previewok').prop('disabled',false);
+			}
       							}
     								});
-	
-	
-	
 	}
-
 		
 	});
+
+
+$('#preview').click(function(){
+		
+		 if($("#outmaterial").valid())
+		  	{
+
+				$.ajax({
+      					data: $('#outmaterial').serializeArray(),
+      					type: "POST",
+      					url: "outgoing_material_with_challan.php",
+      					success: function(html) {
+//						document.getElementById("footer").innerHTML=html;
+			  		window.open("tempdc.pdf");
+					$('#previewok').prop('disabled',false);					
+      							}
+    								});
+  	
+		  	}
+		
+	});
+
 
 
 
@@ -111,14 +143,18 @@ $(function () {
 
     </head>
     <body>
-  <form id="outmaterial" name="outmaterial">
+<form id="outmaterial" name="outmaterial" action="outgoing_material_with_challan.php" method="post">
  <fieldset>
 <legend>Select Out Going Material Details</legend>
      <div id="customer"> </div>
+   <p>
+     <label>Dc No</label>
+     <input id="dcno" name="dcno" size="25" class="required"/>
+   </p>
+
      <label>DC Date</label>
      <input id="dcdate" name="dcdate" size="25" class="required"/>
      <input type="hidden" id="dcdatedb" name="dcdatedb" />
-   </p>
    <p>
      <label>DC Type</label>
      <select id="dctype" name="dctype" class="required">
@@ -147,6 +183,7 @@ $(function () {
      </select>
 
 <input type="hidden" id="mlist" name="mlist">
+<input type="hidden" id="drglist" name="drglist">
    <p>
      <div id="drawing"> </div>
    </p>
@@ -156,10 +193,10 @@ $(function () {
 </div>
 <div id="addbutton">
 <input type="button" id="addmat" name="addmat" value="add">
+<input type="button" id="preview" name="preview" value="Pre View">
+<input type="checkbox" id="previewok" name="previewok">PreView Checked OK
 </div>
     <input type="hidden" id="noofmaterials" name="noofmaterials">
-
-
 
    <p>
      <input class="submit" id="submit" type="submit" value="Submit"/>
@@ -167,7 +204,7 @@ $(function () {
  </fieldset>
  </form>
 <div id="footer2"><table id="addedmaterial" name="addedmaterial" border="1" cellspacing="2">
-<tr><th>Drawing Name and No</th><th>Quantity</th><th>Material Code</th></tr>
+<tr><th>Drawing Name and No</th><th>Total Quantity</th></tr>
 </table> </div>
 <div id="footer"> </div>
 

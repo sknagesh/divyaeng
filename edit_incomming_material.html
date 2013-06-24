@@ -7,7 +7,7 @@
 
  <style type="text/css">
 * { font-family: Verdana; font-size: 96%; }
-label { width: 10em; float: left; }
+label { width: 10em; float: left; color:green}
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { font-weight: bold; clear: both; }
 .submit { margin-left: 12em; }
@@ -34,6 +34,10 @@ $(document).ready(function(){
 		url2='get_drawing.php?custid='+cid+'&rcr=1';  //load drawings to add new items for same challan
 		$('#challans').load(url);
 		$('#drawingadd').load(url2);
+		if(cid==2)
+		{
+			$('#beml').hide();
+		}
 	}	
 
 	});
@@ -205,7 +209,6 @@ $(function () {
 <legend>Edit In comming Material Details</legend>
 
    <p>
-     <label>Customer's Name</label>
      <div id="customer"> </div>
      <div id="challans"> </div>
    </p>
@@ -220,6 +223,7 @@ $(function () {
      <label>Challan Number</label>
      <input id="cno" name="cno" size="25"  class="required"/>
    </p>
+	<div id="beml">
    <p>
      <label>Gatepass Date</label>
      <input id="gpdate" name="gpdate" size="25" class="required"/>
@@ -239,6 +243,7 @@ $(function () {
      <label>DA Number</label>
      <input id="dano" name="dano" size="25" class="required"/>
    </p>
+	</div>
 </div>
 <div id="purchased">
    <p>

@@ -19,7 +19,7 @@ print("<tr><td><label>Fixture No:</label></td><td>$fno</td></tr>");
 //print("<td><label>Clamping Time For This OP:</label></td><td height=\"35\">$ctime</td>");
 //print("<td><label>Machining Time for This OP:</label></td><td height=\"35\">$mtime</td></tr>");
 print("<tr><td><label>Note:</label></td><td>$opnote</td></tr>");
-if($rope['Operation_Drawing']!='')
+if($rope['Stage_Drawing_Path']!='')
 {
 print("<tr><td><a href=\"$odpath\" target=\"_NEW\">Stage Drawing</a></td>");
 }
