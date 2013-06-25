@@ -50,7 +50,10 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 		DATE_FORMAT(End_Date_Time,'%d/%m/%Y %h:%i %p')as edt,
 		TIMEDIFF(End_Date_Time,Start_Date_Time) as td,
 		actl.Operator_ID,Remarks,Operator_Name,Maintenance_Description,Problem_Desc,Maintenance_Desc,
-		Spares_Used,Service_Engr_Name FROM ActivityLog as actl  
+		Spares_Used,Service_Engr_Name,
+		(SELECT GROUP_CONCAT('/logimages/',Image_Path) FROM ActivityLog_Image as ali 
+		WHERE ali.Activity_Log_ID=actl.Activity_Log_ID) as ip
+		 FROM ActivityLog as actl  
 		INNER JOIN Activity as act ON act.Activity_ID=actl.Activity_ID 
 		INNER JOIN Operator as ope ON ope.Operator_ID=actl.Operator_ID
 		INNER JOIN Maintenance as maint ON maint.Activity_Log_ID=actl.Activity_Log_ID
@@ -87,7 +90,27 @@ while ($row = mysql_fetch_assoc($resa))
 		$spare=$row['Spares_Used'];
 		$me=$row['Service_Engr_Name'];
 		$mname=$row['Machine_Name'];
-print("<tr class=\"$c\"><td>$id</td><td>$mname</td><td>$activity</td><td>$prob</td><td>$wd</td><td>$sdt</td><td>$edt</td><td align=\"center\">$td</td>
+		
+				if($row['ip']!='')
+		{
+			$images=explode(',', $row['ip']);
+			
+			$ip="<table style=\"width:80px\"><tr><td>$activity<td></tr><tr><td>";
+			$y=1;
+			for($z=0;$z<count($images);$z++)
+			{
+				$ip.="<a class=\"pdf\" href=\"$images[$z]\" target=\"_NEW\" title=\"View Image in New Tab\">$y&nbsp;&nbsp;&nbsp;  </a>";
+				$y++;
+			}
+			$ip.="</td></tr></table>";			
+		}else{
+			
+			$ip=$activity;
+		}
+		
+		
+		
+print("<tr class=\"$c\"><td>$id</td><td>$mname</td><td>$ip</td><td>$prob</td><td>$wd</td><td>$sdt</td><td>$edt</td><td align=\"center\">$td</td>
 		<td>$spare</td><td>$opename</td><td>$me</td><td>$remarks</td></tr>");
 if($c=="q"){$c="s";}else{$c="q";}
 }

@@ -64,6 +64,11 @@ var mtlno=0;
 	var url='get_drawing.php?custid='+cid;
 	
 	$('#drawing').load(url);	
+	if(cid!=3){
+		$('#beml').hide();
+		}else{
+		$('#beml').show();
+		}
 
 	});
 

@@ -41,7 +41,7 @@ p { font-weight: bold; clear: both; }
       						{
 							console.log(html);
 							data=html.split("<|>");
-					if((data[0]==1)||(data[0]==2)||(data[0]==3)||(data[0]==14)) ///production,setup, rework and cmm logs
+					if((data[0]==1)||(data[0]==2)||(data[0]==3)) ///production,setup, rework and cmm logs
 				{
 					$('#maint').hide();
 					$('#machine').load("get_machine.php?mid="+data[1]);
@@ -75,6 +75,7 @@ p { font-weight: bold; clear: both; }
 						
 					}
 						$('#simg').html(simg);
+						$('#fai').hide();
 						$('#elog').show();
 				}else
 				if(data[0]==5)   //maintenance log
@@ -106,6 +107,7 @@ p { font-weight: bold; clear: both; }
 						}
 					}
 					$('#simg').html(simg);
+					$('#fai').hide();
 						$('#elog').show();
 				}else
 				if(data[0]==8)  ///idle time log
@@ -122,6 +124,7 @@ p { font-weight: bold; clear: both; }
 						$('#sdatedb').val(data[6]);
 						$('#edatedb').val(data[7]);
 						$('#activity').load("get_activity.php?aid="+data[8]);
+						$('#fai').hide();
 						$('#elog').show();
 				}else
 				if((data[0]==4)||(data[0]==11)) ///fai, fixture logs

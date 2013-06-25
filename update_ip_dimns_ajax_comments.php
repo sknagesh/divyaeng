@@ -11,12 +11,14 @@ if($filter!=0)
 			<th>Instrument ID</th><th>Stage Dimn?</th><th>Text Field?</th>
 			<th>Production Dimn?</th><th>Compulsary Dimn?</th><th>Delete Dimn?</th></tr>";
 
-	$qry="SELECT * FROM Dimension WHERE Operation_ID=$filter AND Deleted=0;";
+//	$qry="SELECT * FROM Dimension WHERE Operation_ID=$filter AND Deleted=0;";
+
+$qry="SELECT *,(SELECT GROUP_CONCAT(Comment) FROM Dimn_Comment as dc WHERE dc.Desc_ID=dimn.Desc_ID) as com FROM Dimension as dimn WHERE Operation_ID=$filter AND Deleted=0;";
 
 $resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 $noofdimns=mysql_num_rows($resa);		
 
-
+//print($qry);
 
 
 	if($noofdimns==0) //if there are no dimns add fields so that we can add dimensions
@@ -72,6 +74,7 @@ $noofdimns=mysql_num_rows($resa);
 			if($row['Prod_Dimn']==1){$pd1="Checked";} else{$pd0="Checked";};
 			if($row['Compulsary_Dimn']==1){$cd1="Checked";} else{$cd0="Checked";};
 			if($row['Stage_Dimension']==1){$sd1="Checked";} else{$sd0="Checked";};
+			if($row['com']==''){$com='class="required number"';} else{$com='';};			
         $ipd.= "<tr><td><input type=\"text\" name=\"baloonno[$i]\" id=\"baloonno[$i]\" value=\"$row[Baloon_NO]\" class=\"required number\"size=\"5\" /></td>";
 		$qdd="select * from Dimn_Desc";
 		$res = mysql_query($qdd, $cxn) or die(mysql_error($cxn));
@@ -83,7 +86,7 @@ $noofdimns=mysql_num_rows($resa);
 		$ipd.="$r[Detailed_Desc]</option>";
  		}
 		$ipd.="</select></td>";
-		$ipd.= "<td><input type=\"text\" name=\"basicdimn[$i]\" id=\"basicdimn[$i]\" value=\"$row[Basic_Dimn]\" class=\"required number\"size=\"7\"/></td>";
+		$ipd.= "<td><input type=\"text\" name=\"basicdimn[$i]\" id=\"basicdimn[$i]\" value=\"$row[Basic_Dimn]\" $com size=\"7\"/></td>";
 		$ipd.= "<td><input type=\"text\" name=\"tollower[$i]\" id=\"tollower[$i]\" value=\"$row[Tol_Lower]\" class=\"number\" size=\"6\"/></td>";
 		$ipd.= "<td><input type=\"text\" name=\"tolupper[$i]\" id=\"tolupper[$i]\" value=\"$row[Tol_Upper]\" class=\"number\" size=\"6\"/></td>";
 		$q="select * from Instrument";

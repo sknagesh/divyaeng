@@ -11,6 +11,7 @@ if(isSet($_POST['Insert_ID2'])){$insertid2=$_POST['Insert_ID2'];}else{$insertid2
 if(isSet($_POST['Tool_ID_2'])){$toolid2=$_POST['Tool_ID_2'];}else{$toolid2='';}
 $toolid1=$_POST['Tool_ID_1'];
 $holderid=$_POST['Holder_ID_1'];
+if(isSet($_POST['Holder_ID_2'])){$holderid2=$_POST['Holder_ID_2'];}else{$holderid2='';}
 $mdesc=$_POST['tdesc'];
 if(isSet($_POST['toh'])){$toh=$_POST['toh'];}else{$toh='';}
 if(isSet($_POST['tlife'])){$tlife=$_POST['tlife'];}else{$tlife='';}
@@ -48,6 +49,7 @@ $query="INSERT INTO Ope_Tool (
 				Tool_ID_2,
 				Insert_ID_2,
 				Holder_ID_1,
+				Holder_ID_2,
 				Ope_Tool_Desc,
 				Ope_Tool_OH,
 				Ope_Tool_Life,
@@ -59,6 +61,7 @@ $query="INSERT INTO Ope_Tool (
 				'$toolid2',
 				'$insertid2',
 				'$holderid',
+				'$holderid2',
 				'$mdesc',
 				'$toh',
 				'$tlife',

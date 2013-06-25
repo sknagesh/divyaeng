@@ -7,10 +7,7 @@ $custid=$_GET['custid'];
 $query="SELECT mi.Material_Inward_ID,EX_Challan_NO,DATE_FORMAT(EX_Challan_Date,'%d/%m/%Y') as ecd,
 				DA_NO,DATE_FORMAT(DA_Date,'%d/%m/%Y') as dad,GP_NO,DATE_FORMAT(GP_Date,'%d/%m/%Y') as gpd,
 				Purchase_Ref,DATE_FORMAT(Purchase_Ref_Date,'%d/%m/%Y') as prd FROM 
-				Material_Inward as mi
-				INNER JOIN MI_Drg_Qty as mdq ON mdq.Material_Inward_ID=mi.Material_Inward_ID
-				INNER JOIN Component as comp ON comp.Drawing_ID=mdq.Drawing_ID 
-				WHERE comp.Customer_ID='$custid' AND Open='1';";
+				Material_Inward as mi WHERE mi.Customer_ID='$custid' AND Open='1';";
 //print($query);
 print("<label>Select Challans</label>");
 print("<select name=\"Material_Inward_ID\" id=\"Material_Inward_ID\" class=\"required\">");

@@ -81,11 +81,6 @@ var options = {  ///options for ajaxSubnit function
 		var url="fixturework_log.html";
 		phpfile="fixturework_log.php";
 	}else
-		if(aid==14) //CMM inspection
-	{
-		var url="production_log.html";
-		phpfile="production_log.php";
-	}else
 		if(aid==15) //Non Conformance Report
 	{
 		var url="non_conformance_log.html";

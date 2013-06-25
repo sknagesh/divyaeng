@@ -13,7 +13,7 @@ $r=mysql_num_rows($res);
 if($r!=0)
 {
 echo "<table border=\"1\" cellspacing=\"1\" bgcolor=\"#7FFFD4\">";
-echo "<tr><th>Delete Tool</th><th>Preferred Tool</th><th>Alternate Tool</th><th>Holder</th>
+echo "<tr><th>Delete Tool</th><th>Preferred Tool</th><th>Alternate Tool</th><th>Holder 1</th><th>Holder 2</th>
 		<th>Work Description</th><th>Tool Overhang</th><th>Tool Life</th><th>Tool Image</th></tr>";
 $i=0;
 
@@ -60,17 +60,11 @@ while ($ins1=mysql_fetch_assoc($rin1))
 if($ins1[Insert_ID]==$row[Insert_ID_1]){$sel="selected=selected";}else{$sel="";}
 
 echo '<option value="'.$ins1[Insert_ID].'"'. $sel.'>';
-echo $ins1[Insert_Part_NO].' - '.$ins1[Insert_Description].'</option>';
+echo $ins1[Insert_Part_NO].'</option>';
 }
 echo '</select>';
 }
 echo '</td>';
-
-
-
-
-
-
 
 
 
@@ -111,18 +105,18 @@ while ($ins2=mysql_fetch_assoc($rin2))
 if($ins2[Insert_ID]==$row[Insert_ID_2]){$sel="selected=selected";}else{$sel="";}
 
 echo '<option value="'.$ins2[Insert_ID].'"'. $sel.'>';
-echo $ins2[Insert_Part_NO].' - '.$ins2[Insert_Description].'</option>';
+echo $ins2[Insert_Part_NO].'</option>';
 }
 echo '</select>';
 }
 echo '</td>';
 
 
-
+//preferred holder
 $qhol="SELECT * FROM Holder;";
 $rhol=mysql_query($qhol) or die(mysql_error());
 
-echo '<td><select name="Holder_ID_1['.$i.']" id="Holder_ID_1" class="required">';
+echo '<td style=width:30px><select name="Holder_ID_1['.$i.']" id="Holder_ID_1" class="required">';
 echo '<option value="">Select Holder</option>';
 while ($rowh = mysql_fetch_assoc($rhol))
 {
@@ -131,6 +125,22 @@ if($rowh[Holder_ID]==$row[Holder_ID_1]){$sel="selected=selected";}else{$sel="";}
 echo '<option value='.$rowh[Holder_ID].' '.$sel.' >'.$rowh[Holder_Description].'</option>';
 }
 echo '</select></td>';
+
+
+//alternate holder
+$qhol="SELECT * FROM Holder;";
+$rhol=mysql_query($qhol) or die(mysql_error());
+
+echo '<td><select name="Holder_ID_2['.$i.']" id="Holder_ID_2">';
+echo '<option value="">Select Holder</option>';
+while ($rowh = mysql_fetch_assoc($rhol))
+{
+if($rowh[Holder_ID]==$row[Holder_ID_2]){$sel="selected=selected";}else{$sel="";}
+
+echo '<option value='.$rowh[Holder_ID].' '.$sel.' >'.$rowh[Holder_Description].'</option>';
+}
+echo '</select></td>';
+
 
 echo '<td><input type="text" name="mdesc['.$i.']" id="mdesc['.$i.']" value="'.$row[Ope_Tool_Desc].'"></td>';
 

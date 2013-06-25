@@ -108,25 +108,9 @@ var options = {  ///options for ajaxSubnit function
 				var urlo="get_tools_for_operation.php?opid="+opeid;
 				$('#footer2').load(urlo);
       							}
- 
-
 
     };
 	
-	
-		
-	
-	
-
-
 
   });
 
-
-/*		var toolid1=$('#Tool_ID_1').val();
-		var toolid2=$('#Tool_ID_2').val();
-		var holderid=$('#Holder_ID').val();
-		var mdesc=$('#tdesc').val();
-		var toh=$('#toh').val();
-		var tlife=$('#tlife').val();
-	var turl="add_tool_to_operation.php?toolid1="+toolid1+'&toolid2='+toolid2+'&holderid='+holderid+'&mdesc='+mdesc+'&toh='+toh+'&tlife='+tlife;*/
