@@ -6,7 +6,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 //print_r($_POST);
 $toolid=$_GET['toolid'];
 $query="SELECT 
-			Tool_Dia,Tool_FL,Shank_Dia,Tool_Corner_Rad,Tool_Useful_Length, Tool_OAL,Qty_Shop_New,Tool_Remarks,Qty_Shop_Resharp
+			Tool_Dia,Tool_FL,Shank_Dia,Tool_Corner_Rad,Tool_Useful_Length, Tool_OAL,Qty_New_SF,Tool_Remarks,Qty_Resharpened_SF
 			 FROM Tool AS t 
 			 LEFT OUTER JOIN Tool_Qty as tq ON tq.Tool_ID=t.Tool_ID
 			 WHERE t.Tool_ID='$toolid';";

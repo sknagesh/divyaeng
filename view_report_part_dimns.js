@@ -101,6 +101,11 @@ if($('#viewipdimn').valid())
 
 });
 
+$(function () {
+	$('#rdate').datetimeEntry({datetimeFormat: 'D-O-Y'});
+	
+	
+	});  
 
 
 

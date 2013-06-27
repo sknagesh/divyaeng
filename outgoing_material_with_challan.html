@@ -21,7 +21,9 @@ $(document).ready(function(){
 		var data='';
 		var dqty='';		
 	$('#submit').prop('disabled',true);
+	$('#preview').prop('disabled',true);
 	$('#previewok').prop('disabled',true);
+	$('#previewok').val("1");  //set default preview value to false
 	$("#customer").load('get_customer.php');
 	$('#outmaterial').validate();
 
@@ -74,7 +76,7 @@ $(document).ready(function(){
 		$('#addedmaterial').show();
 			if(data!='')
 			{
-					$('#previewok').prop('disabled',false);
+					$('#preview').prop('disabled',false);
 			}
       							}
     								});
@@ -104,23 +106,26 @@ $('#preview').click(function(){
 	});
 
 
+$('#previewok').click(function(){
+
+if(this.checked)
+{
+$('#previewok').val("0");
+$('#submit').attr("disabled",false);
+}else
+{
+$('#previewok').val("1");
+$('#submit').attr("disabled",true);
+}
+});
+
 
 
 	$("#submit").click(function(event) {
 		 if($("#outmaterial").valid())
 		  	{
-		  		event.preventDefault();
-				$.ajax({
-      					data: $('#outmaterial').serializeArray(),
-      					type: "POST",
-      					url: "outgoing_material_with_challan.php",
-      					success: function(html) {
-		
-						document.getElementById("footer").innerHTML=html;
-						$('#outmaterial').get(0).reset();
-      							}
-    								});
-  	
+				return true;
+				$("form#outmaterial").reset();
 		  	}
 
 	});
@@ -194,7 +199,7 @@ $(function () {
 <div id="addbutton">
 <input type="button" id="addmat" name="addmat" value="add">
 <input type="button" id="preview" name="preview" value="Pre View">
-<input type="checkbox" id="previewok" name="previewok">PreView Checked OK
+<input type="checkbox" id="previewok" name="previewok" value="1">PreView Checked OK
 </div>
     <input type="hidden" id="noofmaterials" name="noofmaterials">
 

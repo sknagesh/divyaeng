@@ -5,6 +5,8 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 //print_r($_POST);
 
+$dcpath='dcpdfs/';
+
 $custid=$_POST['Customer_ID'];
 $dcno=$_POST['dcno'];
 $dcdate=$_POST['dcdate'];
@@ -13,6 +15,7 @@ $dctype=$_POST['dctype'];
 if(isSet($_POST['cref'])){$cref=$_POST['cref'];}else{$cref='';}
 if(isSet($_POST['refdate'])){$refdate=$_POST['refdate'];}else{$refdate='';}
 if(isSet($_POST['refdatedb'])){$refdatedb=$_POST['refdatedb'];}else{$refdatedb='';}
+if(isSet($_POST['previewok'])){$previewok=$_POST['previewok'];}else{$previewok='';}
 $dmode=$_POST['dmode'];
 $mlist=$_POST['mlist'];
 $drglist=$_POST['drglist'];
@@ -149,9 +152,9 @@ while($j<count($dq_list))
 //print($qcdet);
 		$rcdet = mysql_query($qcdet, $cxn) or die(mysql_error($cxn));
 		$rowc=mysql_fetch_assoc($rcdet);
-		$pdf->Cell(80,8,"$rowc[Component_Name]  $rowc[Drawing_NO]",0,0,'L');
+		$pdf->MultiCell(80, 8, "$rowc[Component_Name]  $rowc[Drawing_NO]", 0, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 		$pdf->Cell(20,8,$dq_list[$j][1],0,0,'L');
-		//add code for remarks
+		$pdf->Cell(75,8,$cqr_list[$j][2],0,0,'L');  //remarks from challan_qty_remarks_array
 	}
 			$j++;
 }
@@ -166,20 +169,82 @@ while($j<count($cqr_list))
 	{
 		$pdf->ln(8);
 		$pdf->Cell(20,8,$j+1,0,0,'C');
-		$qchdet="SELECT * FROM Material_Inward WHERE Material_Inward_ID='".$cqr_list[$j][0]."';";
+		$qmdq="SELECT Material_Inward_ID FROM MI_Drg_Qty WHERE MI_Drg_Qty_Id=".$cqr_list[$j][0].";";
+		$rmdq = mysql_query($qmdq, $cxn) or die(mysql_error($cxn));
+		$remdq=mysql_fetch_assoc($rmdq);
+		$miid=$remdq['Material_Inward_ID'];
+
+		$qchdet="SELECT * FROM Material_Inward WHERE Material_Inward_ID='".$miid."';";
 //print($qcdet);
 		$rchdet = mysql_query($qchdet, $cxn) or die(mysql_error($cxn));
 		$rowch=mysql_fetch_assoc($rchdet);
 		$pdf->Cell(80,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['EX_Challan_Date'],0,0,'L');
 		$pdf->Cell(20,8,"Quantity: ".$cqr_list[$j][1],0,0,'L');
-		//add code for remarks
+
 	}
 			$j++;
 }
 
+if($previewok=='0')
+{
+	
+	$q="INSERT INTO Material_Outward (DC_NO,
+									Date,
+									Mode_Of_Despatch,
+									Dc_Type,
+									Comments,
+									Cust_Ref,
+									Ref_Date)
+									
+									VALUE('$dcno',
+										'$dcdatedb',
+										'$dmode',
+										'$dctype',
+										'',
+										'$cref',
+										'$refdatedb');";
+	$cupq = mysql_query($q, $cxn) or die(mysql_error($cxn));									
+	$id=mysql_insert_id();
+
+$j=0;	
+while($j<count($cqr_list))
+{
+	if($cqr_list[$j][0]!='')  //only if we have some quantity defined
+	{
+		$qmdqd="SELECT Drawing_ID FROM MI_Drg_Qty WHERE MI_Drg_Qty_Id=".$cqr_list[$j][0].";";
+		$rmdqd = mysql_query($qmdqd, $cxn) or die(mysql_error($cxn));
+		$remdqd=mysql_fetch_assoc($rmdqd);
+		$drgid=$remdqd['Drawing_ID'];
+		$qmoq="INSERT INTO MO_Drg_Qty (Material_Outward_ID,MI_Drg_Qty_ID,Drawing_ID,Outward_Qty)
+								  VALUES('$id','".$cqr_list[$j][0]."','$drgid','".$cqr_list[$j][1]."');";			
+//		print('$qmoq');
+		$rqmoq = mysql_query($qmoq, $cxn) or die(mysql_error($cxn));
+
+	}
+			$j++;
+}
+	
+	
+
+	
+	
+	
+	$name=$dcpath.$dcno.'.pdf';
+	$pdf->Output($name,'F');
+	$pdf->Output($name,'D');
+//	print("preview ok comitting to database");
+	
+}else{
+		
+	$pdf->Output('tempdc.pdf','F');	
+//	print("not commiting");
+
+}
 
 
-	$pdf->Output('tempdc.pdf','F');
+
+
+
 
 
 ?>

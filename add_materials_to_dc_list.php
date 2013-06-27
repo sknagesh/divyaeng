@@ -6,18 +6,18 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
 $dqty=$_POST['dqty'];
 $remarks=$_POST['remark'];
-$miid=$_POST['miid'];
+$midrgid=$_POST['midrgid'];
 $add='';
 $tqty=0;
-for($i=0;$i<count($miid);$i++)
+for($i=0;$i<count($midrgid);$i++)
 {
-		if($dqty[$i]!='')
-		{
-		$add.=$miid[$i].'<|>'.$dqty[$i].'<|>'.$remarks[$i].'<||>';		
-		$tqty+=$dqty[$i];	
-		}
-	
-	
+if($dqty[$i]!='')
+{
+$add.=$midrgid[$i].'<|>'.$dqty[$i].'<|>'.$remarks.'<||>';	
+$tqty+=$dqty[$i];	
+}
+
+
 }
 $add.='@'.$tqty;
 print($add);

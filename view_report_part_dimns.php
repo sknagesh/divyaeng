@@ -47,14 +47,14 @@ $r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
 	while($i=mysql_fetch_assoc($r))  //loop through each job inspected
 	{
 	$qry="SELECT dimn.Dimension_ID, dimn.Operation_ID, 
-					Basic_Dimn, ob.Dimn_Observation_ID, Batch_ID,
+					Basic_Dimn, ob.Dimn_Observation_ID, Batch_ID,Baloon_NO,
 					Job_NO, Observed_Dimn,ob.Comment_ID,Comment FROM Observations as ob
 					INNER JOIN Dimn_Observation as do ON do.Dimn_Observation_ID=ob.Dimn_Observation_ID
 					LEFT OUTER JOIN Dimn_Comment AS dc ON dc.Comment_ID=ob.Comment_ID 
-					LEFT OUTER JOIN Dimension as dimn ON dimn.Dimension_ID = ob.Dimension_ID 
+					RIGHT OUTER JOIN Dimension as dimn ON dimn.Dimension_ID = ob.Dimension_ID 
 					AND do.Job_NO='$i[Job_NO]'  AND Batch_ID='$batchid'
 					WHERE dimn.Operation_ID = '$opid' ORDER BY Baloon_NO ASC";
-//		print("$qry<br>");
+	//	print("$qry<br>");
 		$res = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 		$x=0;
 		while($row=mysql_fetch_assoc($res))  //for each job get dimensions measured and store it in an array
@@ -166,7 +166,7 @@ $z=0;
 				FROM Dimension as dimn
 				INNER JOIN Operation as ope ON ope.Operation_ID=dimn.Operation_ID
 				INNER JOIN Component as comp ON comp.Drawing_ID=ope.Drawing_ID
-				WHERE comp.Drawing_ID=1  ORDER BY Baloon_NO ASC;";
+				WHERE comp.Drawing_ID='$drawingid'  ORDER BY Baloon_NO ASC;";
 			
 //		print("$qry<br>");
 		$res = mysql_query($qry, $cxn) or die(mysql_error($cxn));

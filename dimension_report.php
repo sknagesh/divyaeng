@@ -104,7 +104,7 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,DATE_FORMAT(Insp_Date,'%d/%m/%
 					INNER JOIN Dimn_Observation as do ON do.Dimn_Observation_ID=ob.Dimn_Observation_ID
 					INNER JOIN Operator as ope ON ope.Operator_ID=do.Operator_ID 
 					LEFT OUTER JOIN Dimn_Comment AS dc ON dc.Comment_ID=ob.Comment_ID 
-					LEFT OUTER JOIN Dimension as dimn ON dimn.Dimension_ID = ob.Dimension_ID 
+					RIGHT OUTER JOIN Dimension as dimn ON dimn.Dimension_ID = ob.Dimension_ID 
 					AND do.Job_NO='$jobno[$z]'  AND Batch_ID='$batchid'
 					WHERE dimn.Operation_ID = '$opid' ORDER BY Baloon_NO ASC";				
 			
@@ -179,7 +179,7 @@ function Footer()
     // Page number
     $this->SetY(-10);
     $this->SetFont('helvetica','',6);
-	$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+	$this->Cell(0,10,'Page'.$this->getAliasNumPage().'/'.$this->getAliasNbPages(),0,0,'C');
 }
 }
 
@@ -356,7 +356,7 @@ $z=0;
 				FROM Dimension as dimn
 				INNER JOIN Operation as ope ON ope.Operation_ID=dimn.Operation_ID
 				INNER JOIN Component as comp ON comp.Drawing_ID=ope.Drawing_ID
-				WHERE comp.Drawing_ID=1  ORDER BY Baloon_NO ASC;";
+				WHERE comp.Drawing_ID='$drawingid'  ORDER BY Baloon_NO ASC;";
 			
 //		print("$qry<br>");
 		$res = mysql_query($qry, $cxn) or die(mysql_error($cxn));
@@ -441,7 +441,7 @@ function Footer()
     // Page number
     $this->SetY(-10);
     $this->SetFont('helvetica','',6);
-	$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+	$this->Cell(0,10,'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(),0,0,'C');
 }
 
 }
@@ -449,7 +449,7 @@ function Footer()
 
 $pdf = new PDF_SKN(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 //$pdf->AliasNbPages();
-$pdf->setAutoPageBreak(1,35);
+$pdf->setAutoPageBreak(0,35);
 $pdf->AddPage('L','A4');
 $pdf->SetFont('helvetica','',10);
 
@@ -498,7 +498,6 @@ else {
 				if($x==$bno[$bna] || $oktodisplay==1)  //if baloon no is the one selected to be displayed
 				{
 					$pdf->MultiCell(20, 8, $x, 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
-//					$pdf->MultiCell(20,8,$x,1,0,$xp,$yp);   //multi
 					$xldata[$xy]=$lrows[$z];
 					$oktodisplay=1;
 				}else{break;}
@@ -515,7 +514,6 @@ else {
 
 
 						$pdf->MultiCell(35, 8, $rrow[$s][$z], 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
-//						$pdf->MultiCell(35, 8, $rrow[$s][$z],1,0,$xp,$yp);   //multi
 						array_push($xldata[$xy],$rrow[$s][$z]);
 					
 					}else{
@@ -524,8 +522,16 @@ else {
 			
 				$s+=1;
 				}
-			$pdf->ln();   //end of each row
-			$xy+=1;
+
+		if ($pdf->getY() > $pdf->getPageHeight() - 40) {
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+		$pdf->setY(36);
+		}else{        
+        $pdf->ln();   //end of each row
+		}
+			
+						$xy+=1;
 			}
 
 					if($bna<$bnomax-1 && $oktodisplay==1)

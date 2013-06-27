@@ -21,12 +21,11 @@ $("#viewpart").validate();  //attach validater to form
 		}	
   	});
 
-/*	$(".opimg").click(function(){
-		//window.open(this.href);
-		$('#opimage').html(this.href);
-		 return false;
-		
-		});*/
 
+	$(document).on('click', "a", function(event) {
+		event.preventDefault();
+		window.open(this.href);
+		 		
+		});
 
 });
