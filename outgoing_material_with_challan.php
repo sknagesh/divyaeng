@@ -224,8 +224,60 @@ while($j<count($cqr_list))
 			$j++;
 }
 	
-	
 
+$j=0;   ///update challan status from open to closed	
+while($j<count($cqr_list))
+{
+	if($cqr_list[$j][0]!='')  //only if we have some quantity defined
+	{
+		//get qty received and miid for each drawing id dispatched
+		$qd="SELECT Material_Qty,Material_Inward_ID,Drawing_ID FROM MI_Drg_Qty WHERE MI_Drg_Qty_ID=".$cqr_list[$j][0].";";
+//print("<br>$qd");		
+		$rd = mysql_query($qd, $cxn) or die(mysql_error($cxn));
+		$resd=mysql_fetch_assoc($rd);
+		$miid=$resd['Material_Inward_ID'];
+		$miqty=$resd['Material_Qty'];
+		$drgid=$resd['Drawing_ID'];
+//print("<br>miid=$miid miqty=$miqty  drgid=$drgid");
+				//get quantites already dispatched for each drawing
+		$query="SELECT sum(Outward_Qty) as oq from MO_Drg_Qty where Drawing_ID='$drgid' and MI_Drg_Qty_ID=".$cqr_list[$j][0].";";
+//print("<br>$query");
+		$res = mysql_query($query, $cxn) or die(mysql_error($cxn));
+		$row=mysql_fetch_assoc($res);
+		$oq=$row['oq'];
+//print("<br>out qty= $oq");		
+		$tq=$miqty-$oq;
+
+		if($tq==0)  //if qty remaining is 0 then set Qty_Open accordingly
+		{
+		$q3="UPDATE MI_Drg_Qty SET Qty_Open='0' WHERE MI_Drg_Qty_ID=".$cqr_list[$j][0].";";
+//print("<br>$q3");
+		$res3 = mysql_query($q3, $cxn) or die(mysql_error($cxn));
+		}		
+
+		//Now check all items received under challan is dispatched
+
+		$q4="SELECT Drawing_ID FROM MI_Drg_Qty WHERE Qty_Open=1 AND Material_Inward_ID=$miid;";
+//print("<br>$q4");
+		$res4 = mysql_query($q4, $cxn) or die(mysql_error($cxn));
+	
+		$opendqty=mysql_affected_rows();
+
+		if($opendqty==0)
+		{
+		$q5="UPDATE Material_Inward SET Open=0 WHERE Material_Inward_Id='$miid';";
+//print("<br>$q5");
+		$res5 = mysql_query($q5, $cxn) or die(mysql_error($cxn));
+		}
+
+
+	}
+			$j++;
+}
+	
+	
+		
+	
 	
 	
 	

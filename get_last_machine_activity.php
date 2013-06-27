@@ -11,7 +11,7 @@ $query="SELECT Activity_Log_ID,actl.Activity_ID, Machine_ID,Remarks,
 		Operator_Name,Activity_Name FROM ActivityLog as actl  
 		INNER JOIN Activity as act ON act.Activity_ID=actl.Activity_ID 
 		INNER JOIN Operator as ope ON ope.Operator_ID=actl.Operator_ID
-		WHERE Machine_ID='$mid' AND actl.Activity_ID NOT IN(9,10) ORDER BY End_Date_Time DESC LIMIT 3;";
+		WHERE Machine_ID='$mid' AND actl.Activity_ID NOT IN(10,15) ORDER BY End_Date_Time DESC LIMIT 3;";
 //print("$query<br>");
 print("<br><h1>Last Three Log Entries for this Machine</h1><br>");
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));

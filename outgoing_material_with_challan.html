@@ -120,16 +120,11 @@ $('#submit').attr("disabled",true);
 });
 
 
-
-	$("#submit").click(function(event) {
-		 if($("#outmaterial").valid())
-		  	{
-				return true;
-				$("form#outmaterial").reset();
-		  	}
-
-	});
-
+$('#dcno').keyup(function(){
+	var dcn=$('#dcno').val();
+$('#dcerror').load("check_dc_no.php?dcno="+dcn);	
+	
+});
 
 
 $(function () {
@@ -152,9 +147,10 @@ $(function () {
  <fieldset>
 <legend>Select Out Going Material Details</legend>
      <div id="customer"> </div>
+<div id="dc">
    <p>
      <label>Dc No</label>
-     <input id="dcno" name="dcno" size="25" class="required"/>
+     <input id="dcno" name="dcno" size="25" class="required"/><div id="dcerror"> </div>
    </p>
 
      <label>DC Date</label>
@@ -206,7 +202,9 @@ $(function () {
    <p>
      <input class="submit" id="submit" type="submit" value="Submit"/>
    </p>
+</div>
  </fieldset>
+ 
  </form>
 <div id="footer2"><table id="addedmaterial" name="addedmaterial" border="1" cellspacing="2">
 <tr><th>Drawing Name and No</th><th>Total Quantity</th></tr>

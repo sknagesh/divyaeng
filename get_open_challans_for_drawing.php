@@ -5,9 +5,9 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawid=$_GET['drawingid'];
 
 $query="SELECT EX_Challan_NO,mi.Material_Inward_ID,Material_Qty,EX_Challan_Date,midq.MI_Drg_Qty_ID,
-		(select sum(Outward_Qty) from MO_Drg_Qty where Drawing_ID='$drawid' and midq.Material_Inward_ID=mi.Material_Inward_ID) as dqty 
+		(select sum(Outward_Qty) from MO_Drg_Qty where Drawing_ID='$drawid' and MI_Drg_Qty_ID=midq.MI_Drg_Qty_ID) as dqty 
 		FROM Material_Inward as mi INNER JOIN MI_Drg_Qty as midq on midq.Material_Inward_ID=mi.Material_Inward_ID 
-		WHERE midq.Drawing_ID='$drawid'";
+		WHERE midq.Drawing_ID='$drawid' AND Qty_Open=1";
  
 // print($query);
 

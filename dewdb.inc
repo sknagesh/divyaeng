@@ -62,4 +62,12 @@ function clean_num( $num ){
 		return rtrim(rtrim($num, '0'), '.');
 	}
 }
+
+
+function min2hm($secs) {
+if ($secs<0) return false;
+$h = (int)($secs / 60); $m = $secs % 60;
+return $h." H and ".$m." M";
+}
+
 ?>
