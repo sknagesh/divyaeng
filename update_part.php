@@ -8,6 +8,7 @@ $uploadDir = '/home/www/drawings/';
 $drgid=$_POST['Drawing_ID'];
 $custid=$_POST['Customer_ID'];
 $drawingno=$_POST['drawingno'];
+$dno="Drawing_NO=\"".$_POST['drawingno']."\"";
 if(isSet($_POST['revno'])){$revno=$_POST['revno'];}else{$revno="";}
 $componentname=$_POST['componentname'];
 if(isSet($_POST['mspec'])){$mspec=$_POST['mspec'];}else{$mspec="";}
@@ -38,7 +39,7 @@ if((isSet($_FILES['drg']['name']))&&$_FILES['drg']['name']!='')
 
 	if(!get_magic_quotes_gpc())
 						{
-						$drgfileName = addslashes($drgfileName);
+						$drgfileName = "Customer_Drawing=\"".addslashes($drgfileName)."\"";
 						$drgfilePath = addslashes($drgfilePath);
 						}
 
@@ -68,7 +69,7 @@ if((isSet($_FILES['process']['name']))&&($_FILES['process']['name']!=''))
 
 	if(!get_magic_quotes_gpc())
 						{
-						$profileName = addslashes($profileName);
+						$profileName = "Process_Sheet=\"".addslashes($profileName)."\"";
 						$profilePath = addslashes($profilePath);
 						}
 
@@ -99,14 +100,11 @@ if((isSet($_FILES['preview']['name']))&&($_FILES['preview']['name']!=''))
 
 	if(!get_magic_quotes_gpc())
 						{
-						$prefileName = addslashes($prefileName);
+						$prefileName = "Preview_Image=\"".addslashes($prefileName)."\"";
 						$prefilePath = addslashes($prefilePath);
 						}
 
 }else{$prefileName='';}
-
-
-
 
 
 
@@ -117,10 +115,11 @@ $query="UPDATE Component SET 	Drawing_NO='$drawingno',
 								Raw_Material_Size='$cblank',
 								Pre_Machined_Blank_Size='$pmblank',
 								Finish_Size='$fsize',
-								Customer_Drawing='$drgfileName',
-								Process_Sheet='$profileName',
-								Preview_Image='$prefileName',
-								Scrap_Weight='$sweight' WHERE Drawing_ID='$drgid';";
+								Scrap_Weight='$sweight'";
+								if($drgfileName!=''){$query.=",$drgfileName";}
+								if($profileName!=''){$query.=",$profileName";}
+								if($prefileName!=''){$query.=",$prefileName";}
+	 							$query.="WHERE Drawing_ID='$drgid';";
 
 //print($query);
 

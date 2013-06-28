@@ -43,6 +43,14 @@ $('#autobatch').on("click",function(){
 	
 		});
 
+$(function () {
+	$('#cdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#cdatedb', altFormat: 'Y-O-D'});
+	
+
+	});  
+
+
+
 
 });
 
@@ -60,8 +68,6 @@ $("form#batchno").on("submit",function(event) {
 								$('#bdetails').hide();								
       								}
 			});
-
-
 
 
 

@@ -38,14 +38,14 @@ $bno=array_values($bnos);  //to reassign array values in an order ie, 1,3,7 to 0
 $bnomax=count($bno);
 
 
-$j="SELECT Component_Name, Customer_Name, Drawing_NO FROM
+$j="SELECT Component_Name, Customer_Name, Drawing_NO,Drawing_Rev FROM
 		 Operation as op INNER JOIN Component as  comp ON comp.Drawing_ID=op.Drawing_ID
 		 INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID WHERE op.Operation_ID='$opid';";
 	$rr = mysql_query($j, $cxn) or die(mysql_error($cxn));
 while($rrs=mysql_fetch_assoc($rr))
 {
 	$cname=$rrs['Component_Name'];
-	$partno=$rrs['Drawing_NO'];
+	$partno=$rrs['Drawing_NO']."/".$rrs['Drawing_Rev'];
 	$custname=$rrs['Customer_Name'];
 }
 
@@ -161,8 +161,8 @@ function Header()
 	$this->Cell(110,6,'HEAT NO: '.$heatcode,'T R',0,'L');
     $this->Cell(85,6,'DATE: '.$jdate,'L B R',1,'L');
     $this->Cell(80,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
-	$this->Cell(110,6,"Qty:",'B R',0,'L');
-    $this->Cell(85,6,"Operation No: ".$opdesc. "  Note: ".$comment,'B R',0,'L');
+	$this->Cell(110,6,"",'B R',0,'L');
+    $this->Cell(85,6,"OP No: ".$opdesc. "  Note: ".$comment,'B R',0,'L');
 
 	}
 
@@ -170,7 +170,7 @@ function Footer()
 {
    	$jcomment=$GLOBALS['jcomment'];
     // Position at 1.5 cm from bottom
-    $this->SetY(-35);
+    $this->SetY(-32);
 	// Arial italic 8
     $this->SetFont('helvetica','',16);
 	$this->Cell(220,10,"Note: ".$jcomment,'0',0,'L');
@@ -186,7 +186,8 @@ function Footer()
 
 $pdf = new PDF_SKN(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 //$pdf->AliasNbPages();
-$pdf->setAutoPageBreak(1,35);
+$pdf->setTopMargin(10);
+$pdf->setAutoPageBreak(0,35);
 $pdf->AddPage('L','A4');
 $pdf->SetFont('helvetica','',10);
 
@@ -215,7 +216,8 @@ else {
 //		$pdf->Cell(35,8,'Comp. No'.$jobno[$z],1,0,'L');
 		array_push($xldata[0],$jobno[$z]);
 			}else{
-				$pdf->Cell(35,8,'',1,0,'L');
+				$pdf->MultiCell(35, 8, '', 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
+//				$pdf->Cell(35,8,'',1,0,'L');
 			}
 		$z++;
 		}
@@ -256,12 +258,26 @@ else {
 						array_push($xldata[$xy],$rrow[$s][$z]);
 					
 					}else{
-						$pdf->Cell(35,8,'',1,0,'L');
+						$pdf->MultiCell(35, 8, '', 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
+//						$pdf->Cell(35,8,'',1,0,'L');
 					}
 			
 				$s+=1;
 				}
-			$pdf->ln();   //end of each row
+//			$pdf->ln();   //end of each row
+
+
+		if ($pdf->getY() > $pdf->getPageHeight() - 46.5) {
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+		$pdf->setY(36);
+		}else{        
+        $pdf->ln();   //end of each row
+		}
+
+
+
+
 			$xy+=1;
 			}
 
@@ -288,13 +304,13 @@ $bno=array_values($bnos);  //to reassign array values in an order ie, 1,3,7 to 0
 $bnomax=count($bno);
 
 
-$j="SELECT Component_Name, Customer_Name, Drawing_NO FROM Component as comp 
+$j="SELECT Component_Name, Customer_Name, Drawing_NO,Drawing_Rev FROM Component as comp 
 			INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID WHERE Drawing_ID='$drawingid';";
 	$rr = mysql_query($j, $cxn) or die(mysql_error($cxn));
 while($rrs=mysql_fetch_assoc($rr))
 {
 	$cname=$rrs['Component_Name'];
-	$partno=$rrs['Drawing_NO'];
+	$partno=$rrs['Drawing_NO']."/".$rrs['Drawing_Rev'];
 	$custname=$rrs['Customer_Name'];
 }
 
@@ -523,7 +539,7 @@ else {
 				$s+=1;
 				}
 
-		if ($pdf->getY() > $pdf->getPageHeight() - 40) {
+		if ($pdf->getY() > $pdf->getPageHeight() - 46.5) {
         $pdf->rollbackTransaction(true);
         $pdf->AddPage();
 		$pdf->setY(36);

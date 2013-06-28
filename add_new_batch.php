@@ -9,6 +9,7 @@ $miid=$_POST['MI_Drg_Qty_ID'];
 $mqty=$_POST['mqty'];
 $hcode=$_POST['hcode'];
 if(isSet($_POST['Batch_Remarks'])){$batchremarks=$_POST['Batch_Remarks'];}else{$batchremarks='';}
+if(isSet($_POST['cdatedb'])){$cdatedb=$_POST['cdatedb'];}else{$cdatedb='';}
 $batchqty=0;
 for($j=0;$j<count($mqty);$j++)
 {
@@ -21,7 +22,7 @@ for($j=0;$j<count($mqty);$j++)
 	$Batch_Desc=$_POST['Batch_Desc'];	
 	} else{$Batch_Desc=$Drawing_ID."-".date("Y")."-".date("m")."-".date("d")."-".$batchqty;}
 
-$query="INSERT INTO Batch_NO (Mfg_Batch_NO,Batch_Remarks) VALUES('$Batch_Desc','$batchremarks');";
+$query="INSERT INTO Batch_NO (Mfg_Batch_NO,Batch_Remarks,Commited_Date) VALUES('$Batch_Desc','$batchremarks','$cdatedb');";
 
 //print("<br>Query is '$query'");
 $result = mysql_query($query, $cxn) or die(mysql_error($cxn));

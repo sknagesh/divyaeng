@@ -17,9 +17,10 @@ color: #ffffff;
 </style>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="jquery.validate.js"></script>
+<script src="jquery.datetimeentry.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-
+$('#deldate').hide();
 $('#submit').attr("disabled",true);
 
 $('#batchno').validate(); //attach form to validation engine
@@ -47,11 +48,13 @@ $('#batch').load(url);
 $('#batch').click(function() {     //populate drawing list based on customer
 
 var batchid=$('#Batch_ID').val();
+
 if(batchid=="")
 {
+	$('#deldate').hide();
 	$('#submit').attr("disabled",true);
 }else
-{
+{	$('#deldate').show();
 	$('#submit').attr("disabled",false);
 }
 
@@ -60,7 +63,7 @@ if(batchid=="")
 
 });
 
-$("form#batchno").live("submit",function(event) {
+$("form#batchno").on("submit",function(event) {
 	event.preventDefault();
 	var $this = $(this);
 	
@@ -78,6 +81,10 @@ $("form#batchno").live("submit",function(event) {
 
 	});
 
+$(function () {
+	$('#ddate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#ddatedb', altFormat: 'Y-O-D'});
+	
+	});  
 	
 	
 	
@@ -87,17 +94,29 @@ $("form#batchno").live("submit",function(event) {
 <body>
 <form name="batchno" id="batchno" method="post" action="close_batch_no.php" >
 <fieldset><legend>Select Drawing Details</legend>
-<table >		
-		<tr><td><div id="customer"> </div></td></tr>		
-		<tr><td><div id="drawing"> </div></td></tr>
-		<tr><td><div id="batch"> </div></td></tr>
-</table>
+		
+<div id="customer"> </div>		
+<div id="drawing"> </div>
+<div id="batch"> </div>
+<div id="deldate"> 
+<p>
+	<label>Delivered Date</label>
+	<input type="text" name="ddate" id="ddate" size="25" class="required">
+	<input type="hidden" name="ddatedb" id="ddatedb">
+</p>
+<p>	
+	<label>Delivered Commets If Any</label>
+	<input type="text" name="dcomm" id="dcomm" maxlength="100">
+</p>
+	</div>
+
+
 </fieldset>
-		<td colspan=4 align="center"><input type="submit" name="Submit" id="submit" value="Submit" />
-</table>		
+		<input type="submit" name="Submit" id="submit" value="Submit" />
+		
 		</form>
 
-<div id="footer"></div> <!--place show errors, results etc-->
+<div id="footer"> </div> <!--place show errors, results etc-->
 
 </body>
 </html>

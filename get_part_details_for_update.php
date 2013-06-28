@@ -58,7 +58,7 @@ print("
    </p>
 
    <p>
-     <label>Scrap Weight</label>
+     <label>Recovarable Scrap Weight</label>
      <input id=\"sweight\" name=\"sweight\" size=\"25\"  class=\"number\" value=\"$swt\"/>
    </p>
 

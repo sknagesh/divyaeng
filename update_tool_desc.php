@@ -2,9 +2,10 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-
+$uploadDir = '/home/www/drawings/';
 //print_r($_POST);
 
+$toolid=$_POST['Tool_ID_1'];
 $supid=$_POST['Supplier_ID'];
 $ttypeid=$_POST['Tool_Type_ID'];
 $nce=$_POST['nce'];
@@ -22,38 +23,26 @@ if(isSet($_POST['sdia'])){$sdia=$_POST['sdia'];}else{$sdia="";}
 if(isSet($_POST['tremark'])){$tremark=$_POST['tremark'];}else{$tremark="";}
 if(isSet($_POST['tprice'])){$tprice=$_POST['tprice'];}else{$tprice="";}
 
-$query="INSERT INTO Tool (Supplier_ID,
-								Tool_Type_ID,
-								Tool_Part_NO,
-								Tool_Desc,
-								Tool_Dia,
-								Tool_FL,
-								Tool_Corner_Rad,
-								Tool_Angle,
-								No_Of_Edges,
-								Tool_OAL,
-								Tool_Useful_Length,
-								Shank_Dia,
-								Brand_ID,
-								Tool_Coating,
-								Tool_Remarks,
-								Tool_Price) ";
-$query.="VALUES('$supid',
-				'$ttypeid',
-				'$tpno',
-				'$tdesc',
-				'$tdia',
-				'$tfl',
-				'$tcr',
-				'$tang',
-				'$nce',
-				'$oal',
-				'$usel',
-				'$sdia',
-				'$tmake',
-				'$coating',
-				'$tremark',
-				'$tprice');";
+$query="UPDATE Tool SET
+	Supplier_ID='$supid',
+	Tool_Type_ID='$ttypeid',
+	Tool_Part_NO='$tpno',
+	Tool_Desc='$tdesc',
+	Tool_Dia='$tdia',
+	Tool_FL='$tfl',
+	Tool_Corner_Rad='$tcr',
+	Tool_Angle='$tang',
+	No_Of_Edges='$nce',
+	Tool_OAL='$oal',
+	Tool_Useful_Length='$usel',
+	Shank_Dia='$sdia',
+	Brand_ID='$tmake',
+	Tool_Coating='$coating',
+	Tool_Remarks='$tremark',
+	Tool_Price='$tprice'
+	 WHERE Tool_ID=$toolid;";
+
+
 
 //print($query);
 
@@ -62,11 +51,11 @@ $res=mysql_query($query) or die(mysql_error());
 $result=mysql_affected_rows();
 if($result!=0)
 {
-print("Added new Tool $tdesc - $tpno");	
+print("Updated Tool $tdesc - $tpno");	
 	
 }else
 	{
-		print("Error Adding");
+		print("Error Updating");
 	}
 
 

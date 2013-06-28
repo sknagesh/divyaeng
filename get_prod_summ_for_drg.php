@@ -119,8 +119,8 @@ $r=mysql_query($q2) or die(mysql_error());
 		if($row['Fixture']!=''){$fxt=min2hm($row['Fixture']);}else{$fxt='';}
 		if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
 	print("<tr class=\"$c\"><td>$row[Customer_Name]</td>
-							<td>$fai</td>
 							<td>$fxt</td>
+							<td>$fai</td>
 							<td>$t</td>
 							</tr>");
 	if($c=="q"){$c="s";}else{$c="q";}
@@ -182,8 +182,8 @@ if($rrr!=0)
 		if($row['Fixture']!=''){$fxt=min2hm($row['Fixture']);}else{$fxt='';}
 		if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
 	print("<tr class=\"$c\"><td>$row[Customer_Name]</td>
-							<td>$fai</td>
 							<td>$fxt</td>
+							<td>$fai</td>
 							<td>$t</td>
 							</tr>");
 	if($c=="q"){$c="s";}else{$c="q";}

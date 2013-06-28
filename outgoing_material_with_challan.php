@@ -12,6 +12,7 @@ $dcno=$_POST['dcno'];
 $dcdate=$_POST['dcdate'];
 $dcdatedb=$_POST['dcdatedb'];
 $dctype=$_POST['dctype'];
+$gcomm=$_POST['gcomm'];
 if(isSet($_POST['cref'])){$cref=$_POST['cref'];}else{$cref='';}
 if(isSet($_POST['refdate'])){$refdate=$_POST['refdate'];}else{$refdate='';}
 if(isSet($_POST['refdatedb'])){$refdatedb=$_POST['refdatedb'];}else{$refdatedb='';}
@@ -96,6 +97,7 @@ function Header()
 }
 function Footer()
 {
+	
     // Position at 1.5 cm from bottom
     $this->SetY(-35);
 	$this->line(0,260,220,260);
@@ -184,6 +186,11 @@ while($j<count($cqr_list))
 	}
 			$j++;
 }
+
+
+$pdf->SetY(-45);
+$pdf->Cell(200,8,"Note: ".$gcomm,0,0,'C');
+
 
 if($previewok=='0')
 {
