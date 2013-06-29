@@ -7,6 +7,7 @@ print_r($_POST);
 $drawid=$_POST['Drawing_ID'];
 $opedesc=$_POST['opdesc'];
 $itl=$_POST['itl'];
+$rco=$_POST['rco'];
 if(isSet($_POST['stime'])){$stime=$_POST['stime'];}else{$stime="";}
 if(isSet($_POST['ctime'])){$ctime=$_POST['ctime'];}else{$ctime="";}
 if(isSet($_POST['mtime'])){$mtime=$_POST['mtime'];}else{$mtime="";}
@@ -110,7 +111,8 @@ $query="INSERT INTO Operation (Drawing_ID,
 								NC_Prog_Path,
 								Operation_Notes,
 								Stage_Drawing_Path,
-								In_Tool_List) 
+								In_Tool_List,
+								Only_In_Route_card) 
 	 						VALUES('$drawid',
 									'$opedesc',
 									'$sltime',
@@ -120,7 +122,8 @@ $query="INSERT INTO Operation (Drawing_ID,
 									'$ppath',
 									'$onote',
 									'$odrgfileName',
-									'$itl');";
+									'$itl',
+									'$rco');";
 
 //print($query);
 

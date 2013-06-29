@@ -8,6 +8,7 @@ $drawid=$_POST['Drawing_ID'];
 $opid=$_POST['Operation_ID'];
 $opedesc=$_POST['opdesc'];
 $itl=$_POST['itl'];
+$rco=$_POST['rco'];
 if(isSet($_POST['stime'])){$stime=$_POST['stime'];}else{$stime="";}
 if(isSet($_POST['ctime'])){$ctime=$_POST['ctime'];}else{$ctime="";}
 if(isSet($_POST['mtime'])){$mtime=$_POST['mtime'];}else{$mtime="";}
@@ -112,7 +113,8 @@ $query="UPDATE Operation
 				Program_NO='$progno',
 				NC_Prog_Path='$ppath',
 				In_tool_List='$itl',
-				Operation_Notes='$onote'
+				Operation_Notes='$onote',
+				Only_In_Route_Card='$rco'
 				$stagedrg
 			WHERE Operation_ID=$opid;";
 

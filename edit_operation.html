@@ -83,7 +83,13 @@ p { font-weight: bold; clear: both; }
 					}else{
 						$('#itl2').prop("checked",true);
 					}
-					
+          console.log(data[11]);
+					 if(data[11]==1)
+          {
+          $('#rco1').prop("checked",true);  
+          }else{
+            $('#rco2').prop("checked",true);
+          }
 
 			$('#eop').show();
 						}
@@ -193,6 +199,11 @@ var options = {  ///options for ajaxSubnit function
 	<input type="radio" id="itl2" name="itl" value="0">Not Required
    </p>
 
+   <p>
+     <label>Required Only In Route Card?</label>
+  <input type="radio" id="rco1" name="rco" value="1">No
+  <input type="radio" id="rco2" name="rco" value="0">Yes
+   </p>
 
 
    <p>

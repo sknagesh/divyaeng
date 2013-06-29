@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Training Feedback</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.form.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 25em; float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+	$('#tplan').validate();
+  $('#training').load("get_training_plan.php");
+ 
+  $('#training').click(function(){
+    var tid=$('#Training_Plan_ID').val();
+      if(tid!='')
+      {
+
+        $('#trainee').load("get_trainees_feedback.php?tid="+tid);
+      }
+
+  });
+
+
+var options = {  ///options for ajaxSubnit function 
+        target:        '#footer',   // target div id to update result of submit 
+//        success:       showResponse  // post-submit callback 
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    };
+
+  $("#addp").click(function(event) {
+
+   if($("#tplan").valid())
+    {
+      event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+      $("#tplan").ajaxSubmit(options);
+
+    }
+
+    });
+
+
+
+  });
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+  <form name ="tplan" id="tplan" action="training_feedback.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>Training Feedback</legend>
+   <p>
+     <label>Select Training Plan</label>
+     <div id="training"> </div>
+   </p>
+
+   <p>
+     <label>Trainee Name</label>
+     <div id="trainee"> </div>
+   </p>
+
+   <p>
+     <label>Training Feedback</label>
+     <textarea id="feedback" name="feedback" class="required" maxlength="150"/> </textarea>
+     </p>
+
+   <p>
+     <label>Is Further Training Required</label>
+     <input id="ftrainyes" name="ftrain" type="radio" class="required" value="1"/>Yes
+     <input id="ftrainno" name="ftrain" type="radio" class="required" value="0"/>No
+   </p>
+
+   <p>
+     <label>Training Evaluation File</label>
+     <input id="teval" name="teval" type="file"/>
+     </p>
+
+   <p>
+     <input id="addp" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"> </div>
+<div id="footer2"> </div>
+
+</body>
+</html>

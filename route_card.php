@@ -29,7 +29,7 @@ while($rrs=mysql_fetch_assoc($rr))
 }
 
 
-$kj="SELECT Heat_Code,Mfg_Batch_NO,Material_Code FROM Batch_NO as bn 
+$kj="SELECT Heat_Code,Mfg_Batch_NO,Material_Code,Batch_Remarks FROM Batch_NO as bn 
 		INNER JOIN BNo_MI_Challans as bmc ON bmc.Batch_ID=bn.Batch_ID 
 		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID  
 		WHERE bn.Batch_ID='$batchid';";
@@ -39,6 +39,7 @@ while($krrs=mysql_fetch_assoc($krr))
 	$heatcode=$krrs['Heat_Code'];
 	$materialcode=$krrs['Material_Code'];
 	$batchdesc=$krrs['Mfg_Batch_NO'];
+	$batchremark=$krrs['Batch_Remarks'];
 }
 
 $qchalan="SELECT Ex_Challan_NO,DATE_FORMAT(Ex_Challan_Date,'%d/%m/%Y') as ecd,
@@ -78,6 +79,7 @@ function Header()
    	$bqty=$GLOBALS['bqty'];
 	$cdate=$GLOBALS['cdt'];
 	$hcode=$GLOBALS['heatcode'];
+	$bremarks=$GLOBALS['batchremark'];
 	$y=$GLOBALS['y'];
     $this->SetFont('helvetica','',12);
     $this->MultiCell(70, 12, 'Divya Engineering Works (P) Ltd, Mysore', 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
@@ -86,16 +88,18 @@ function Header()
 	$this->Cell(58,6,'RECORD REF: DEW/PRD/R/16',1,2,'L');
 	$this->Cell(35,6,'DATE: 01-08-2012',1,0,'L');
 	$this->Cell(23,6,'REV NO: 00',1,1,'L');
-    $this->Cell(30,6,'Customer: ',1,0,'L');
-	$this->Cell(40,6,$custname,1,0,'L');
+    $this->Cell(20,6,'Customer: ',1,0,'L');
+	$this->Cell(50,6,$custname,1,0,'L');
     $this->Cell(128,6,'Material Stock NO: '.$materialcode,'1',1,'L');
 	$this->Cell(70,6,'Part: '.$cname,1,0,'L');
-    $this->Cell(70,6,'Drg No/Rev No: '.$partno,1,0,'L');
+	$this->MultiCell(70, 6, 'Drg No/Rev No: '.$partno, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);				
+//    $this->Cell(70,6,'Drg No/Rev No: '.$partno,1,0,'L');
     $this->Cell(58,6,'DATE Material Received: '.$cdate,1,1,'L');
-    $this->Cell(70,6,'P.O NO & Date: '.$jdate,1,0,'L');
+    $this->Cell(70,6,'P.O NO & Date: ',1,0,'L');
     $this->Cell(128,6,'DEW Batch NO: '.$batchdesc. '   Batch Qty: '.$bqty,1,1,'L');
     $this->MultiCell(198,6,'D.C/Challan : '.$challanno, 1, 'L', 0, 1, '', '', true,0,false,true,8,'M',true);
-	$this->MultiCell(198,6,'Heat Code & Qty: '.$hcode, 1, 'L', 0, 1, '', '', true,0,false,true,8,'M',true);
+	$this->MultiCell(99,6,'Heat Code & Qty: '.$hcode, 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
+	$this->MultiCell(99,6,'Job Serial Nos: '.$bremarks, 1, 'L', 0, 1, '', '', true,0,false,true,8,'M',true);
 	}
 
 function Footer()
@@ -110,14 +114,14 @@ function Footer()
     // Page number
     $this->SetY(-10);
     $this->SetFont('helvetica','',6);
-	$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+	$this->Cell(0,10,'Page '.$this->PageNo(),0,0,'C');
 }
 }
 
 
 $pdf = new PDF_SKN(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 //$pdf->AliasNbPages();
-$pdf->setAutoPageBreak(1,29);
+$pdf->setAutoPageBreak(1,35);
 $pdf->SetMargins(5,42,10,29);
 $pdf->AddPage('P','A4');
 $pdf->SetFont('helvetica','',10);
@@ -131,6 +135,7 @@ $pdf->MultiCell(35,7,'       Quantity         Accepeted   Rejected', 1, 'C', 0, 
 $pdf->MultiCell(14,7,'Start Date', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
 $pdf->MultiCell(16,7,'Completed Date', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
 $pdf->Cell(18,7,'Remarks',1,1,'L');
+/*
 //incomming
 $pdf->Cell(15,7,'',1,0,'L');
 $pdf->Cell(45,7,'Incomming',1,0,'L');
@@ -146,19 +151,29 @@ $pdf->MultiCell(35,7,'', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
 $pdf->MultiCell(14,7,'', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
 $pdf->MultiCell(16,7,'', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
 $pdf->Cell(18,7,'',1,1,'L');
+*/
 
 
-
-$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid';";
+$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' ORDER BY Operation_Desc ASC;";
 
 $res = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while($row=mysql_fetch_assoc($res))
 {
 			
+if(strpos($row['Operation_Desc'],'CMM'))
+{
+
+	$o=explode(':', $row['Operation_Desc']);
+$odesc=$o[1];
+$p='';
+}else{
+	$odesc=$row['Operation_Desc'];
+	$p='Process Sheet, Activity Log';
+}
 
 $pdf->Cell(15,6,'',1,0,'L');
-$pdf->Cell(45,6,$row[Operation_Desc],1,0,'L');
-$pdf->MultiCell(55,6,'Process Sheet, Activity Log', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
+$pdf->MultiCell(45, 6, $odesc, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);				
+$pdf->MultiCell(55,6,$p, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 $pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 $pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 $pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
@@ -173,6 +188,8 @@ $pdf->Cell(18,6,'',1,1,'L');
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->Cell(18,6,'',1,1,'L');
 		}
+if(!strpos($row['Operation_Desc'],'CMM'))
+{
 $in="Inspection";
 $ir="Inprocess Inspection Report";
 	for($c=0;$c<=2;$c++)
@@ -187,45 +204,13 @@ $ir="Inprocess Inspection Report";
 		$in='';
 		$ir='';
 		}
-
+}
 
 }
 
 
 		$pdf->Cell(15,6,'',1,0,'L');
 		$pdf->Cell(45,6,'Fianl Inspection',1,0,'L');
-		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
-
-		$pdf->Cell(15,6,'',1,0,'L');
-		$pdf->Cell(45,6,'',1,0,'L');
-		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
-
-		$pdf->Cell(15,6,'',1,0,'L');
-		$pdf->Cell(45,6,'Manual Inspection',1,0,'L');
-		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
-
-		$pdf->Cell(15,6,'',1,0,'L');
-		$pdf->Cell(45,6,'',1,0,'L');
-		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
-
-		$pdf->Cell(15,6,'',1,0,'L');
-		$pdf->Cell(45,6,'CMM Inspection',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
