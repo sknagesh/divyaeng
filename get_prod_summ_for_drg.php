@@ -84,10 +84,8 @@ if($drawid=='')
 	{
 		if($row['Production']!=''){$p=min2hm($row['Production']);}else{$p='';}
 		if($row['Setup']!=''){$s=min2hm($row['Setup']);}else{$s='';}
-		if($row['Reowrk']!=''){$rw=min2hm($row['Rework']);}else{$rw='';}
+		if($row['Rework']!=''){$rw=min2hm($row['Rework']);}else{$rw='';}
 		if($row['CMM']!=''){$cmm=min2hm($row['CMM']);}else{$cmm='';}
-		if($row['FAI']!=''){$fai=min2hm($row['FAI']);}else{$fai='';}
-		if($row['Fixture']!=''){$fxt=min2hm($row['Fixture']);}else{$fxt='';}
 		if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
 	print("<tr class=\"$c\"><td>$row[Customer_Name]</td>
 							<td>$p</td>

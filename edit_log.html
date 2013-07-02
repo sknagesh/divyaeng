@@ -106,9 +106,20 @@ p { font-weight: bold; clear: both; }
 							simg+=images[i+1]+'<p>';
 						}
 					}
+
 					$('#simg').html(simg);
+					$('#spm').html(data[15]);
+					
+					if(data[15]!='')
+					{
+
+						$('div#oldmaint').hide();
+
+					}
+
+
 					$('#fai').hide();
-						$('#elog').show();
+					$('#elog').show();
 				}else
 				if(data[0]==8)  ///idle time log
 				{
@@ -297,7 +308,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <input type="text" name="mkengr" id="mkengr" size="25" >
 	   <p>
 
-
+	   	<div id="oldmaint">
 	   <p>
      <label for="drgop">Problem Description</label>
      <textarea name="bddetail" rows="4" cols="50" id="bddetail" class="required" maxlength="500"> </textarea>
@@ -307,12 +318,12 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <label for="drgop">Work Carried Out Details</label>
      <textarea name="wodetail" rows="4" cols="50" id="wodetail" class="required" maxlength="1000"> </textarea>
 	   <p>
-
+	   </div>
 	   <p>
      <label for="remarks">Spares Used</label>
      <textarea name="spares" rows="4" cols="50" id="spares" maxlength="500"> </textarea> 
 	   <p>
-	
+	<div id="spm"> </div>	
 
 </div>
 

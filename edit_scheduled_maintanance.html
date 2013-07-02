@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 13px; }
+label { width: 15em; float: left; color:green;font-weight: bold; clear: both; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+  	var data="";
+    var datae=new Array();
+	$('#footer').html("")
+	$('#footer2').html("");
+  $('#edit').hide();
+	//$('#footer2').hide();
+	$('#smaint').validate();
+  	$("#machine").load('get_machine.php');
+  	$('#machine').click(function(){
+
+	var mid=$('#Machine_ID').val();
+	if(mid!="")
+	{
+		url="get_scheduled_maint_activity_heading.php?mid="+mid;
+  $('#mact').load(url);
+	}
+  	});
+
+    $('#mact').click(function(){
+      var spmid=$('#SPM_ID').val();
+
+
+          $.ajax({
+                type: "GET",
+                url: "get_scheduled_maint_to_edit.php?spmid="+spmid,
+                success: function(html) {
+          if(html!='')
+          {
+           datae=html.split('<|>');
+          $('#interval').val(datae[0]);
+          $('#spmdesc').val(datae[1]);
+            var tmp='';
+          for(var j=2;j<datae.length;j++)
+          {
+              tmp+=datae[j];
+          }
+          $('#mdesce').html(tmp);
+
+$('#edit').show();
+
+        }
+                    }
+                });
+
+
+
+
+
+
+    });
+
+
+
+$('#Add').click(function(){
+
+  if($('#mdesc').val()!='')
+    {
+
+	   data+=$('#mdesc').val()+'<|>';
+	   $('#mdesch').val(data);
+	   var newtr="<tr><td>"+$('#mdesc').val()+"</td></tr>";
+	   $('#md').append(newtr);
+	   $('#footer2').show();
+	   console.log(newtr);
+	   $('#mdesc').val(' ');
+
+    }else{
+
+	     alert("Maintenance Description Missing");
+    }
+
+});
+
+  	
+
+	$("#submit").click(function(event) {
+
+	 if($("#smaint").valid())
+  	{
+	  	event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+
+	    		$.ajax({
+      					data: $('#smaint').serializeArray(),
+      					type: "POST",
+      					url: "edit_scheduled_maintenance.php",
+      					success: function(html) {
+				document.getElementById("footer").innerHTML=html;
+		  		$("#footer").load(html)
+		  		$('form#smaint')[0].reset();
+          $('#mdesch').val('');
+          $('#edit').val('');
+          data='';
+          
+      							}
+    							});
+
+
+  	}
+
+		});
+
+
+
+
+});
+  </script>
+
+
+    </head>
+    <body>
+
+ 
+<form id="smaint" name="smaint" action="edit_scheduled_maintenance.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>Scheduled Maintenance Details</legend>
+   <p>
+     <label for="machine">Select Machine</label>
+     <div id="machine"> </div>
+     	   <p>
+<div id="mact"></div>
+<div id="edit">
+
+     <label>Maintenance Interval in Days</label>
+     <input type="text" name="interval" id="interval" size="25" class="required number" >
+
+     <p>
+     <label>Maintenance Description</label>
+     <input type="text" name="spmdesc" id="spmdesc" size="25" class="required">
+
+
+	   <p>
+     <label>Edit Activites Involved</label>
+   </p>
+     <div id="mdesce"> </div>
+
+     <p>
+     <label>Add New Activites Involved</label>
+     <input type="text" name="mdesc" id="mdesc" size="25" >
+     <input type="hidden" name="mdesch" id="mdesch" value="" >
+     <p>
+
+	   <p>
+	   	<input type="button" id="Add" name="add" value="Add">
+
+	</div>
+
+ </fieldset>
+    <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+
+</div>
+</form>
+<div id="footer"></div>
+<table id="md">
+	<tr><th>Maitenance Description</th></tr>
+
+</table>
+<div id="footer2"></div>
+</body>
+</html>

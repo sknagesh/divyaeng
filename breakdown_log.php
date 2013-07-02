@@ -2,7 +2,7 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-//print_r($_POST);
+print_r($_POST);
 $uploadDir = '/home/www/logimages/';
 
 
@@ -12,11 +12,16 @@ $sdatetime=$_POST['sdatedb'];
 $edatetime=$_POST['edatedb'];
 $operatorid=$_POST['Operator_ID'];
 $maintid=$_POST['Maintenance_Type_ID'];
-$bddetails=$_POST['bddetail'];
-$wodetails=$_POST['wodetail'];
+if(isSet($_POST['bddetail'])){$bddetails=$_POST['bddetail'];}else{$bddetails='';}
+if(isSet($_POST['wodetail'])){$wodetails=$_POST['wodetail'];}else{$wodetails='';}
 if(isSet($_POST['mkengr'])){$mkengr=$_POST['mkengr'];}else{$mkengr="";}
 if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
+if(isSet($_POST['pm'])){$pm=$_POST['pm'];}else{$pm="";}
+if($pm!='')
+{
+$pm=implode(',', $pm);
+}
 
 if((isSet($_FILES['oimg']['name']))&&($_FILES['oimg']['name']!='')){
 
@@ -49,13 +54,15 @@ $pquery="INSERT INTO Maintenance (Activity_Log_ID,
 								Problem_Desc,
 								Maintenance_Desc,
 								Spares_Used,
-								Maintenance_Type_ID) ";
+								Maintenance_Type_ID,
+								Sch_Prev_Maint_IDs) ";
 $pquery.="VALUES('$lastid',
 				'$mkengr',
 				'$bddetails',
 				'$wodetails',
 				'$spares',
-				'$maintid');";
+				'$maintid',
+				'$pm');";
 
 //print("<br>$pquery");
 $result=mysql_query($pquery) or die(mysql_error());

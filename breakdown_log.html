@@ -36,6 +36,36 @@ p { font-weight: bold; clear: both; }
 	}
   	});
 
+  	
+  	$('#mainttype').click(function(){
+
+	var mid=$('#Machine_ID').val();
+	var mtype=$('#Maintenance_Type_ID').val();
+console.log(mtype);
+	if(mtype==4)
+	{
+		url="get_scheduled_maint_activity_heading.php?mid="+mid;
+		$('#maint').hide();
+		$('#smaint').load(url);
+	}else{
+		$('#maint').show();
+		$('#smaint').text('');
+
+	}
+  	});
+
+  	$('#smaint').click(function(){
+  		var spmid=$('#SPM_ID').val();
+
+  		var url="get_scheduled_maint_activity.php?spmid="+spmid;
+  			if(spmid!='')
+  			{
+  			$('#mainth').load(url);
+  			}
+
+  	});
+
+
 
   	$('#operator').click(function(){
 	var opid=$('#Operator_ID').val();
@@ -75,6 +105,7 @@ p { font-weight: bold; clear: both; }
 						$('#sdate').val(data[0]);
 						$('#sdatedb').val(data[1]);
 						$('#edate').val(data[0]);
+						$('#edatedb').val(data[0]);
 						console.log("back from ajax call data 0="+data[0]+"data 1="+data[1]);
 										}
     							});
@@ -131,7 +162,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <input type="text" name="mkengr" id="mkengr" size="25" >
 	   <p>
 
-
+<div id="maint">
 	   <p>
      <label for="drgop">Problem Description</label>
      <textarea name="bddetail" rows="4" cols="50" id="bddetail" class="required" maxlength="500"> </textarea>
@@ -143,14 +174,18 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
 	   <p>
 
 	   <p>
+     <label for="remarks">Spares Used</label>
+     <textarea name="spares" rows="4" cols="50" id="spares" maxlength="500"> </textarea> 
+	   <p>
+</div>
+<div id="smaint"> </div>
+<div id="mainth"> </div>
+
+	   <p>
      <label for="remarks">Remarks</label>
      <textarea name="remark" rows="4" cols="50" id="remarks" maxlength="500"> </textarea> 
 	   <p>
 		
-	   <p>
-     <label for="remarks">Spares Used</label>
-     <textarea name="spares" rows="4" cols="50" id="spares" maxlength="500"> </textarea> 
-	   <p>
 
    <p>
      <label>Upload Images if any </label>

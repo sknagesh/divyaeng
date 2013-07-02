@@ -25,7 +25,8 @@ if(isSet($_POST['bddetail'])){$bddetail=$_POST['bddetail'];}else{$bddetail="";}
 if(isSet($_POST['wodetail'])){$wodetail=$_POST['wodetail'];}else{$wodetail="";}
 if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
 if(isSet($_POST['Maintenance_Type_ID'])){$mtype=$_POST['Maintenance_Type_ID'];}else{$mtype="";}
-
+if(isSet($_POST['spmdesc'])){$spmdesc=$_POST['spmdesc'];}else{$spmdesc="";}
+if(isSet($_POST['spmid'])){$spmid=$_POST['spmid'];}else{$spmid="";}
 //fixture and fai data
 if(isSet($_POST['opdesc'])){$opdesc=$_POST['opdesc'];}else{$opdesc='';}
 
@@ -33,6 +34,20 @@ if(isSet($_POST['opdesc'])){$opdesc=$_POST['opdesc'];}else{$opdesc='';}
 if(isSet($_POST['simg'])){$simg=$_POST['simg'];}else{$simg='';}
 
 
+
+$spmids='';
+if($spmdesc!='')
+{
+$s=array();
+	for($m=0;$m<count($spmid);$m++)
+	{
+		if($spmdesc[$m]!='')
+		{
+			array_push($s,$spmid[$m]);
+		}
+	}
+$spmids=implode(',', $s);
+}
 
 
 if(isSet($_FILES['oimg']['name'])){
@@ -76,7 +91,8 @@ $pquery="UPDATE Maintenance SET Service_engr_Name='$mkengr',
 								Problem_Desc='$bddetail',
 								Maintenance_Desc='$wodetail',
 								Spares_Used='$spares',
-								Maintenance_type_ID='$mtype' WHERE Activity_Log_ID=$actlid; ";
+								Maintenance_type_ID='$mtype',
+								Sch_Prev_Maint_IDs='$spmids' WHERE Activity_Log_ID=$actlid; ";
 
 //print("<br>$pquery");
 

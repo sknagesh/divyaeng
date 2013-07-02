@@ -25,13 +25,8 @@ p { font-weight: bold; clear: both; }
   $(document).ready(function(){
   	$("#machine").load('get_machine.php');  //load customer list from get_customer.php
   	$("#mtype").load('get_maint_types.php');
-			var mid=$('#Machine_ID').val();
-			var mtype=$('#Maintenance_Type_ID').val();	
-			var sdate=$('#sdatedb').val();
-			var edate=$('#edatedb').val();
-			var stext=$('#searcht').val();
 
-			var url="get_maint_log_for_machine.php?sdate="+sdate+"&edate="+edate+"&stext="+stext+"&mtype="+mtype;
+			var url="get_maint_log_for_machine.php";
 	
 		$('#footer').load(url);
 	

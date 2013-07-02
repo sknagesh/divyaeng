@@ -45,7 +45,7 @@ if($mtype!='')
 
 
 	
-$query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Name,
+$query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Name,Sch_Prev_Maint_IDs as pm,
 		DATE_FORMAT(Start_Date_Time,'%d/%m/%Y %h:%i %p') as sdt,
 		DATE_FORMAT(End_Date_Time,'%d/%m/%Y %h:%i %p')as edt,
 		TIMEDIFF(End_Date_Time,Start_Date_Time) as td,
@@ -59,7 +59,7 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 		INNER JOIN Maintenance as maint ON maint.Activity_Log_ID=actl.Activity_Log_ID
 		INNER JOIN Machine AS ma ON ma.Machine_ID=actl.Machine_ID
 		INNER JOIN Maintenance_Type AS mt ON mt.Maintenance_Type_ID=maint.Maintenance_Type_ID 
-		WHERE actl.Activity_ID='5' $mid $sdate $edate $mtype $setext 
+		WHERE actl.Activity_ID='5' $mid $sdate $edate $mtype $stext 
 		  ORDER BY End_Date_Time DESC;";
 	
 //print("$query<br>");
@@ -78,15 +78,44 @@ print("<tr class=\"t\" ><th>ID</th><th>Machine</th><th>Activity</th><th>Problem 
 while ($row = mysql_fetch_assoc($resa))
 {
 		
+
+		if($row['pm']!='')
+		{
+
+				$pm=explode(',', $row['pm']);
+					$spmdesc='Maintenance Activites carried out are ';
+				for($j=0;$j<count($pm);$j++)
+				{
+
+					$q="SELECT SPM_Desc as spmd from SPM_Desc WHERE SPM_Desc_ID='$pm[$j]';";
+//					print("<br>$q");
+					$rpm = mysql_query($q, $cxn) or die(mysql_error($cxn));
+					$rspm=mysql_fetch_assoc($rpm);
+					$spmdesc.=$rspm['spmd'].', ';
+
+				}
+
+		}else{
+			$spmdesc='';
+		}
+
+
+
 		$id=$row['Activity_Log_ID'];
 		$sdt=$row['sdt'];
 		$edt=$row['edt'];
 		$opename=$row['Operator_Name'];
-		$activity=$row['Maintenance_Type'];
+		$activity=$row['Maintenance_Description'];
 		$td=$row['td'];
 		$remarks=$row['Remarks'];
 		$prob=$row['Problem_Desc'];
+		if($spmdesc!='')
+		{
+			$wd=$spmdesc;
+		}else{
+
 		$wd=$row['Maintenance_Desc'];
+	}
 		$spare=$row['Spares_Used'];
 		$me=$row['Service_Engr_Name'];
 		$mname=$row['Machine_Name'];
@@ -108,8 +137,7 @@ while ($row = mysql_fetch_assoc($resa))
 			$ip=$activity;
 		}
 		
-		
-		
+
 print("<tr class=\"$c\"><td>$id</td><td>$mname</td><td>$ip</td><td>$prob</td><td>$wd</td><td>$sdt</td><td>$edt</td><td align=\"center\">$td</td>
 		<td>$spare</td><td>$opename</td><td>$me</td><td>$remarks</td></tr>");
 if($c=="q"){$c="s";}else{$c="q";}

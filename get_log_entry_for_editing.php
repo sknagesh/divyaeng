@@ -58,7 +58,7 @@ if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
 } else if($activityid==5)
 	{
 
-	$q="SELECT maint.Activity_Log_ID,Activity_ID,Machine_ID, Start_Date_Time,End_Date_Time,Operator_ID, 
+	$q="SELECT maint.Activity_Log_ID,Activity_ID,Machine_ID, Start_Date_Time,End_Date_Time,Operator_ID,Sch_Prev_Maint_IDs,
 	DATE_FORMAT(Start_Date_Time,'%d-%m-%Y %h:%i:%s %p') as sdt, DATE_FORMAT(End_Date_time,'%d-%m-%Y %h:%i:%s %p') as edt,
 	Service_Engr_Name,Problem_Desc,Maintenance_Desc,Spares_Used,maint.Maintenance_Type_ID,Remarks,
 	(Select GROUP_CONCAT(CONCAT(AL_Image_ID, ',' ,Image_Path)) FROM ActivityLog_Image WHERE Activity_LOG_ID='$lid')as ali
@@ -86,7 +86,36 @@ if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
 		$edtdb=$row['End_Date_Time'];
 		$actid=$row['Activity_ID'];
 		$ali=$row['ali'];
-		$data=$activityid."<|>".$mid."<|>".$opeid."<|>".$sdt."<|>".$edt."<|>".$sename."<|>".$pdesc."<|>".$maintdesc."<|>".$spares."<|>".$mtypeid."<|>".$remark."<|>".$sdtdb."<|>".$edtdb."<|>".$actid."<|>".$ali;
+		$spmid=$row['Sch_Prev_Maint_IDs'];
+	
+		if($spmid!='')
+		{$sid=explode(',',$spmid);
+
+		$qs="SELECT SPM_ID FROM SPM_Desc WHERE SPM_Desc_ID=$sid[0];";
+		//print($qs);
+		$ress = mysql_query($qs, $cxn) or die(mysql_error($cxn));		
+		$s=mysql_fetch_assoc($ress);
+		$spmid=$s['SPM_ID'];
+		$q2="SELECT * FROM SPM_Desc WHERE SPM_ID=".$spmid.";";
+		$r2 = mysql_query($q2, $cxn) or die(mysql_error($cxn));
+	$spmt='';
+$l=0;
+	while($row2=mysql_fetch_assoc($r2))
+	{
+$c='';
+	for($h=0;$h<count($sid);$h++)
+	{
+	if($sid[$h]==$row2['SPM_Desc_ID']){$c="checked=checked";}	
+
+	}
+		$spmt.='<input type="checkbox" name="spmdesc['.$l.']" value="1"'.$c.'><input type="hidden" name="spmid['.$l.']" value="'.$row2['SPM_Desc_ID'].'">'.$row2['SPM_Desc'].'<br>';
+		$l++;
+	}
+	
+
+
+		}
+		$data=$activityid."<|>".$mid."<|>".$opeid."<|>".$sdt."<|>".$edt."<|>".$sename."<|>".$pdesc."<|>".$maintdesc."<|>".$spares."<|>".$mtypeid."<|>".$remark."<|>".$sdtdb."<|>".$edtdb."<|>".$actid."<|>".$ali."<|>".$spmt;
 	
 		}else 	
 		{
