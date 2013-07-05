@@ -110,6 +110,29 @@ if(jobno!='')
 	});
 
 
+$('input[id^="fai"]').click(function() {      //show dimensions based on selection
+	var fai=$(this).val();
+//console.log(fai);
+	var jobno=$('#Job_NO').val();
+	var bid=$('#Batch_ID').val();
+	var opid=$('#Operation_ID').val();
+
+	var url="get_job_for_operation_for_editing.php?opid="+opid+'&jobno='+jobno+"&bid="+bid+"&fai="+fai;
+if(jobno!='')
+{
+	$('#ipdimns').load(url);
+	$('#s').show();
+}else{
+	$('#ipdimns').text(' ');
+	$('#s').hide();
+}
+
+	});
+
+
+
+
+
 $("#submit").click(function(event) {
 
 

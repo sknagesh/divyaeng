@@ -121,6 +121,8 @@ while ($row = mysql_fetch_assoc($resa))
 		$operationdesc=$rr['Problem_Desc'];
 		$compname="";
 		$dno='';
+		$qty='';
+		$pno='';
 	}else
 		if($row['Activity_ID']==11)
 	{

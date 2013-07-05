@@ -5,6 +5,15 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $opid = $_GET['opid'];
 $bid=$_GET['bid'];
 $jobno=$_GET['jobno'];
+if(isSet($_GET['fai'])){$fai=$_GET['fai'];}else{$fai='';}
+
+if(($fai!='') && ($fai==0))
+{
+
+	$f="AND Prod_Dimn='1' ";
+}else{$f='';}
+
+
 $ipd="";
 	$ipd="<table border=\"1\" cellspacing=\"1\" id=\"inprocesstble\">";
 	$ipd.= "<tr><th>Baloon No</th><th>Dimension Desc</th><th>Basic dimn</th><th>Tol. Lower</th><th>Tol Upper</th>";
@@ -16,7 +25,7 @@ $ipd="";
 	Instrument_SLNO,Text_Field FROM Dimension as dimn 
 	INNER JOIN Instrument AS inst ON inst.Instrument_ID=dimn.Instrument_ID
 	INNER JOIN Dimn_Desc as dd ON dd.Desc_ID=dimn.Desc_ID 
-	WHERE Operation_ID='$opid' AND Deleted!=1 ORDER BY Baloon_NO ASC;";
+	WHERE Operation_ID='$opid' AND Deleted!=1 $f ORDER BY Baloon_NO ASC;";
 
 	
 	//print($qry);
