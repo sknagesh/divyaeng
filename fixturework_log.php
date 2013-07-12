@@ -39,7 +39,7 @@ $query.="VALUES('$activityid',
 				'$operatorid',
 				'$remark');";
 
-print("<br>$query");
+//print("<br>$query");
 
 $res=mysql_query($query) or die(mysql_error());
 $lastid=mysql_insert_id();
@@ -57,14 +57,14 @@ $pquery.="VALUES('$lastid',
 				'$qty',
 				'$batchid');";
 
-print("<br>$pquery");
+//print("<br>$pquery");
 $result=mysql_query($pquery) or die(mysql_error());
 $ok=mysql_affected_rows();
 if($ok!=0)
 {
-	print("Added one Row in to NonProduction Log and Log ID is $lastid");
+	print("<p style=\"font size:12 color:green \">Added one Row in to NonProduction Log and Log ID is $lastid</p>");
 }else{
-	print("Error adding into NonProduction Log");
+	print("<p style=\"font size:12 color:red \">Error adding into NonProduction Log</p>");
 }
 
 if($oimgfiles!=0)

@@ -15,6 +15,7 @@ if(isSet($_POST['Holder_ID_2'])){$holderid2=$_POST['Holder_ID_2'];}else{$holderi
 $mdesc=$_POST['tdesc'];
 if(isSet($_POST['toh'])){$toh=$_POST['toh'];}else{$toh='';}
 if(isSet($_POST['tlife'])){$tlife=$_POST['tlife'];}else{$tlife='';}
+if(isSet($_POST['tsl'])){$tsl=$_POST['tsl'];}else{$tsl='';}
 
 
 if((isSet($_FILES['timg']['name']))&&($_FILES['timg']['name']!=''))
@@ -53,6 +54,7 @@ $query="INSERT INTO Ope_Tool (
 				Ope_Tool_Desc,
 				Ope_Tool_OH,
 				Ope_Tool_Life,
+				Storage_Location,
 				Ope_Tool_Image_Path)
 				 
 		VALUES('$opid',
@@ -65,6 +67,7 @@ $query="INSERT INTO Ope_Tool (
 				'$mdesc',
 				'$toh',
 				'$tlife',
+				'$tsl',
 				'$odrgfileName');";
 
 //			print($query);

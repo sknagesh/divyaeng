@@ -12,7 +12,8 @@ $r=mysql_num_rows($res);
 if($r!=0)
 {
 print("<table border=\"1\" cellspacing=\"1\">");
-print("<tr><th>Instrument ID</th><th>Serial No</th><th>Description</th><th>Calibration Date</th><th>Next Calibration Date</th></tr>");
+print("<tr><th>Instrument ID</th><th>Serial No</th><th>Description</th><th>Make</th><th>Range</th><th>Least Count</th><th>Calibration Frequency</th>
+<th>Calibration Date</th><th>Next Calibration Date</th></tr>");
 while($row=mysql_fetch_assoc($res))
 {
 

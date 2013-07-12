@@ -20,9 +20,9 @@ $batch="AND tc.Batch_ID='$bid'";
 $batch="";
 }
 
-$query="SELECT Machine_Name,tb.Brand_Description as obd,cb.Brand_Description as cbd,
-				Mfg_Batch_NO,Operation_Desc,Reason,Operator_Name,Remarks,New_Tool_condition,
-				Original_Tool_Condition,Start_Date_Time,Component_Name,Drawing_NO,ot.Tool_Desc as tod,
+$query="SELECT Machine_Name,tb.Brand_Description as obd,cb.Brand_Description as cbd,Job_NO,
+				Mfg_Batch_NO,Operation_Desc,Reason,Operator_Name,Remarks,New_Tool_condition as ntc,
+				Original_Tool_Condition as otc,Start_Date_Time,Component_Name,Drawing_NO,ot.Tool_Desc as tod,
 				ct.Tool_Desc as ctd FROM ToolChange AS tc
 		 		INNER JOIN ActivityLog as actl ON actl.Activity_log_ID=tc.Activity_Log_ID
 		 		INNER JOIN Operation AS ope ON ope.Operation_ID=tc.Operation_ID 
@@ -47,15 +47,16 @@ if($r!=0)
 {
 	$c="q";
 print("<table cellspacing=\"1\">");
-print("<tr class=\"t\"><th>Machine</th><th>Drawing No and Name</th><th>Operation</th><th>Batch NO</th><th>Changed By</th><th>Change Date and Time</th>
+print("<tr class=\"t\"><th>Machine</th><th>Drawing No and Name</th><th>Operation</th><th>Batch NO</th><th>Job NO</th><th>Changed By</th><th>Change Date and Time</th>
 			<th>Original Tool</th><th>Changed Tool</th><th>Reason For Change</th><th>Remarks</th></tr>");
 while($row=mysql_fetch_assoc($res))
 {
 
 print("<tr class=\"$c\">
-			<td>$row[Machine_Name]</td><td>$row[Drawing_NO] $row[Component_Name]</td>
-			<td>$row[Operation_Desc]</td><td>$row[Mfg_Batch_NO]</td><td>$row[Operator_Name]</td><td>$row[Start_Date_Time]</td>
-			<td>$row[obd] Make $row[tod]</td><td>$row[cbd] Make $row[ctd]</td><td>$row[Reason]</td><td>$row[Remarks]</td></tr>");
+			<td>$row[Machine_Name]</td><td style=\"width:130px\">$row[Drawing_NO] $row[Component_Name]</td>
+			<td style=\"width:150px\">$row[Operation_Desc]</td><td>$row[Mfg_Batch_NO]</td><td>$row[Job_NO]</td>
+			<td>$row[Operator_Name]</td><td>$row[Start_Date_Time]</td><td>$row[obd] Make $row[tod] / $row[otc]</td>
+			<td>$row[cbd] Make $row[ctd] / $row[ntc]</td><td>$row[Reason]</td><td>$row[Remarks]</td></tr>");
 	if($c=="q"){$c="s";}else{$c="q";}
 }
 print("</table>");

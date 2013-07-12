@@ -15,7 +15,7 @@ while ($a <= $len-1) {
 	print("processing del din");
 	if(isset($deldimn[$a]))
 	{
-		$q1="SELECT * FROM Measured_Dimn WHERE Dimension_ID='$inprocessid[$a]';";
+		$q1="SELECT * FROM Observations WHERE Dimension_ID='$inprocessid[$a]';";
 		$res1 = mysql_query($q1, $cxn) or die(mysql_error($cxn));
 		$nr=mysql_affected_rows($cxn);
 		if($nr==0){
@@ -25,7 +25,7 @@ while ($a <= $len-1) {
 		$res = mysql_query($query, $cxn) or die(mysql_error($cxn));
 		$deleted+=1;
 		}else{
-		print("Measured dimensions found for this dimension, so marking as deleted");
+		print("Measured Observations Found For This Dimension, So Just Marking Dimension as Deleted");
 		$query="UPDATE Dimension SET Deleted='1' WHERE Dimension_ID=$inprocessid[$a];";		
 		//print("$query");		
 		$res = mysql_query($query, $cxn) or die(mysql_error($cxn));

@@ -68,26 +68,52 @@ return {minDatetime: $('#caldate').datetimeEntry('getDatetime')};
 <fieldset><legend>Enter Instrument Details</legend>
 
    <p>
-		<label for="bno">Instrument Serial No</label>
+		<label>Instrument Serial No</label>
      	<input type="text" name="instno" id="instno" class="required" />
    </p>
 
 	<p>
-			<label for="bno">Instrument Description</label></td>
+			<label>Instrument Description</label></td>
 			<input type="text" name="instdesc" id="instdesc" class="required"/>
 	</p>
 	
 	<p>
-			<label for="bno">Calibration Date</label></td>
-			<input type="text" name="caldate" id="caldate" class="required"/>
-			<input type="hidden" name="caldatedb" id="caldatedb"/>
+			<label>Instrument Make</label></td>
+			<input type="text" name="make" id="make" class="required"/>
 	</p>
 
 	<p>
-			<label for="bno">Next Calibration Date</label></td>
-			<input type="text" name="nextcaldate" id="nextcaldate" class="required"/>
-			<input type="hidden" name="nextcaldatedb" id="nextcaldatedb"/>
+			<label>Measuring Range</label></td>
+			<input type="text" name="range" id="range"/>
 	</p>
+
+	<p>
+			<label>Acceptable Error</label></td>
+			<input type="text" name="aerror" id="aerror"/>
+	</p>
+
+	<p>
+			<label>Least Count</label></td>
+			<input type="text" name="lc" id="lc" class="number"/>
+	</p>
+
+	<p>
+			<label>Calibration Frequency in Months</label></td>
+			<input type="text" name="calfreq" id="calfreq" class="number" />
+	</p>
+
+
+	<p>
+			<label>Calibration Date</label></td>
+			<input type="text" name="caldate" id="caldate"/>
+			<input type="hidden" name="caldatedb" id="caldatedb"/>
+	</p>
+	<p>
+			<label>Remarks</label></td>
+			<input type="text" name="remarks" id="remarks"/>
+			
+	</p>
+
 
    <p>
      <input class="submit" id="submit" type="submit" value="Submit"/>

@@ -59,6 +59,8 @@ $st.="<p><label>Tool Over Hang</label>";
 $st.="<input type=\"text\" name=\"toh\" id=\"toh\" class=\"number\"></p>";
 $st.="<p><label>Tool Life In Mins/No Of Comp</label>";
 $st.="<input type=\"text\" name=\"tlife\" id=\"tlife\" class=\"number\"></p>";
+$st.="<p><label>Tool Storage Location</label>";
+$st.="<input type=\"text\" name=\"tsl\" id=\"tsl\"></p>";
 $st.='<p>
      <label>Upload Tool Image</label>
      <input id="timg" name="timg" type="file" />

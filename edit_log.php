@@ -2,7 +2,7 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-print_r($_POST);
+//print_r($_POST);
 
 $uploadDir = '/home/www/logimages/';
 //production log data
@@ -67,7 +67,7 @@ $query="UPDATE ActivityLog SET Activity_ID='$activityid',
 								Operator_ID='$operatorid',
 								Remarks='$remarks' WHERE Activity_Log_ID=$actlid; ";
 
-print("<br>$query");
+//print("<br>$query");
 
 $res=mysql_query($query) or die(mysql_error());
 
@@ -79,7 +79,7 @@ $pquery="UPDATE Production SET Operation_ID=$operationid,
 								Batch_ID='$bid',
 								Quantity='$qty' WHERE Activity_Log_ID='$actlid'; ";
 
-print("<br>$pquery");
+//print("<br>$pquery");
 
 $result=mysql_query($pquery) or die(mysql_error());
 
@@ -109,7 +109,7 @@ $pquery="UPDATE NonProduction SET Drawing_ID='$drawingid',
 								Quantity='$qty',
 								Batch_ID='$bid' WHERE Activity_Log_ID=$actlid; ";
 
-print("<br>$pquery");
+//print("<br>$pquery");
 
 $result=mysql_query($pquery) or die(mysql_error());
 
@@ -130,7 +130,7 @@ $simg=array_values($simg); //re-order array
 		$rf=mysql_query($qf) or die(mysql_error());
 		$rfr=mysql_fetch_assoc($rf);
 		$filepath=$uploadDir.$rfr['Image_Path'];
-		print($filepath);
+//		print($filepath);
 		unlink($filepath);	
 		$q="DELETE FROM ActivityLog_Image WHERE AL_Image_ID=$simg[$j];";
 		$rf=mysql_query($q) or die(mysql_error());
@@ -174,7 +174,7 @@ if($oimgfiles!='')
 
 		for ($i=0; $i < $oimgfiles; $i++) { 
 			$quef="INSERT INTO ActivityLog_Image (Activity_Log_ID,Image_Path) VALUES( '$actlid','$drgfileNames[$i]');";
-			print($quef);
+//			print($quef);
 			$resf=mysql_query($quef) or die(mysql_error());
 	}
 

@@ -116,7 +116,7 @@ $pdf = new PDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', f
 //$pdf->AliasNbPages();
 $pdf->setAutoPageBreak(1,35);
 $pdf->AddPage('P','A4');
-$pdf->SetFont('helvetica','',10);
+$pdf->SetFont('helvetica','B',13);
 $pdf->SetY(56);
 
 $pdf->Cell(125,8,$custname,0,0,'L');
@@ -125,10 +125,11 @@ $pdf->Cell(100,8,"DC NO: $dcno",0,1,'L');
 $pdf->SetFont('helvetica','',13);
 $pdf->Cell(125,8,$addl1,0,0,'L');$pdf->Cell(100,8,"Date: $dcdate",0,1,'L');
 $pdf->Cell(125,8,$addl2,0,0,'L');$pdf->Cell(100,8,"Your Ref: $cref",0,1,'L');
-$pdf->Cell(125,8,$phone,0,0,'L');$pdf->Cell(100,8,"Date: $refdate",0,1,'L');
+$pdf->Cell(125,8,"Phone No: ".$phone,0,0,'L');$pdf->Cell(100,8,"Date: $refdate",0,1,'L');
 $pdf->ln(8);
 $pdf->line(0,97,220,97);//line before mode of dispatch
-$pdf->Cell(135,8,"Mode Of Dispatch: $dmode",0,0,'L');$pdf->Cell(100,8,"Status: $dctype",0,1,'L');
+$pdf->Cell(125,8,'',0,0,'L');$pdf->Cell(100,8,"Mode Of Dispatch: $dmode",0,1,'L');
+$pdf->Cell(125,8,"",0,0,'L');$pdf->Cell(100,8,"Status: $dctype",0,1,'L');
 $pdf->SetFont('helvetica','',10);
 $pdf->Cell(150,8,"Please receive the following materials and acknowledge the receipt",0,1,'L');
 $pdf->line(0,110,220,110);//line after mode of dispatch
@@ -164,6 +165,7 @@ while($j<count($dq_list))
 
 $pdf->setY(200);
 $pdf->SetFont('helvetica','',8); //body font
+$pdf->MultiCell(80, 8, "Material Received Vide", 0, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 $j=0;
 while($j<count($cqr_list))
 {
@@ -188,8 +190,10 @@ while($j<count($cqr_list))
 }
 
 
-$pdf->SetY(-45);
-$pdf->Cell(200,8,"Note: ".$gcomm,0,0,'C');
+$pdf->SetY(-53);
+$pdf->SetFont('helvetica','B',11); //note font
+$pdf->Cell(200,8,"Consignee's TIN No: ".$tinno,0,1,'L');
+$pdf->Cell(200,8,"Note: ".$gcomm,0,0,'L');
 
 
 if($previewok=='0')

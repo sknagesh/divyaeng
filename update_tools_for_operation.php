@@ -14,6 +14,7 @@ if(isSet($_POST['Tool_ID_2'])){$toolid2=$_POST['Tool_ID_2'];}else{$toolid2='';}
 $toolid1=$_POST['Tool_ID_1'];
 $holderid1=$_POST['Holder_ID_1'];
 if(isSet($_POST['Holder_ID_2'])){$holderid2=$_POST['Holder_ID_2'];}else{$holderid2='';}
+if(isSet($_POST['tsl'])){$tsl=$_POST['tsl'];}else{$tsl='';}
 $mdesc=$_POST['mdesc'];
 if(isSet($_POST['toh'])){$toh=$_POST['toh'];}else{$toh='';}
 if(isSet($_POST['tlife'])){$tlife=$_POST['tlife'];}else{$tlife='';}
@@ -72,7 +73,8 @@ $query="UPDATE Ope_Tool SET
 				Holder_ID_1='$holderid1[$x]',
 				Holder_ID_2='$holderid2[$x]',
 				Ope_Tool_Desc='$mdesc[$x]',
-				Ope_Tool_OH='$toh[$x]'
+				Ope_Tool_OH='$toh[$x]',
+				Storage_Location='$tsl[$x]'
 				WHERE Ope_Tool_ID='$opeid[$x]';";
 
 //			print($query);

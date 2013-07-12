@@ -14,7 +14,7 @@ if($r!=0)
 {
 echo "<table border=\"1\" cellspacing=\"1\" bgcolor=\"#7FFFD4\">";
 echo "<tr><th>Delete Tool</th><th>Preferred Tool</th><th>Alternate Tool</th><th>Holder 1</th><th>Holder 2</th>
-		<th>Work Description</th><th>Tool Overhang</th><th>Tool Life</th><th>Tool Image</th></tr>";
+		<th>Work Description</th><th>Tool Overhang</th><th>Tool Life</th><th>Storage Location</th><th>Tool Image</th></tr>";
 $i=0;
 
 while($row=mysql_fetch_assoc($res))
@@ -146,6 +146,7 @@ echo '<td><input type="text" name="mdesc['.$i.']" id="mdesc['.$i.']" value="'.$r
 
 echo '<td><input type="text" name="toh['.$i.']" id="toh['.$i.']" size="10" value="'.$row[Ope_Tool_OH].'"></td>';
 echo '<td><input type="text" name="tlife['.$i.']" id="tlife['.$i.']" size="10" value="'.$row[Ope_Tool_Life].'"></td>';
+echo '<td><input type="text" name="tsl['.$i.']" id="tsl['.$i.']" size="10" value="'.$row[Storage_Location].'"></td>';
 echo '<td><input type="file" name="timg['.$i.']"  size="10" id="timg['.$i.']" >'.$row[Ope_Tool_Image_Path].'</td></tr>';
 
 $i++;

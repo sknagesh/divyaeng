@@ -35,7 +35,7 @@ print("</table>");
 
 
 
-$query='SELECT Ope_Tool_ID,Ope_Tool_OH,Ope_Tool_Desc,Tool_ID_1,Ope_Tool_Image_Path, 
+$query='SELECT Ope_Tool_ID,Ope_Tool_OH,Ope_Tool_Desc,Tool_ID_1,Ope_Tool_Image_Path,Storage_Location,
 		(SELECT CONCAT(Tool_Desc," ( ",Tool_Part_NO," )") FROM Tool WHERE Tool_ID=ot.Tool_ID_1) as td1, 
 		(SELECT CONCAT(Tool_Desc," ( ",Tool_Part_NO," )") FROM Tool WHERE Tool_ID=ot.Tool_ID_2)as td2, 
 		(SELECT CONCAT(Insert_Part_NO," ",Insert_Description) FROM Inserts WHERE Insert_ID=ot.Insert_ID_1) as i1,
@@ -55,7 +55,7 @@ if($r!=0)
 {
 print("<table border=\"1\" cellspacing=\"1\" id=\"ttble\">");
 print("<tr><th>Tool ID</th><th>Preferred Tool and Insert</th><th>Alternate Tool and Insert</th><th>Description</th><th>Preffered Holder</th>
-		<th>Alternate Holder</th><th>Tool Overhang</th><th>Tool Images</th></tr>");
+		<th>Alternate Holder</th><th>Tool Overhang</th><th>Tool Storage Location</th><th>Tool Images</th></tr>");
 while($row=mysql_fetch_assoc($res))
 {
 
@@ -70,7 +70,7 @@ while($row=mysql_fetch_assoc($res))
 	<td >$row[tb1] Make $row[td1] $row[i1]</td>
 	<td >$t2</td>
 	<td>$row[Ope_Tool_Desc]</td>
-	<td>$row[hd1]</td><td>$row[hd2]</td><td>$row[Ope_Tool_OH]</td>
+	<td>$row[hd1]</td><td>$row[hd2]</td><td>$row[Ope_Tool_OH]</td><td>$row[Storage_Location]</td>
 	<td>$img</td></tr>");
 	
 }

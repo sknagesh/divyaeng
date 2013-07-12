@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Instrument List and Calibration history Card</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.form.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size:8; }
+label {padding-right:1em;float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+.drawingqty{border-spacing:2px;
+color: #ffffff;
+} </style>
+  <script>
+  $(document).ready(function(){
+
+
+  $('input[type="radio"]').click(function(){
+
+  var msource=$(this).val();
+
+  if(msource!='')
+    {$('#footer').load("show_instruments_list.php?type="+msource);}
+
+  });
+
+
+
+
+
+  });
+
+
+
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+
+ <fieldset>
+<legend>Select Report Type</legend>
+
+   <p>
+<input type="radio" id="source1" name="type" value="list">List Of Measuring Instruments
+<input type="radio" id="source2" name="type" value="history">Calibration History Card
+   </p>
+
+
+ </fieldset>
+
+<div id="footer"></div>
+
+
+</body>
+</html>

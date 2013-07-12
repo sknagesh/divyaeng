@@ -24,6 +24,16 @@ p { font-weight: bold; clear: both; }
 	  	$("#customer").load('get_customer.php');  //load customer list from get_customer.php
   		$("#footer").load('get_prod_summ_for_drg.php');
 
+    $('#interval').keyup(function(){
+    var interval=$('#interval').val();
+    if(interval!='')
+    {
+    var url='get_prod_summ_for_drg.php?interval='+interval;
+      $("#footer").load(url)
+    }
+      });
+
+
 		$('#customer').click(function(){
 		var custid=$('#Customer_ID').val();
 		var url='get_drawing.php?custid='+custid;
@@ -65,6 +75,7 @@ p { font-weight: bold; clear: both; }
     <div id="customer"> </div>
      <div id="drawing"> </div>
      <div id="batchno"> </div>
+     <label>Time Frame in Days</label><input type="text" name="interval" id="interval" class="number">
  </fieldset>
 <div id="footer"> </div>
 <div id="footer2"> </div>
