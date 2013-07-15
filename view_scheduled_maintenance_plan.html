@@ -26,7 +26,23 @@ p { font-weight: bold; clear: both; }
   $(document).ready(function(){
  
 		$('#calendar').fullCalendar({
-        eventSources: ['scheduled_maintenance_plan.php']
+        eventSources: ['scheduled_maintenance_plan.php'],
+        height: 400,
+      eventClick: function(calEvent, jsEvent, view) {
+
+        console.log('Event id: ' + calEvent.id);
+        var url="get_maint_details.php?id="+ calEvent.id;
+      $.get(url, function(data) {
+      $('#footer').html(data);
+      });
+
+
+        $(this).css('border-color', 'red');
+      }
+
+
+
+
     });
 
   	});
