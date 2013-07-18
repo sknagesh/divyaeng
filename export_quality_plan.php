@@ -35,7 +35,7 @@ $xls->addArray($pd);
 			INNER JOIN Instrument AS inst ON inst.Instrument_ID=dimn.Instrument_ID 
 			INNER JOIN Operation AS op ON dimn.Operation_ID=op.Operation_ID
 			INNER JOIN Dimn_Desc as dd ON dd.Desc_ID=dimn.Desc_ID  
-			WHERE comp.Drawing_ID='$drawingid' ORDER BY Operation_ID ASC;";
+			WHERE comp.Drawing_ID='$drawingid' ORDER BY Operation_ID, Baloon_NO ASC;";
 			
 //print("<br>$qry");
 
@@ -43,7 +43,7 @@ $xls->addArray($pd);
 	$j=0;	
 	while ($row = mysql_fetch_assoc($resa))  //get all dimensions for thi operation and store them in an array
         		{
-	$dimn[$j]=array($row['Operation_Desc'],$row['Baloon_NO'],$row['Dimn_Desc'],$row['Basic_Dimn'],$row['tu'],$row['tl'],$row['Instrument_Description'],$row['Least_Count']);		
+	$dimn[$j]=array($row['Operation_Desc'],$row['Dimn_Desc'],$row['Baloon_NO'],$row['Basic_Dimn'],$row['tu'],$row['tl'],$row['Instrument_Description'],$row['Least_Count']);		
 	$j++;
 		        }
 

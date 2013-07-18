@@ -30,7 +30,14 @@ color: #ffffff;
 
   });
 
+$('#export').click(function(){
+url="show_instruments_list.php?type=export";
+      $.get(url, function(data) {
+      window.open('listofinstruments.pdf');
+      });
 
+
+});
 
 
 
@@ -54,6 +61,7 @@ color: #ffffff;
    <p>
 <input type="radio" id="source1" name="type" value="list">List Of Measuring Instruments
 <input type="radio" id="source2" name="type" value="history">Calibration History Card
+<input type="button" id="export" name="export" value="Export List">
    </p>
 
 

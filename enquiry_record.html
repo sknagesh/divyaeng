@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>NEw Enquiry</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.form.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 15em; float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+    $("#enquiry").validate();  //attach validater to form
+
+
+var options = {  ///options for ajaxSubnit function 
+        target:        '#footer',   // target div id to update result of submit 
+//        success:       showResponse  // post-submit callback 
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    };
+
+	$("#addp").click(function(event) {
+
+	 if($("#enquiry").valid())
+  	{
+	  	event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+	    $("#enquiry").ajaxSubmit(options);
+
+  	}
+
+		});
+		
+		
+ 
+
+
+  });
+
+
+
+  $(function () {
+  $('#edate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#edatedb', altFormat: 'Y-O-D'});
+  
+  $('#rdate').datetimeEntry({datetimeFormat: 'D-O-Y', altField: '#rdatedb', altFormat: 'Y-O-D'});
+  
+  });  
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+  <form name ="enquiry" id="enquiry" action="add_enquiry.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>New Enquiry Details</legend>
+   <p>
+     <label>Customer's Name</label>
+     <input id="cname" name="cname" size="25"  class="required" />
+
+   <p>
+     <label>Enquiry Date</label>
+     <input type="text" id="edate" name="edate" size="25"  class="required" />
+     <input type="hidden" id="edatedb" name="edatedb"/>
+   </p>
+
+   <p>
+     <label>Required Date</label>
+     <input type="text" id="rdate" name="rdate" size="25"/>
+     <input type="hidden" id="rdatedb" name="rdatedb"/>
+   </p>
+
+
+
+   <p>
+     <label>Enquiry Ref</label>
+     <input id="eref" name="eref" size="25"/>
+   </p>
+
+
+   <p>
+     <label>Drawing Number</label>
+     <input id="drawingno" name="drawingno" size="25"  class="required" />
+   </p>
+
+   <p>
+     <label>Component Name</label>
+     <input id="componentname" name="componentname" size="25" class="required"/>
+   </p>
+
+   <p>
+     <label>Component Material</label>
+     <input id="mspec" name="mspec" size="25"  value="" />
+   </p>
+
+   <p>
+     <label>Raw Material Source</label>
+     <input id="msource" name="msource" size="25"  value="" />
+   </p>
+
+   <p>
+     <label>Select Visual Ref. </label>
+     <input id="drg" name="drg" type="file" />
+   </p>
+
+   <p>
+     <input class="submit" id="addp" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"> </div>
+<div id="footer2"> </div>
+
+
+</body>
+</html>

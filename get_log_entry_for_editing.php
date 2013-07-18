@@ -58,7 +58,7 @@ if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
 } else if($activityid==5)
 	{
 
-	$q="SELECT maint.Activity_Log_ID,Activity_ID,Machine_ID, Start_Date_Time,End_Date_Time,Operator_ID,Sch_Prev_Maint_IDs,
+	$q="SELECT maint.Activity_Log_ID,Activity_ID,Machine_ID, SPM_ID,Start_Date_Time,End_Date_Time,Operator_ID,Sch_Prev_Maint_IDs,
 	DATE_FORMAT(Start_Date_Time,'%d-%m-%Y %h:%i:%s %p') as sdt, DATE_FORMAT(End_Date_time,'%d-%m-%Y %h:%i:%s %p') as edt,
 	Service_Engr_Name,Problem_Desc,Maintenance_Desc,Spares_Used,maint.Maintenance_Type_ID,Remarks,
 	(Select GROUP_CONCAT(CONCAT(AL_Image_ID, ',' ,Image_Path)) FROM ActivityLog_Image WHERE Activity_LOG_ID='$lid')as ali
@@ -87,7 +87,6 @@ if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
 		$actid=$row['Activity_ID'];
 		$ali=$row['ali'];
 		$spmid=$row['Sch_Prev_Maint_IDs'];
-	
 		if($spmid!='')
 		{$sid=explode(',',$spmid);
 
@@ -115,7 +114,7 @@ $c='';
 
 
 		}
-		$data=$activityid."<|>".$mid."<|>".$opeid."<|>".$sdt."<|>".$edt."<|>".$sename."<|>".$pdesc."<|>".$maintdesc."<|>".$spares."<|>".$mtypeid."<|>".$remark."<|>".$sdtdb."<|>".$edtdb."<|>".$actid."<|>".$ali."<|>".$spmt;
+		$data=$activityid."<|>".$mid."<|>".$opeid."<|>".$sdt."<|>".$edt."<|>".$sename."<|>".$pdesc."<|>".$maintdesc."<|>".$spares."<|>".$mtypeid."<|>".$remark."<|>".$sdtdb."<|>".$edtdb."<|>".$actid."<|>".$ali."<|>".$spmt."<|>".$spmid;
 	
 		}else 	
 		{

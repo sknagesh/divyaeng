@@ -27,6 +27,8 @@ if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
 if(isSet($_POST['Maintenance_Type_ID'])){$mtype=$_POST['Maintenance_Type_ID'];}else{$mtype="";}
 if(isSet($_POST['spmdesc'])){$spmdesc=$_POST['spmdesc'];}else{$spmdesc="";}
 if(isSet($_POST['spmid'])){$spmid=$_POST['spmid'];}else{$spmid="";}
+
+if(isSet($_POST['SPM_ID'])){$SPM_ID=$_POST['SPM_ID'];}else{$SPM_ID="";}
 //fixture and fai data
 if(isSet($_POST['opdesc'])){$opdesc=$_POST['opdesc'];}else{$opdesc='';}
 
@@ -92,7 +94,8 @@ $pquery="UPDATE Maintenance SET Service_engr_Name='$mkengr',
 								Maintenance_Desc='$wodetail',
 								Spares_Used='$spares',
 								Maintenance_type_ID='$mtype',
-								Sch_Prev_Maint_IDs='$spmids' WHERE Activity_Log_ID=$actlid; ";
+								Sch_Prev_Maint_IDs='$spmids',
+								SPM_ID='$SPM_ID' WHERE Activity_Log_ID=$actlid; ";
 
 //print("<br>$pquery");
 

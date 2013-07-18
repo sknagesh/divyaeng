@@ -5,7 +5,8 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
 $id=$_GET['id'];
 
-
+if($id!='')
+{
 
 $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Name,Sch_Prev_Maint_IDs as pm,
 		DATE_FORMAT(Start_Date_Time,'%d/%m/%Y %h:%i %p') as sdt,
@@ -100,5 +101,8 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 
 
 }
+}else{
 
+	print("");
+}
 ?>

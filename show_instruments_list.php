@@ -1,5 +1,6 @@
 <?php
 include('dewdb.inc');
+require_once('../tcpdf/tcpdf.php');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
@@ -23,19 +24,98 @@ if($r!=0)
 
 		print("<table border=\"1\" cellspacing=\"1\">");
 		print("<tr><th>Serial No</th><th>Description</th><th>Make</th><th>Range</th>
-		<th>Least Count</th><th>Calibration Frequency in Months</th><th>Remarks</th></tr>");
+		<th>Least Count</th><th>Calibration Frequency</th><th>Acceptable Error</th><th>Remarks</th></tr>");
 		while($row=mysql_fetch_assoc($res))
 			{
 
 				print("<tr><td>$row[Instrument_SLNO]</td><td>$row[Instrument_Description]</td>
 			<td>$row[Make]</td><td>$row[Instrument_Range]</td><td>$row[Least_Count] mm</td>
-			<td>$row[Calibration_Frequency]</td><td>$row[Remarks]</td></tr>");
+			<td>$row[Calibration_Frequency] Months</td><td>$row[Acceptable_Error]</td><td>$row[Remarks]</td></tr>");
 	
 			}
 		print("</table>");
 
+	}else
+			if($type=='export')
+	{
+
+class PDF_SKN extends TCPDF {
+// Page header
+function Header()
+{
+    
+    $this->SetFont('helvetica','',12);
+    $this->MultiCell(60, 18, 'Divya Engineering Works (P) Ltd', 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+    $this->MultiCell(100, 18, 'List Of Measuring Instruments And Gages', 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+    $this->SetFont('helvetica','', 8);
+	$this->Cell(85,6,'RECORD REF: DEW/QA/D/01','T R',2,'L');
+	$this->Cell(85,6,'DATE: 01-06-2013','R',2,'L');
+	$this->Cell(85,6,'ISSUE NO: 06','B R',0,'L');
+	$this->ln();
+
 	}
-	else
+
+function Footer()
+{
+    // Position at 1.5 cm from bottom
+    $this->SetY(-32);
+	// Arial italic 8
+    $this->SetFont('helvetica','',16);
+	$this->Cell(140,10,"Approved By: ",'0',1,'L');
+	    // Page number
+    $this->SetY(-10);
+    $this->SetFont('helvetica','',6);
+	$this->Cell(0,10,'Page'.$this->getAliasNumPage().'/'.$this->getAliasNbPages(),0,0,'C');
+}
+}
+
+
+$pdf = new PDF_SKN(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+//$pdf->AliasNbPages();
+$pdf->setTopMargin(10);
+$pdf->setAutoPageBreak(0,35);
+$pdf->AddPage('P','A4');
+$pdf->SetFont('helvetica','',10);
+
+		$pdf->SetY(18);
+		$pdf->Cell(20,8,'SL NO',1,0,'L');
+		$pdf->Cell(50,8,'Description',1,0,'L');
+		$pdf->Cell(20,8,'Make',1,0,'L');
+		$pdf->Cell(20,8,'Range',1,0,'L');
+		$pdf->Cell(20,8,'Least Count',1,0,'L');
+		$pdf->MultiCell(20, 8,'Calibration Frequency', 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+		$pdf->MultiCell(20, 8,'Acceptable Error', 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+		$pdf->Cell(50,8,'Remarks',1,0,'L');
+		$pdf->ln();
+
+		while($row=mysql_fetch_assoc($res))
+			{
+
+
+				$pdf->Cell(20,8,$row[Instrument_SLNO],1,0,'L');
+				$pdf->MultiCell(50, 8,$row[Instrument_Description], 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+				$pdf->MultiCell(20, 8,$row[Make], 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+				$pdf->MultiCell(20, 8,$row[Instrument_Range], 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+				$pdf->MultiCell(20, 8,round($row[Least_Count],4), 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
+				$pdf->Cell(20,8,$row[Calibration_Frequency].' Months',1,0,'L');
+				$pdf->Cell(20,8,$row[Acceptable_Error],1,0,'L');
+				$pdf->Cell(50,8,$row[Remarks],1,0,'L');
+	
+		if ($pdf->getY() > $pdf->getPageHeight() - 50) {
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+		$pdf->setY(18);
+		}else{        
+        $pdf->ln();   //end of each row
+		}
+
+
+
+			}
+
+	$pdf->Output('listofinstruments.pdf','F');
+
+	}	else
 	if($type="history")
 	{
 

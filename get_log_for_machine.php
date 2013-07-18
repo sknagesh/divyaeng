@@ -124,6 +124,24 @@ while ($row = mysql_fetch_assoc($resa))
 		$qty='';
 		$pno='';
 	}else
+			if($row['Activity_ID']==8)
+	{
+		$sq="SELECT *,Idle_Reason FROM NonProduction as np
+		INNER JOIN Idle_Reason as ir ON ir.Idle_ID=np.Idle_ID WHERE Activity_Log_ID=$row[Activity_Log_ID];";
+		$res = mysql_query($sq, $cxn) or die(mysql_error($cxn));
+		$rr=mysql_fetch_assoc($res);
+		if($rr['Idle_ID']!='')
+		{
+		$operationdesc=$rr['Idle_Reason'];
+		}else{
+			$operationdesc='';
+		}
+		$compname="";
+		$dno='';
+		$qty='';
+		$pno='';
+	}else
+
 		if($row['Activity_ID']==11)
 	{
 		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Operation_Description,Quantity,np.Program_NO FROM NonProduction as np

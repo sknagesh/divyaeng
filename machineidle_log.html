@@ -33,7 +33,8 @@ p { font-weight: bold; clear: both; }
 		{
 			url="get_last_machine_activity.php?mid="+mid;
 			$('#operator').load("get_operator.php");
-		$('#footer').load(url);
+			$('#reason').load("get_idle_reasons.php");
+			$('#footer').load(url);
 		}
 
 
@@ -100,6 +101,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <label for="machine">Select Machine</label>
      <div id="machine"> </div>
      <div id="operator"> </div>
+     <div id="reason"> </div>
 	 <div id="pfields">
 	   <p>
      <label for="sdate">Start Date and Time </label>

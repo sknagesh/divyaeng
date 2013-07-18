@@ -12,12 +12,12 @@ $query="SELECT cust.Customer_Name,
 SUM(CASE WHEN Activity_ID=1 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Production,
 SUM(CASE WHEN Activity_ID=2 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Setup,
 SUM(CASE WHEN Activity_ID=3 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Rework,
-SUM(CASE WHEN Activity_ID=9 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS CMM,
 SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS Total From ActivityLog as actl
 INNER JOIN Production as prod ON prod.Activity_Log_ID=actl.Activity_Log_ID
 INNER JOIN Operation as ope On ope.Operation_ID=prod.Operation_ID
 INNER JOIN Component as comp on comp.Drawing_ID=ope.Drawing_ID
-INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID WHERE Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY cust.Customer_ID;";
+INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY cust.Customer_ID;";
 //print($query);
 
 $q2="SELECT cust.Customer_Name,
@@ -28,7 +28,8 @@ INNER JOIN NonProduction as nprod ON nprod.Activity_Log_ID=actl.Activity_Log_ID
 INNER JOIN BNo_MI_Challans as bmc on bmc.Batch_ID=nprod.Batch_ID
 INNER JOIN MI_Drg_Qty as mdq on mdq.MI_Drg_Qty_Id=bmc.MI_Drg_Qty_ID
 INNER JOIN Component as comp on comp.Drawing_ID=mdq.Drawing_ID
-INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID WHERE Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY cust.Customer_ID;";
+INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY cust.Customer_ID;";
 
 $q4="SELECT Machine_Name,
 SUM(CASE WHEN maint.Maintenance_Type_ID=1 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS bdm,
@@ -38,13 +39,13 @@ SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS tm From ActivityLog 
 INNER JOIN Maintenance as maint ON maint.Activity_Log_ID=actl.Activity_Log_ID
 INNER JOIN Maintenance_Type as mtype on mtype.Maintenance_Type_ID=maint.Maintenance_Type_ID
 INNER JOIN Machine as m on m.Machine_ID=actl.Machine_ID
-WHERE Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY m.Machine_ID;";
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY m.Machine_ID;";
 
 $q5="SELECT Machine_Name,
 SUM(CASE WHEN Activity_ID=8 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS idle
 From ActivityLog as actl
 INNER JOIN Machine as m on m.Machine_ID=actl.Machine_ID
-WHERE m.Machine_ID IN(1,2,3,4,5,6,7,9) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY m.Machine_ID;";
+WHERE m.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY m.Machine_ID;";
 
 
 
@@ -119,7 +120,6 @@ if($drawid=='')
 							<th>Production</th>
 							<th>Set Up</th>
 							<th>Rework</th>
-							<th>CMM Programing</th>
 							<th>Total</th>
 							</tr>");
 
@@ -130,7 +130,6 @@ if($drawid=='')
 		if($row['Production']!=''){$p=min2hm($row['Production']);$tproduction+=$row['Production'];}else{$p='';}
 		if($row['Setup']!=''){$s=min2hm($row['Setup']); $tsetup+=$row['Setup'];}else{$s='';}
 		if($row['Rework']!=''){$rw=min2hm($row['Rework']);$trework+=$row['Rework'];}else{$rw='';}
-		if($row['CMM']!=''){$cmm=min2hm($row['CMM']);$tcmm+=$row['CMM'];}else{$cmm='';}
 		if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
 
 		$totalaccounted+=$row['Total'];
@@ -138,7 +137,6 @@ if($drawid=='')
 							<td>$p</td>
 							<td>$s</td>
 							<td>$rw</td>
-							<td>$cmm</td>
 							<td>$t</td>
 							</tr>");
 	if($c=="q"){$c="s";}else{$c="q";}
@@ -224,7 +222,7 @@ $r5=mysql_query($q5) or die(mysql_error());
 
 	}
 print("</table>");
-$availablehours=$interval*24*8;
+$availablehours=$interval*24*7;
 $totalaccounted=min2hm($totalaccounted);
 $tproduction=min2hm($tproduction);$tper=round((($tproduction/$totalaccounted)*100),2);
 $tsetup=min2hm($tsetup);$tsper=round((($tsetup/$totalaccounted)*100),2);
@@ -246,7 +244,6 @@ $tidle=min2hm($tidle);$tidleper=round((($tidle/$totalaccounted)*100),2);
 	print("<tr class=\"s\"><td>Set Up</td><td>$tsetup</td><td>$tsper</td></tr>");
 	print("<tr class=\"q\"><td>Rework</td><td>$trework</td><td>$trwper</td></tr>");
 	print("<tr class=\"s\"><td>Fixture Work</td><td>$tfixture</td><td>$tfxtper</td></tr>");
-	print("<tr class=\"q\"><td>CMM</td><td>$tcmm</td><td>$tcmmper</td></tr>");
 	print("<tr class=\"s\"><td>FAI</td><td>$tfai</td><td>$tfaiper</td></tr>");
 	print("<tr class=\"q\"><td>Maintenance</td><td>$tmaint</td><td>$tmaintper</td></tr>");
 	print("<tr class=\"s\"><td>Idle</td><td>$tidle</td><td>$tidleper</td></tr>");

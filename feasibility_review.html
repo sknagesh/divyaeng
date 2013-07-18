@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Feasibility Review For New Enquiry</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.form.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 25em; float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+    $("#feasibility").validate();  //attach validater to form
+    $('#enquiry').load("get_enquires.php");
+
+var options = {  ///options for ajaxSubnit function 
+        target:        '#footer',   // target div id to update result of submit 
+//        success:       showResponse  // post-submit callback 
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    };
+
+	$("#addp").click(function(event) {
+
+	 if($("#feasibility").valid())
+  	{
+	  	event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+	    $("#feasibility").ajaxSubmit(options);
+
+  	}
+
+		});
+		
+		
+ 
+
+
+  });
+
+
+
+  $(function () {
+  $('#edate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#edatedb', altFormat: 'Y-O-D'});
+  
+  $('#rdate').datetimeEntry({datetimeFormat: 'D-O-Y', altField: '#rdatedb', altFormat: 'Y-O-D'});
+  
+  });  
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+  <form name ="feasibility" id="feasibility" action="feasibility_review.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>Feasibility Review Check List</legend>
+
+    <div id="enquiry"></div>
+
+   <p>
+     <label>Volume/Batch Size of Components Required</label>
+     <input type="text" id="volume" name="volume" size="50"  maxlength="25"/>
+
+   <p>
+     <label>Are Any other Similar Components Being Machined</label>
+     <input type="text" id="scomps" name="scomps" size="50"  maxlength="50"/>
+
+   <p>
+     <label>Are Drawing Requirements Clear</label>
+      <input type="radio" id="clear1" name="requirementclear" value="1" checked>Yes
+      <input type="radio" id="clear22" name="requirementclear" value="0" >No
+
+   <p>
+     <label>Are Further Clarifications Required</label>
+      <input type="radio" id="clarification1" name="clarification" value="1" >Yes
+      <input type="radio" id="clarification2" name="clarification" value="0" checked>No
+
+   <p>
+     <label>Is Component Technically Feasible</label>
+      <input type="radio" id="tfeasible1" name="tfeasible" value="1" checked>Yes
+      <input type="radio" id="tfeasible2" name="tfeasible" value="0" >No
+
+   <p>
+     <label>Tolerances Achievable?</label>
+      <input type="radio" id="tol1" name="tol" value="1" checked>Yes
+      <input type="radio" id="tol2" name="tol" value="0" >No
+
+   <p>
+     <label>Special Final Inspection Report Requirement</label>
+      <input type="radio" id="fir1" name="fir" value="1" >Yes
+      <input type="radio" id="fir2" name="fir" value="0" checked>No
+
+   <p>
+     <label>Documents to be Sent along with Each Batch</label>
+     <input type="text" id="docu" name="docu" size="50"  maxlength="50"/>
+
+
+   <p>
+     <label>Taxes and Duties applicable</label>
+     <input type="text" id="taxes" name="taxes" size="50"  maxlength="30"/>
+
+   <p>
+     <label>Component Packing Requirement</label>
+     <input type="text" id="packing" name="packing" size="50"  maxlength="30"/>
+
+   <p>
+     <label>Mode Of Transport</label>
+     <input type="text" id="tmode" name="tmode" size="50"  maxlength="30"/>
+
+   <p>
+     <label>Freight Paid By</label>
+     <input type="text" id="freight" name="freight" size="50"  maxlength="20"/>
+
+        <p>
+     <label>Payment Terms</label>
+     <input type="text" id="pterms" name="pterms" size="50"  maxlength="30"/>
+
+   <p>
+     <label>Machine Capacity Available</label>
+     <input type="text" id="mcapa" name="mcapa" size="50"  maxlength="30"/>
+
+   <p>
+     <label>Special Tooling/Fixture/Instrument Requirement</label>
+     <input type="text" id="tfireq" name="tfireq" size="50"  maxlength="50"/>
+
+   <p>
+     <label>Any Sub Contracting Required</label>
+     <input type="text" id="scont" name="scont" size="50"  maxlength="25"/>
+
+
+   <p>
+     <label>Is This Enquiry Feasible</label>
+      <input type="radio" id="ef1" name="ef" value="1" class="required">Yes
+      <input type="radio" id="ef2" name="ef" value="0" >No
+   <p>
+     <label>Remarks</label>
+     <input type="text" id="remarks" name="remarks" size="50"  maxlength="50"/>
+
+   <p>
+     <input class="submit" id="addp" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"> </div>
+<div id="footer2"> </div>
+
+
+</body>
+</html>

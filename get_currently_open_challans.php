@@ -10,7 +10,7 @@ $query="SELECT EX_Challan_NO,EX_Challan_Date,mi.Material_Inward_ID,Material_Qty,
 		FROM Material_Inward as mi INNER JOIN MI_Drg_Qty as midq on midq.Material_Inward_ID=mi.Material_Inward_ID
 		INNER JOIN Component as comp on comp.Drawing_Id=midq.Drawing_ID 
 		INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID   
-		WHERE mi.Open=1";
+		WHERE mi.Open=1 ORDER BY cust.Customer_ID";
 
 //print($query);
 

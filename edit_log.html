@@ -109,7 +109,9 @@ p { font-weight: bold; clear: both; }
 
 					$('#simg').html(simg);
 					$('#spm').html(data[15]);
-					
+					$('#SPM_ID').val(data[16]);
+					console.log("spm id="+data[16]);
+					console.log("spm id altered="+$('#SPM_ID').val());
 					if(data[15]!='')
 					{
 
@@ -271,7 +273,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
 	 <div id="mtype"> </div>
 
 <div id="fai">
-	   <p>
+	  <p>
      <label for="pno">Operation Description</label>
      <input type="text" name="opdesc" id="opdesc" size="25" class="required"> 
 	   <p>
@@ -306,6 +308,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
 	   <p>
      <label for="drgop">Service Engineer's Name</label>
      <input type="text" name="mkengr" id="mkengr" size="25" >
+     <input type="hidden" name="SPM_ID" id="SPM_ID">
 	   <p>
 
 	   	<div id="oldmaint">

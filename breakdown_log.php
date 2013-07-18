@@ -18,6 +18,7 @@ if(isSet($_POST['mkengr'])){$mkengr=$_POST['mkengr'];}else{$mkengr="";}
 if(isSet($_POST['spares'])){$spares=$_POST['spares'];}else{$spares="";}
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
 if(isSet($_POST['pm'])){$pm=$_POST['pm'];}else{$pm="";}
+if(isSet($_POST['SPM_ID'])){$spmid=$_POST['SPM_ID'];}else{$spmid="";}
 if($pm!='')
 {
 $pm=implode(',', $pm);
@@ -55,14 +56,16 @@ $pquery="INSERT INTO Maintenance (Activity_Log_ID,
 								Maintenance_Desc,
 								Spares_Used,
 								Maintenance_Type_ID,
-								Sch_Prev_Maint_IDs) ";
+								Sch_Prev_Maint_IDs,
+								SPM_ID) ";
 $pquery.="VALUES('$lastid',
 				'$mkengr',
 				'$bddetails',
 				'$wodetails',
 				'$spares',
 				'$maintid',
-				'$pm');";
+				'$pm',
+				'$spmid');";
 
 //print("<br>$pquery");
 $result=mysql_query($pquery) or die(mysql_error());

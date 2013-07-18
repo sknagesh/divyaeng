@@ -116,8 +116,11 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,DATE_FORMAT(Insp_Date,'%d/%m/%
 		{
 			if($row['Comment']==''){$ob=$row['Observed_Dimn'];}else{$ob=$row['Comment'];}
 			$rrow[$z][$x]=$ob.' '.$row['Remarks'];
+			if(($jdate=='')&&($name==''))
+				{
 			$jdate=$row['sdt'];
 			$name=$row['Operator_Name'];
+				}
 			$x+=1;
 		}
 //	$jobno[$z]=$i['Job_NO'];	
