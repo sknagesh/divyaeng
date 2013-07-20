@@ -39,18 +39,23 @@ if($noofrecords!=0)
 {
 	$c="q";
 print("<table cellspacing=\"1\" cellborder=\"1\" >");
-print("<tr class=\"t\" ><th>Enquiry ID</th><th>Customer Name</th><th>Enquiry Date</th><th>Required Date</th>
+print("<tr class=\"t\" ><th>Details</th><th>Enquiry ID</th><th>Customer Name</th><th>Enquiry Date</th><th>Required Date</th>
 						<th>Enquiry Ref</th><th>Component Name</th><th>Drawing No</th>
-						<th>Material</th><th>Material Source</th><th>Visual Ref</th><th>Remarks</th></tr>");
+						<th>Material</th><th>Material Source</th><th>Visual Ref</th><th>Remarks</th></tr></table>");
+$i=0;
 while ($row = mysql_fetch_assoc($resa))
 {
-		
-print("<tr class=\"$c\"><td>$row[Enquiry_ID]</td><td>$row[Customer_Name]</td><td>$row[Enquiry_Date]</td><td>$row[Required_Date]</td>
+print("<table cellspacing=\"1\" cellborder=\"1\" >");		
+print("<tr class=\"$c\"><td><input type=\"radio\" name=\"detail\" class=\"detail\" id=\"detail[$i]\" value=\"$row[Enquiry_ID]\"></td>
+	<td>$row[Enquiry_ID]</td><td>$row[Customer_Name]</td><td>$row[Enquiry_Date]</td><td>$row[Required_Date]</td>
 						<td>$row[Enquiry_Ref]</td><td>$row[Component_Name]</td><td>$row[Drawing_NO]</td><td>$row[Component_Material]</td>
 						<td>$row[Material_Source]</td><td>$row[Visual_Ref]</td><td>$row[Remarks]</td></tr>");
-if($c=="q"){$c="s";}else{$c="q";}
-}
+print("<tr><td colspan=\"12\"><div id=\"$i\"></div></td><tr>");
 print("</table>");
+if($c=="q"){$c="s";}else{$c="q";}
+$i++;
+}
+
 }else{print("No Enquired Found This Period");}
 
 

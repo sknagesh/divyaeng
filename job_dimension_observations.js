@@ -106,9 +106,10 @@ $('input[id^="fai"]').click(function() {      //show dimensions based on selecti
 	});
 
 
+
 $("#submit").click(function(event) {
 
-if($('#inputdimn').valid())
+if($('#inputdimn').valid()&&dimncheck())
 {
 		event.preventDefault();
 		$.ajax({
@@ -122,7 +123,11 @@ if($('#inputdimn').valid())
 					$('#ipdimns').text(' ');
       							}
 	});
+}else
+{
+			event.preventDefault();
 }
+
 });
 
 
@@ -135,3 +140,21 @@ $(function () {
 	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#dbdate', altFormat: 'Y-O-D'});
 	
 });  
+
+function dimncheck(){
+
+
+var elements = $('*[id^="observation"]');   //$("input[name='observation[]']");
+    var validated = false;
+    elements.each(function() {
+        if ($(this).val() != '') {
+        	console.log('value='+$(this).val());
+            validated = true;
+            return false; // will break the each
+        } else {
+            validated = false;
+        }
+    });
+    console.log(validated);
+    return validated;
+}

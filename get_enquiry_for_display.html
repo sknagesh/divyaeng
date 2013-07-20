@@ -43,6 +43,24 @@ $(function () {
 	
 	});  
 
+
+
+  $(document).on('click', ".detail", function(event) {
+    var enqid=$(this).val();
+    console.log(enqid);
+  var eid=$(this).attr("id");
+  var p1=eid.indexOf("[")+1;
+  var p2=eid.indexOf("]");
+  var id=eid.substring(p1,p2);
+
+    var url='get_enquiry_details.php?eid='+enqid;
+    $('#'+id).load(url);
+  
+  });
+
+
+
+
   });
 
 function customRange() { 

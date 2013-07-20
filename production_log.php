@@ -70,9 +70,9 @@ $ok=mysql_affected_rows();
 }
 if($ok!=0)
 {
-	print("Added one Row in to Production Log with Batch ID $bno and Log ID is $lastid");
+	print('<p style="font-size:12px;color:green">Added one Row in to Production Log with Batch ID $bno and Log ID is $lastid</p>');
 }else{
-	print("Error adding into Production Log");
+	print('<p style="font-size:12px;color:red">Error adding into Production Log</p>');
 }
 
 
@@ -117,4 +117,5 @@ if($oimgfiles!='')
 
 
 }
+
 ?>

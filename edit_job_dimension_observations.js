@@ -18,7 +18,7 @@ $(document).on("keyup", '*[id^="obser"]', function(event){//function to check if
 	var tup=document.getElementById(tu).value;
 	var bdim=document.getElementById(bd).value;
 	var edimn=$(this).val();
-console.log("tlow="+tlow+"tup="+tup+"bdim="+bdim+"edim="+edimn);
+//console.log("tlow="+tlow+"tup="+tup+"bdim="+bdim+"edim="+edimn);
 
 	if(edimn!="")
 		{
@@ -137,7 +137,8 @@ $("#submit").click(function(event) {
 
 
 
-
+if($('#inputdimn').valid())
+{
  		event.preventDefault();
 		$.ajax({
       					data: $('#inputdimn').serializeArray(),
@@ -149,8 +150,8 @@ $("#submit").click(function(event) {
 //				$('#inputdimn')[0].reset();
 					$('#ipdimns').text(' ');
       							}
-	});
-
+			});
+}
 });
 
 });

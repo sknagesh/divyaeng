@@ -45,7 +45,7 @@ while ($row = mysql_fetch_assoc($resa))
 		
 	if($row['Activity_ID']==1)
 	{
-		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Operation_Desc,Quantity,pro.Program_NO FROM Production as pro 
+		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Batch_Remarks,Operation_Desc,Quantity,pro.Program_NO FROM Production as pro 
 		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=pro.Batch_ID 
 		INNER JOIN Batch_NO as bn ON bn.Batch_ID=bmc.Batch_ID
 		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
@@ -57,13 +57,13 @@ while ($row = mysql_fetch_assoc($resa))
 		$dno=$rr['Drawing_NO'];
 		$compname=$rr['Component_Name'];
 		$operationdesc=$rr['Operation_Desc'];
-		$batchno=$rr['Mfg_Batch_NO'];
+		$batchno=$rr['Mfg_Batch_NO'].'<p style="font-size:9px;color:green">'. $rr['Batch_Remarks'].'</p>';
 		$qty=$rr['Quantity'];
 		$pno=$rr['Program_NO'];
 	}else
 		if($row['Activity_ID']==2)
 	{
-		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Operation_Desc,Quantity,pro.Program_NO FROM Production as pro 
+		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Batch_Remarks,Operation_Desc,Quantity,pro.Program_NO FROM Production as pro 
 		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=pro.Batch_ID 
 		INNER JOIN Batch_NO as bn ON bn.Batch_ID=bmc.Batch_ID
 		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
@@ -75,7 +75,7 @@ while ($row = mysql_fetch_assoc($resa))
 		$dno=$rr['Drawing_NO'];
 		$compname=$rr['Component_Name'];
 		$operationdesc=$rr['Operation_Desc'];
-		$batchno=$rr['Mfg_Batch_NO'];
+		$batchno=$rr['Mfg_Batch_NO'] . $rr['Batch_Remarks'];
 		$qty=$rr['Quantity'];		 
 		$pno=$rr['Program_NO'];
 	}else
@@ -123,6 +123,7 @@ while ($row = mysql_fetch_assoc($resa))
 		$dno='';
 		$qty='';
 		$pno='';
+		$batchno='';
 	}else
 			if($row['Activity_ID']==8)
 	{
@@ -140,6 +141,7 @@ while ($row = mysql_fetch_assoc($resa))
 		$dno='';
 		$qty='';
 		$pno='';
+		$batchno='';
 	}else
 
 		if($row['Activity_ID']==11)
@@ -184,6 +186,7 @@ while ($row = mysql_fetch_assoc($resa))
 			$compname='';
 			$pno='';
 			$qty='';
+			$batchno='';
 
 		}
 		
@@ -200,7 +203,7 @@ while ($row = mysql_fetch_assoc($resa))
 		{
 			$images=explode(',', $row['ip']);
 			
-			$ip="<table style=\"width:80px\"><tr><td>$batchno<td></tr><tr><td>";
+			$ip="<table style=\"width:80px\"><tr><td>$pno<td></tr><tr><td>";
 			$y=1;
 			for($z=0;$z<count($images);$z++)
 			{
@@ -210,14 +213,14 @@ while ($row = mysql_fetch_assoc($resa))
 			$ip.="</td></tr></table>";			
 		}else{
 			
-			$ip=$batchno;
+			$ip=$pno;
 		}
 		
 print("<tr class=\"$c\"><td>$id</td><td>$machine</td><td>$activity</td><td style=\"width:130px\">$dno : $compname</td>
-		<td style=\"width:150px\">$operationdesc</td><td style=\"width:80px\">$ip</td><td style=\"width:80px\">$sdt</td><td style=\"width:80px\">$edt</td>
+		<td style=\"width:150px\">$operationdesc</td><td style=\"width:80px\">$batchno</td><td style=\"width:80px\">$sdt</td><td style=\"width:80px\">$edt</td>
 		<td align=\"center\" style=\"width:50px\">$td</td>
 		<td align=\"center\" style=\"width:40px\">$qty</td>
-		<td style=\"width:55px\">$pno</td><td style=\"width:80px\">$opename</td>
+		<td style=\"width:55px\">$ip</td><td style=\"width:80px\">$opename</td>
 		<td><span style=\"max-width:150px;\">$remarks</span></td></tr>");
 if($c=="q"){$c="s";}else{$c="q";}
 }

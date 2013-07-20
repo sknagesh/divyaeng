@@ -9,7 +9,7 @@ $machineid=$_POST['Machine_ID'];
 $sdatetime=$_POST['sdatedb'];
 $edatetime=$_POST['edatedb'];
 $operatorid=$_POST['Operator_ID'];
-$idleid=$_POST['Idle_ID'];
+if(isSet($_POST['Idle_ID'])){$idleid=$_POST['Idle_ID'];}else{$idleid='';}
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remark="";}
 
 
@@ -38,9 +38,9 @@ if($ok!=0)
 
 $q2="INSERT INTO NonProduction (Activity_Log_ID,Idle_ID) VALUES('$lastid','$idleid');";
 $res=mysql_query($q2) or die(mysql_error());
-	print("<p style=font size:12 color:green>Added one Row in to Idle Time Log with Batch ID $bno and Log ID is $lastid</p>");
+	print('<p style="font-size:12px;color:green">Added one Row in to Idle Time Log with Batch ID $bno and Log ID is $lastid</p>');
 }else{
-	print("<p style=font size:12 color:red>Error adding into Production Log</p>");
+	print('<p style="font-size:12px;color:red">Error adding into Production Log</p>');
 }
 
 ?>

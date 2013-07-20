@@ -99,10 +99,17 @@ function Footer()
 {
 	
     // Position at 1.5 cm from bottom
-    $this->SetY(-35);
-	$this->line(0,260,220,260);
-    $this->SetFont('helvetica','B',8);
+    $this->SetY(-45);
+	$this->line(0,250,220,250);
+    $this->SetFont('helvetica','B',10);
+    $this->Cell(100,6,'Received the above materials in good condition',0,0,'L');
+    $this->Cell(100,6,'For Divya Engineering Works (P) Ltd',0,1,'L');
     // Page number
+    $this->ln();
+    $this->ln();
+    $this->Cell(80,6,"RECEIVER's  SIGNATURE",0,0,'C');
+    $this->Cell(100,6,"Authorised Signatory",0,1,'C');
+    $this->SetFont('helvetica','B',8);
     $this->Cell(200,6,'Commissionerate: Mysore. Division II,S1 & S2,Vinaya Marg, Siddhartha Nagar, Mysore -11 ',0,1,'L');
 	$this->Cell(100,6,'Range: Mysore West, Vinaya Marg, Siddartha Nagar, Mysore - 11   C.E.Reg No AAACD6353QXM001   Ser.Tax.Reg. AAACD6353QST002',0,1,'L');
     $this->SetFont('helvetica','B',11);
@@ -163,7 +170,7 @@ while($j<count($dq_list))
 }
 
 
-$pdf->setY(200);
+$pdf->setY(180);
 $pdf->SetFont('helvetica','',8); //body font
 $pdf->MultiCell(80, 8, "Material Received Vide", 0, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 $j=0;
@@ -183,6 +190,11 @@ while($j<count($cqr_list))
 		$rchdet = mysql_query($qchdet, $cxn) or die(mysql_error($cxn));
 		$rowch=mysql_fetch_assoc($rchdet);
 		$pdf->Cell(80,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['EX_Challan_Date'],0,0,'L');
+		if($custid==3){
+		$pdf->Cell(80,8,$rowch['GP_NO']." Dated: ".$rowch['GP_Date'],0,0,'L');
+
+		}
+
 		$pdf->Cell(20,8,"Quantity: ".$cqr_list[$j][1],0,0,'L');
 
 	}
@@ -190,9 +202,10 @@ while($j<count($cqr_list))
 }
 
 
-$pdf->SetY(-53);
+$pdf->SetY(-63);
 $pdf->SetFont('helvetica','B',11); //note font
-$pdf->Cell(200,8,"Consignee's TIN No: ".$tinno,0,1,'L');
+$pdf->Cell(100,8,"Consignee's TIN No: ".$tinno,0,0,'L');if($custid==3){$pdf->Cell(100,8,"Vendor Code: 1247",0,0,'L');}
+$pdf->ln();
 $pdf->Cell(200,8,"Note: ".$gcomm,0,0,'L');
 
 

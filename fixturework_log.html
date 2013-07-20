@@ -85,7 +85,7 @@ p { font-weight: bold; clear: both; }
 	});
 
 
-  	$('#edate').focus(function(){
+  	$('#sdate').focus(function(){
 	var mid=$('#Machine_ID').val();
 			$.ajax({
       					type: "GET",
@@ -95,10 +95,11 @@ p { font-weight: bold; clear: both; }
 						
 						var data=html.split('<>');						
 												
-						$('#sd').text(data[0]);
+	//					$('#sd').text(data[0]);
 						$('#sdate').val(data[0]);
 						$('#sdatedb').val(data[1]);
 						$('#edate').val(data[0]);
+						$('#edatedb').val(data[1]);
 						console.log("back from ajax call data 0="+data[0]+"data 1="+data[1]);
 										}
     							});
@@ -156,7 +157,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
 	   <p>
 
      <label for="sdate">Start Date and Time </label>
-     <input type="hidden" name="sdate" id="sdate" size="25">
+     <input type="text" name="sdate" id="sdate" size="25" class="required">
      <div id="sd"> </div>
       <input type="hidden" name="sdatedb" id="sdatedb" >
 	   <p>
