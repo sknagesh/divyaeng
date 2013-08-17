@@ -26,7 +26,14 @@ if($edate!='')
 	$edate="AND Enquiry_Date<='$edate'";
 }
 
-$query="SELECT * FROM Enquiry_Record WHERE Customer_Name!='' $mid $sdate $edate;";
+if(($mid=='')&&($sdate=='')&&($edate==''))
+{
+$query="SELECT * FROM Enquiry_Record;";
+}else
+{
+$query="SELECT * FROM Enquiry_Record WHERE Customer_Name!='' $mid $sdate $edate;";	
+}
+
 
 
 	

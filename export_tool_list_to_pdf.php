@@ -11,7 +11,7 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
 $query="SELECT * FROM Component WHERE Drawing_ID=$did;";
-print($query);
+//print($query);
 
 
 
@@ -75,7 +75,7 @@ $pdf->AddPage('L','A4');
 $pdf->SetFont('helvetica','',10);
 
 
-$q2="SELECT * FROM Operation WHERE Drawing_ID=$did AND In_Tool_List=1;";
+$q2="SELECT * FROM Operation WHERE Drawing_ID=$did AND In_Tool_List=1 ORDER BY Operation_Desc ASC;";
 
 $rr=mysql_query($q2) or die(mysql_error());
 $noofop=mysql_affected_rows();
@@ -94,44 +94,54 @@ $pdf->Cell(80,8,'Work Description',1,1,'L');
 $pdf->SetFont('helvetica','',10);
 
 
-$q3="SELECT Ope_Tool_ID,t.Tool_Part_NO,t.Tool_Desc,Insert_ID_1,Insert_ID_2,tb1.Brand_Description as bd1,tb2.Brand_Description as bd2,
-		tt.Tool_Part_NO as tpn2,tt.Tool_Desc as tde2,ins2.Insert_Part_NO as ip2,ins2.Insert_Description as id2,
-		inse.Insert_Description,
-		t.Tool_Dia,Tool_ID_1,Tool_ID_2,Ope_Tool_OH,Ope_Tool_Desc,Holder_Description FROM Ope_Tool AS ot 
-		INNER JOIN Tool as t ON t.Tool_ID=ot.Tool_ID_1 
-		LEFT OUTER JOIN Inserts AS inse ON inse.Insert_ID=ot.Insert_ID_1
-		LEFT OUTER JOIN Inserts AS ins2 ON ins2.Insert_ID=ot.Insert_ID_2
-		LEFT OUTER JOIN Tool as tt ON tt.Tool_ID=ot.Tool_ID_2 
-		INNER JOIN Tool_Brand as tb1 ON tb1.Brand_ID=t.Brand_ID
-		INNER JOIN Tool_Brand as tb2 ON tb2.Brand_ID=tt.Brand_ID
-		INNER JOIN Holder AS h ON h.Holder_ID=ot.Holder_ID_1 
-		WHERE ot.Operation_ID='$row[Operation_ID]';";
+$q3='SELECT Ope_Tool_ID,Ope_Tool_OH,Ope_Tool_Desc,Tool_ID_1,Ope_Tool_Image_Path,Storage_Location,
+		(SELECT CONCAT(Tool_Desc," ( ",Tool_Part_NO," )") FROM Tool WHERE Tool_ID=ot.Tool_ID_1) as td1, 
+		(SELECT CONCAT(Tool_Desc," ( ",Tool_Part_NO," )") FROM Tool WHERE Tool_ID=ot.Tool_ID_2)as td2, 
+		(SELECT CONCAT(Insert_Part_NO," ",Insert_Description) FROM Inserts WHERE Insert_ID=ot.Insert_ID_1) as i1,
+		(SELECT CONCAT(Insert_Part_NO," ",Insert_Description) FROM Inserts WHERE Insert_ID=ot.Insert_ID_2) as i2,
+		(SELECT Brand_Description FROM Tool_Brand as tb INNER JOIN Tool as t1 ON t1.Brand_ID=tb.Brand_ID WHERE t1.Tool_ID=ot.Tool_ID_1) as tb1,
+		(SELECT Brand_Description FROM Tool_Brand as tb2 INNER JOIN Tool as t2 ON t2.Brand_ID=tb2.Brand_ID WHERE t2.Tool_ID=ot.Tool_ID_2) as tb2, 
+		(SELECT Holder_Description FROM Holder as h1 WHERE Holder_ID=ot.Holder_ID_1) as hd1,
+		(SELECT Holder_Description FROM Holder as h2 WHERE Holder_ID=ot.Holder_ID_2) as hd2
+		FROM Ope_Tool AS ot WHERE ot.Operation_ID="'.$row[Operation_ID].'";';
 
-//	print($q3);
-
-//	$q3="SELECT Tool_Part_NO,Tool_Desc,Tool_Dia,Ope_Tool_OH,Ope_Tool_Desc,Holder_Desc FROM Ope_Tools AS ot  
-//				INNER JOIN Tool as t ON t.Tool_ID=ot.Tool_ID_1
-//				INNER JOIN Holder AS h ON h.Holder_ID=ot.Holder_ID
-//				WHERE ot.Operation_ID='$row[Operation_ID]';";
 		$rr3=mysql_query($q3) or die(mysql_error());
 		
 $n=1;
 	while($rowi=mysql_fetch_assoc($rr3))
 	{
 		$pdf->Cell(10,8,$n,1,0,'C');
-		$pdf->Cell(135,8,$rowi[Tool_Desc]." (".$rowi[Tool_Part_NO].")",1,0,'L');
-		$pdf->Cell(25,8,$rowi[Holder_Description],1,0,'L');
+		$pdf->Cell(135,8,$rowi[td1],1,0,'L');
+		$pdf->Cell(25,8,$rowi[hd1],1,0,'L');
 		$pdf->Cell(25,8,$rowi[Ope_Tool_OH],1,0,'C');
 		$pdf->Cell(80,8,$rowi[Ope_Tool_Desc],1,1,'L');
+
+		if (($pdf->getY()) > ($pdf->getPageHeight()-46.5))   //IF TOOL LIST EXCEEDS ONE PAGE FOR THIS OPERATION
+		{
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+		$pdf->SetY(30);
+		$pdf->SetFont('helvetica','B',12);
+		$pdf->Cell(275,8,'Operation Description '. $row['Operation_Desc']."  Program No: ".$row['Program_NO'],1,1,'C');
+		$pdf->SetFont('helvetica','B',9);
+		$pdf->Cell(10,8,'SL No',1,0,'C');
+		$pdf->Cell(135,8,'Tool Part No and Description',1,0,'L');
+		$pdf->Cell(25,8,'Tool Holder',1,0,'L');
+		$pdf->Cell(25,8,'Tool Overhang',1,0,'C');
+		$pdf->Cell(80,8,'Work Description',1,1,'L');
+		$pdf->SetFont('helvetica','',10);
+
+
+		}
 	$n+=1;
 		
 	}
 
-$pn+=1;
-if($pn!=$noofop)
-{
-	$pdf->AddPage('L');	
-}
+		$pn+=1;
+		if($pn!=$noofop)
+			{
+				$pdf->AddPage('L');	
+			}
 
 	
 	

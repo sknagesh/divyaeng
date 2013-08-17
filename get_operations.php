@@ -7,13 +7,22 @@ if(isSet($_GET['oid'])){$did=$_GET['oid'];}else{$did="";}
 if(isSet($_GET['itl'])){$itl=$_GET['itl'];}else{$itl="";}
 if(isSet($_GET['hcomp'])){$hcomp=$_GET['hcomp'];}else{$hcomp="";}
 if(isSet($_GET['id'])){$id=$_GET['id'];}else{$id="";}
+if(isSet($_GET['iol'])){$iol=$_GET['iol'];}else{$iol="";}
 //print_r($_POST);
+
+$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' AND In_Tool_List=1 AND In_Op_List=0 ORDER BY Operation_Desc;";
+
+
+if($iol==1)
+{
+	$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' ORDER BY Operation_Desc;";	
+}else 
 if($itl!=1)
 {
-$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' ORDER BY Operation_Desc;";
-}else{
-	$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' AND In_Tool_List=1 ORDER BY Operation_Desc;";
+$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' AND In_Op_List=0 ORDER BY Operation_Desc;";
 }
+
+//print($query);
 print("<label for=\"draw\">Select Operation</label>");
 print("<select name=\"Operation_ID$id\" id=\"Operation_ID$id\" class=\"required\">");
 echo '<option value="">Select Operation</option>';

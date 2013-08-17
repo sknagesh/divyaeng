@@ -35,7 +35,7 @@ p { font-weight: bold; clear: both; }
 		var drawingid=$('#Drawing_ID').val();
 		if(drawingid!='')
 		{
-		var url='get_operations.php?drawingid='+drawingid;
+		var url='get_operations.php?drawingid='+drawingid+'&iol=1';
   		$("#operation").load(url)
   		}else{
   			$("#operation").text('');

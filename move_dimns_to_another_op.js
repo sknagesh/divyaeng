@@ -41,8 +41,8 @@ $("#sdrawing").click(function() {      //populate operation list based on drawin
 	var drawingid=$('#Drawing_IDS').val();
 	if(drawingid!='')
 		{
-		var urls="get_operations.php?drawingid="+drawingid+"&id=S";
-		var urld="get_operations.php?drawingid="+drawingid+"&id=D";
+		var urls="get_operations.php?drawingid="+drawingid+"&id=S"+'&iol=1';
+		var urld="get_operations.php?drawingid="+drawingid+"&id=D"+'&iol=1';
 			if(action=='move')
 			{
 			$('#soperation').load(urls);
@@ -73,7 +73,7 @@ $("#ddrawing").click(function() {      //populate operation list based on drawin
 	var drawingid=$('#Drawing_IDD').val();
 	if(drawingid!='')
 		{
-		var urld="get_operations.php?drawingid="+drawingid+"&id=D";
+		var urld="get_operations.php?drawingid="+drawingid+"&id=D"+'&iol=1';
 		$('#doperation').load(urld);
 		}else{
 			$('#doperation').text('');

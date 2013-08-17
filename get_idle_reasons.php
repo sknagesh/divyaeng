@@ -2,7 +2,6 @@
 include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
-$supid=$_GET['sid'];
 $query="SELECT * FROM Idle_Reason;";
 
 //print($query);

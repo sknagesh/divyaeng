@@ -15,7 +15,7 @@ if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
 {
 
 	$q="SELECT prod.Activity_Log_ID, mdq.Drawing_ID,prod.Batch_ID,Activity_ID,Machine_ID, comp.Customer_ID,Operation_ID,Start_Date_Time,End_Date_Time,
-	Operator_ID, DATE_FORMAT(Start_Date_Time,'%d-%m-%Y %h:%i:%s %p') as sdt, DATE_FORMAT(End_Date_time,'%d-%m-%Y %h:%i:%s %p') as edt,
+	Operator_ID, DATE_FORMAT(Start_Date_Time,'%d-%m-%Y %H:%i:%s %p') as sdt, DATE_FORMAT(End_Date_time,'%d-%m-%Y %H:%i:%s %p') as edt,
 	Quantity,Remarks,Program_NO,
 	(Select GROUP_CONCAT(CONCAT(AL_Image_ID, ',' ,Image_Path)) FROM ActivityLog_Image WHERE Activity_LOG_ID='$lid')as ali
 	 FROM Production as prod INNER JOIN ActivityLog as actl ON actl.Activity_Log_ID=prod.Activity_Log_ID 
@@ -124,9 +124,11 @@ $c='';
 } else if($activityid==8) //idle time log
 	{
 
-	$q="SELECT Activity_Log_ID,Activity_ID,Machine_ID, Start_Date_Time,End_Date_Time,Operator_ID, 
+	$q="SELECT actl.Activity_Log_ID,Activity_ID,Machine_ID, Start_Date_Time,End_Date_Time,Operator_ID,np.Idle_ID,
 	DATE_FORMAT(Start_Date_Time,'%d-%m-%Y %h:%i:%s %p') as sdt, DATE_FORMAT(End_Date_time,'%d-%m-%Y %h:%i:%s %p') as edt,
-	Remarks FROM ActivityLog WHERE Activity_Log_ID='$lid';";
+	Remarks FROM ActivityLog as actl 
+	INNER JOIN NonProduction as np ON np.Activity_Log_ID=actl.Activity_Log_ID 
+	LEFT OUTER JOIN Idle_Reason as ir ON ir.Idle_ID=np.Idle_ID WHERE actl.Activity_Log_ID='$lid';";
 		
 	$resa = mysql_query($q, $cxn) or die(mysql_error($cxn));
 
@@ -142,7 +144,26 @@ $c='';
 		$sdtdb=$row['Start_Date_Time'];
 		$edtdb=$row['End_Date_Time'];
 		$actid=$row['Activity_ID'];
-		$data=$activityid."<|>".$mid."<|>".$opeid."<|>".$sdt."<|>".$edt."<|>".$remark."<|>".$sdtdb."<|>".$edtdb."<|>".$actid;
+		if($row['Idle_ID']!='')
+		{
+
+			$q8="SELECT * From Idle_Reason;";
+			$r8 = mysql_query($q8, $cxn) or die(mysql_error($cxn));
+			
+$irs="<label>Reason For Machine Idle</label>";
+$irs.="<select name=\"Idle_ID\" id=\"Idle_ID\" class=\"required\">";
+$irs.='<option value="">Select Reason</option>';
+while ($row8 = mysql_fetch_assoc($r8))
+{
+	if($row8['Idle_ID']==$row['Idle_ID']){$sel="selected=selected";}else{$sel='';}
+$irs.="<option value=".$row8['Idle_ID']." ".$sel.">";
+$irs.="$row8[Idle_Reason]</option>";
+}
+$irs.="</select>";
+
+
+		}
+		$data=$activityid."<|>".$mid."<|>".$opeid."<|>".$sdt."<|>".$edt."<|>".$remark."<|>".$sdtdb."<|>".$edtdb."<|>".$actid."<|>".$irs;
 	
 		}else 	
 		{

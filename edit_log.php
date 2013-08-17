@@ -35,6 +35,7 @@ if(isSet($_POST['opdesc'])){$opdesc=$_POST['opdesc'];}else{$opdesc='';}
 
 if(isSet($_POST['simg'])){$simg=$_POST['simg'];}else{$simg='';}
 
+if(isSet($_POST['Idle_ID'])){$idleid=$_POST['Idle_ID'];}else{$idleid='';}
 
 
 $spmids='';
@@ -111,6 +112,17 @@ $pquery="UPDATE NonProduction SET Drawing_ID='$drawingid',
 								Program_NO='$progno',
 								Quantity='$qty',
 								Batch_ID='$bid' WHERE Activity_Log_ID=$actlid; ";
+
+//print("<br>$pquery");
+
+$result=mysql_query($pquery) or die(mysql_error());
+
+print("Updated Log ID $actlid");
+
+	
+}else if(($activityid==8))
+{
+$pquery="UPDATE NonProduction SET Idle_ID='$idleid' WHERE Activity_Log_ID=$actlid; ";
 
 //print("<br>$pquery");
 

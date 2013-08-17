@@ -133,19 +133,22 @@ $pdf->SetFont('helvetica','',13);
 $pdf->Cell(125,8,$addl1,0,0,'L');$pdf->Cell(100,8,"Date: $dcdate",0,1,'L');
 $pdf->Cell(125,8,$addl2,0,0,'L');$pdf->Cell(100,8,"Your Ref: $cref",0,1,'L');
 $pdf->Cell(125,8,"Phone No: ".$phone,0,0,'L');$pdf->Cell(100,8,"Date: $refdate",0,1,'L');
-$pdf->ln(8);
-$pdf->line(0,97,220,97);//line before mode of dispatch
-$pdf->Cell(125,8,'',0,0,'L');$pdf->Cell(100,8,"Mode Of Dispatch: $dmode",0,1,'L');
+$pdf->ln();
+$pdf->line(0,87,220,87);//line before mode of dispatch
+$pdf->setY(86);
+$pdf->MultiCell(125, 16, "Please receive the following materials and acknowledge the receipt", 0, 'L', 0, 0, '', '', true,0,false,true,16,'M',true);
+$pdf->Cell(100,8,"Mode Of Dispatch: $dmode",0,1,'L');
 $pdf->Cell(125,8,"",0,0,'L');$pdf->Cell(100,8,"Status: $dctype",0,1,'L');
 $pdf->SetFont('helvetica','',10);
-$pdf->Cell(150,8,"Please receive the following materials and acknowledge the receipt",0,1,'L');
-$pdf->line(0,110,220,110);//line after mode of dispatch
-$pdf->line(135,55,135,97);//vertical line b/w address and dc no
+$pdf->Cell(150,8,'',0,1,'L');
+$pdf->line(0,101,220,101);//line after mode of dispatch
+$pdf->line(135,55,135,101);//vertical line b/w address and dc no
 $pdf->line(135,72,220,72);//horizontal line b/w dc no and cust ref
 $pdf->SetFont('helvetica','B',11);
+$pdf->setY(100);
 $pdf->Cell(20,8,"SL NO",0,0,'L');$pdf->Cell(80,8,"Description",0,0,'L');
-$pdf->Cell(20,8,"Qty",0,0,'L');$pdf->Cell(50,8,"Remarks",0,0,'L');
-$pdf->line(0,120,220,120);//line after slno, desc and remarks
+$pdf->Cell(35,8,"Qty",0,0,'C');$pdf->Cell(50,8,"Remarks",0,0,'C');
+$pdf->line(0,110,220,110);//line after slno, desc and remarks
 $pdf->ln(6);
 
 
@@ -163,8 +166,8 @@ while($j<count($dq_list))
 		$rcdet = mysql_query($qcdet, $cxn) or die(mysql_error($cxn));
 		$rowc=mysql_fetch_assoc($rcdet);
 		$pdf->MultiCell(80, 8, "$rowc[Component_Name]  $rowc[Drawing_NO]", 0, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
-		$pdf->Cell(20,8,$dq_list[$j][1],0,0,'L');
-		$pdf->Cell(75,8,$cqr_list[$j][2],0,0,'L');  //remarks from challan_qty_remarks_array
+		$pdf->Cell(35,8,$dq_list[$j][1],0,0,'C');
+		$pdf->Cell(50,8,$cqr_list[$j][2],0,0,'C');  //remarks from challan_qty_remarks_array
 	}
 			$j++;
 }
@@ -185,14 +188,19 @@ while($j<count($cqr_list))
 		$remdq=mysql_fetch_assoc($rmdq);
 		$miid=$remdq['Material_Inward_ID'];
 
-		$qchdet="SELECT * FROM Material_Inward WHERE Material_Inward_ID='".$miid."';";
-//print($qcdet);
+		$qchdet="SELECT EX_Challan_NO,DATE_FORMAT(EX_Challan_Date,'%d/%m/%Y') as exd,GP_NO,DATE_FORMAT(GP_Date,'%d/%m/%Y') as gpd,
+				DA_NO,DATE_FORMAT(DA_Date,'%d/%m/%Y') as dad FROM Material_Inward WHERE Material_Inward_ID='".$miid."';";
+//print($qchdet);
 		$rchdet = mysql_query($qchdet, $cxn) or die(mysql_error($cxn));
 		$rowch=mysql_fetch_assoc($rchdet);
-		$pdf->Cell(80,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['EX_Challan_Date'],0,0,'L');
-		if($custid==3){
-		$pdf->Cell(80,8,$rowch['GP_NO']." Dated: ".$rowch['GP_Date'],0,0,'L');
 
+		if($custid==3){
+		$pdf->Cell(50,8,$rowch['GP_NO']." Dated: ".$rowch['gpd'],0,0,'L');
+		$pdf->Cell(50,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');
+		$pdf->Cell(50,8,$rowch['DA_NO']." Dated: ".$rowch['dad'],0,0,'L');
+
+		}else{
+					$pdf->Cell(80,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');
 		}
 
 		$pdf->Cell(20,8,"Quantity: ".$cqr_list[$j][1],0,0,'L');
@@ -204,7 +212,7 @@ while($j<count($cqr_list))
 
 $pdf->SetY(-63);
 $pdf->SetFont('helvetica','B',11); //note font
-$pdf->Cell(100,8,"Consignee's TIN No: ".$tinno,0,0,'L');if($custid==3){$pdf->Cell(100,8,"Vendor Code: 1247",0,0,'L');}
+$pdf->Cell(100,8,"Consignee's TIN No: ".$tinno,0,0,'L');if($custid==3){$pdf->Cell(100,8,"Vendor Code: 701247",0,0,'L');}
 $pdf->ln();
 $pdf->Cell(200,8,"Note: ".$gcomm,0,0,'L');
 

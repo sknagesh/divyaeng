@@ -21,10 +21,10 @@ $j=0;
 $k=0;
 while($i<count($dimid))
 {
-	if($observation[$i]!=''){$oid=$observation[$i];}else{$oid='';}
-	if($comment[$i]!=''){$cid=$comment[$i];}else{$cid='';}
+	if((isSet($observation[$i]))&&($observation[$i]!='')){$oid=$observation[$i];}else{$oid='';}
+	if((isSet($comment[$i]))&&($comment[$i]!='')){$cid=$comment[$i];}else{$cid='';}
 
-	if($obserid[$i]=='')
+	if(!(isSet($obserid[$i]))||$obserid[$i]=='')
 	{
 	if($oid!=''||$cid!='')
 		{

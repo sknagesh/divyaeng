@@ -23,7 +23,9 @@ p { font-weight: bold; clear: both; }
 </style>
   <script>
   $(document).ready(function(){
-  	$("#enquires").load('get_enquires.php');  //load customer list from get_customer.php
+    var lastdiv='';
+ 	$("#enquires").load('get_enquires.php');  //load customer list from get_customer.php
+$('#footer').load("get_enquiry_for_display.php");
 	$('#enquires').click(function(){
 
 	var eid=$('#Enquiry_ID').val();
@@ -52,6 +54,12 @@ $(function () {
   var p1=eid.indexOf("[")+1;
   var p2=eid.indexOf("]");
   var id=eid.substring(p1,p2);
+if(lastdiv=='')
+{
+  lastdiv='#'+id;
+}else{
+  $(lastdiv).text('');
+}
 
     var url='get_enquiry_details.php?eid='+enqid;
     $('#'+id).load(url);

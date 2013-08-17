@@ -5,7 +5,7 @@ require_once('../tcpdf/tcpdf.php');
 $uploadDir = '/home/www/enquiry/';
 //print_r($_POST);
 
-
+$today = date("Y-m-d H-i");
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
@@ -62,7 +62,7 @@ function Header()
     $this->Cell(80,18,'Divya Engineering Works (P) Ltd, Mysore',1,0,'C');
 	$this->Cell(110,18,'Clarification Request',1,0,'C');
 	$this->SetFont('helvetica','', 10);
-	$this->Cell(85,6,'RECORD REF: ','T R',2,'L');
+	$this->Cell(85,6,'RECORD REF: DEW/QA/R/07','T R',2,'L');
 	$this->Cell(85,6,'DATE: 01-07-2013','R',2,'L');
 	$this->Cell(85,6,'REV NO: 00','B R',0,'L');
 	$this->ln();
@@ -132,7 +132,7 @@ if($oimgfiles!=0)
 	
 		if($_FILES['oimg']['name'][$key]!='')
 		{
-		$drgfileName = $drawingid.$enquiryid."-".$_FILES['oimg']['name'][$key];
+		$drgfileName = $today.$drawingid.$enquiryid."-".$_FILES['oimg']['name'][$key];
 		$drgtmpName = $_FILES['oimg']['tmp_name'][$key];
 		$drgfileSize = $_FILES['oimg']['size'][$key];
 		$drgfileType = $_FILES['oimg']['type'][$key];

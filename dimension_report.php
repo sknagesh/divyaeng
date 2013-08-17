@@ -64,9 +64,10 @@ $kj="SELECT Heat_Code,Mfg_Batch_NO,Material_Code FROM Batch_NO as bn
 		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID  
 		WHERE bn.Batch_ID='$batchid';";
 $krr = mysql_query($kj, $cxn) or die(mysql_error($cxn));
+$heatcode='';
 while($krrs=mysql_fetch_assoc($krr))
 {
-	$heatcode=$krrs['Heat_Code'];
+	$heatcode.=$krrs['Heat_Code'].'  ';
 	$materialcode=$krrs['Material_Code'];
 	$batchdesc=$krrs['Mfg_Batch_NO'];
 }

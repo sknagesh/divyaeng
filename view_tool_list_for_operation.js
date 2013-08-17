@@ -1,4 +1,5 @@
 $(document).ready(function(){
+var lastdiv='';
 $('#footer2').hide();
 $("#customer").load('get_customer.php');  //load customer list from get_customer.php
 $("#viewpart").validate();  //attach validater to form
@@ -32,11 +33,34 @@ $("#viewpart").validate();  //attach validater to form
 	$(document).on('click', ".tinfo", function(event) {
 		var toolid=$(this).val();
 		console.log(toolid);
+	var tid=$(this).attr('id');
+	var p1=tid.indexOf("[")+1;
+  	var p2=tid.indexOf("]");
+  	var id=tid.substring(p1,p2);
+if(lastdiv=='')
+{
+  lastdiv='#'+id;
+}else{
+  $(lastdiv).text('');
+  lastdiv='#'+id;
+}
+
 		var url='get_tool_info.php?toolid='+toolid;
-		$('#toolinfo').load(url);
+		$('#'+id).load(url);
+		$('#'+id).css("background-color","lightgreen");
 	
 	});
 
+
+
+  $(document).on('click', ".detail", function(event) {
+    var enqid=$(this).val();
+    console.log(enqid);
+
+    var url='get_enquiry_details.php?eid='+enqid;
+    $('#'+id).load(url);
+  
+  });
 
 
 

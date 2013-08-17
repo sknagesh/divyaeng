@@ -14,7 +14,7 @@ $dimid=$_POST['dimid'];
 $date=($_POST['dbdate']);
 $observation=$_POST['observation'];
 $remark=$_POST['remarks'];
-$comment=$_POST['comment'];
+if(isSet($_POST['comment'])){$comment=$_POST['comment'];}else{$comment='';};
 
 $query="INSERT INTO Dimn_Observation (Batch_ID, Operation_ID, Job_NO,Insp_Date,Operator_ID) 
 		 VALUES('$batchid','$operationid','$jobno','$date','$inspectorid');";

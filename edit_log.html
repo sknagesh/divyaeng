@@ -76,6 +76,7 @@ p { font-weight: bold; clear: both; }
 					}
 						$('#simg').html(simg);
 						$('#fai').hide();
+						$('#idle').hide();
 						$('#elog').show();
 				}else
 				if(data[0]==5)   //maintenance log
@@ -122,6 +123,7 @@ p { font-weight: bold; clear: both; }
 
 					$('#fai').hide();
 					$('#elog').show();
+					$('#idle').hide();
 				}else
 				if(data[0]==8)  ///idle time log
 				{
@@ -137,6 +139,7 @@ p { font-weight: bold; clear: both; }
 						$('#sdatedb').val(data[6]);
 						$('#edatedb').val(data[7]);
 						$('#activity').load("get_activity.php?aid="+data[8]);
+						$('#idle').html(data[9]);		
 						$('#fai').hide();
 						$('#elog').show();
 				}else
@@ -176,6 +179,7 @@ p { font-weight: bold; clear: both; }
 					}
 					$('#simg').html(simg);
 					$('#elog').show();
+					$('#idle').hide();
 				}
 			}else{
 				$('#footer').html("I don't Know How to Edit this Log, Why do you want to Edit This???");
@@ -265,6 +269,7 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <div id="activity"> </div>
 	<label for="machine">Select Machine</label>
      <div id="machine"> </div>
+     <div id="idle"> </div>
      <div id="customer"> </div>
      <div id="drawing"> </div>
      <div id="operation"> </div>

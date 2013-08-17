@@ -58,6 +58,24 @@ p { font-weight: bold; clear: both; }
   		
   		});
 
+    $('#month').click(function(){
+  if ($('#month').is(':checked'))
+    {
+      var url="get_prod_summ_for_drg.php?drawingid=month";  
+        $.get(url, function(data) {
+      $('#footer').html(data);
+
+      });
+
+  
+  
+    }else{
+      $("#footer").load('get_prod_summ_for_drg.php');
+
+    }
+     
+      });
+
 
 
   });
@@ -75,7 +93,8 @@ p { font-weight: bold; clear: both; }
     <div id="customer"> </div>
      <div id="drawing"> </div>
      <div id="batchno"> </div>
-     <label>Time Frame in Days</label><input type="text" name="interval" id="interval" class="number">
+     <label>Time Frame in Days</label><input type="text" name="interval" id="interval" class="number"><br>
+     <label>Monthwise Report</label><input type="checkbox" name="month" id="month">
  </fieldset>
 <div id="footer"> </div>
 <div id="footer2"> </div>

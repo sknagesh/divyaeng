@@ -62,7 +62,7 @@ $result=mysql_query($pquery) or die(mysql_error());
 $ok=mysql_affected_rows();
 if($ok!=0)
 {
-	print('<p style="font-size:12px;color:green">Added one Row in to NonProduction Log and Log ID is $lastid</p>');
+	print('<p style="font-size:12px;color:green">Added one Row in to NonProduction Log and Log ID is '.$lastid.'</p>');
 }else{
 	print('<p style="font-size:12px;color:red">Error adding into NonProduction Log</p>');
 }

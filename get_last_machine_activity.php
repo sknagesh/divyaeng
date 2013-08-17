@@ -133,6 +133,7 @@ while ($row = mysql_fetch_assoc($resa))
 			$dno='';
 			$opename='';
 			$compname='';
+			$batchno='';
 
 		}
 		

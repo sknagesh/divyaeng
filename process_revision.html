@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+        <script src="jquery.form.js"></script>
+        <script src="jquery.MultiFile.pack.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 13px; }
+label { width: 10em; float: left; color:green;font-weight: bold; clear: both; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+	$('#processchange').validate();
+
+  	$('#customer').load("get_customer.php");
+
+  	$('#customer').click(function(){
+  	var cid=$('#Customer_ID').val();
+  	var url="get_drawing.php?custid="+cid+'&hcomp=1';
+  	if(cid!='')
+  	{
+  	$('#drawing').load(url);
+  	}
+  	});
+
+  	$('#drawing').click(function(){
+
+	var did=$('#Drawing_ID').val();
+		if(did!="")
+		{
+		var url="get_operations.php?drawingid="+did;
+		$('#operation').load(url);
+
+		}
+		$('#operator').load("get_operator.php");
+  	});
+  
+
+$(function () {
+	$('#cdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#cdatedb', altFormat: 'Y-O-D'});
+	
+	
+	});  
+
+
+
+var options = {  ///options for ajaxSubnit function 
+        target:        '#footer',   // target div id to update result of submit 
+//        success:       showResponse  // post-submit callback 
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    };
+
+	$("#submit").click(function(event) {
+
+	 if($("#processchange").valid())
+  	{
+	  	event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+	    $("#processchange").ajaxSubmit(options);
+
+  	}
+
+		});
+
+
+
+});
+
+
+
+  </script>
+
+
+    </head>
+    <body>
+
+  <form name ="processchange" id="processchange" action="process_revision.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>Non Conformance Details</legend>
+   <p>
+     <div id="customer"> </div>
+     <div id="drawing"> </div>
+     <div id="operation"> </div>
+     <div id="operator"> </div>
+     
+	   <p>
+     <label>Change Date </label>
+     <input type="text" name="cdate" id="cdate" size="25" class="required">
+      <input type="hidden" name="cdatedb" id="cdatedb" >
+	   <p>
+
+	   <p>
+     <label>Reason For Change</label>
+     <textarea name="creason" rows="4" cols="50" id="creason" class="required" maxlength="250"> </textarea> 
+	   <p>
+		
+	<label>Changes Carried Out</label>
+     <textarea name="changes" rows="4" cols="50" id="changes" class="required" maxlength="250"> </textarea> 
+	   <p>
+		
+	<label>Remarks</label>
+     <textarea name="remarks" rows="4" cols="50" id="remarks" maxlength="250"> </textarea> 
+	   <p>
+	   	
+   <p>
+     <label>Upload Supporting Images if any </label>
+     <input id="oimg" class="multi" name="oimg[]" type="file" />
+   </p>
+	   	
+   <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+
+<div id="footer"> </div>
+
+</body>
+</html>
