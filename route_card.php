@@ -54,7 +54,7 @@ $bqty=0;
 while($rchallan=mysql_fetch_assoc($rqchallan))
 {
 		if($rchallan['Ex_Challan_NO']!=''){$cno=$rchallan['Ex_Challan_NO'];}else{$cno=$rchallan['Purchase_Ref'];}
-		if($rchallan['ecd']!=''){$cdt=$rchallan['ecd'];}else{$cdt=$rchallan['prd'];}
+		if($rchallan['ecd']!='00/00/0000'){$cdt=$rchallan['ecd'];}else{$cdt=$rchallan['prd'];}
 	$challanno.=$cno.' dt. '.$cdt.' Qty: '.$rchallan['Qty_In_Batch'].' ' ;
 	$bqty+=$rchallan['Qty_In_Batch'];
 	}

@@ -21,7 +21,8 @@ $row = mysql_fetch_assoc($resa);
 	$drgid=$row['Drawing_ID'];
 	$drgrev=$row['Drawing_Rev'];
 	$swt=$row['Scrap_Weight'];
-
+  $custdrawingno=$row['Cust_Drawing_NO'];
+  $mcode=$row['Material_Code'];
 print("
    <p>
      <label>Drawing Number</label>
@@ -34,6 +35,11 @@ print("
    </p>
 
    <p>
+     <label>Customer Drawing Number</label>
+     <input id=\"custdrawingno\" name=\"custdrawingno\" value=\"$custdrawingno\"/>
+   </p>
+
+   <p>
      <label>Component Name</label>
      <input id=\"componentname\" name=\"componentname\" size=\"25\" class=\"required\" value=\"$pname\"/>
    </p>
@@ -41,6 +47,12 @@ print("
      <label>Component Material</label>
      <input id=\"mspec\" name=\"mspec\" size=\"25\"  value=\"$cmaterial\" />
    </p>
+
+   <p>
+     <label>Material Code</label>
+     <input id=\"mcode\" name=\"mcode\" value=\"$mcode\"/>
+   </p>
+
 
    <p>
      <label>Raw Material Size</label>

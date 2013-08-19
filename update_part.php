@@ -16,7 +16,8 @@ if(isSet($_POST['cblank'])){$cblank=$_POST['cblank'];}else{$cblank="";}
 if(isSet($_POST['pmblank'])){$pmblank=$_POST['pmblank'];}else{$pmblank="";}
 if(isSet($_POST['fsize'])){$fsize=$_POST['fsize'];}else{$fsize="";}
 if(isSet($_POST['sweight'])){$sweight=$_POST['sweight'];}else{$sweight="";}
-
+if(isSet($_POST['custdrawingno'])){$custdrawingno=$_POST['custdrawingno'];}else{$custdrawingno="";}
+if(isSet($_POST['mcode'])){$mcode=$_POST['mcode'];}else{$mcode="";}
 
 if((isSet($_FILES['drg']['name']))&&$_FILES['drg']['name']!='')
 {
@@ -110,8 +111,10 @@ if((isSet($_FILES['preview']['name']))&&($_FILES['preview']['name']!=''))
 
 $query="UPDATE Component SET 	Drawing_NO='$drawingno',
 								Drawing_Rev='$revno',
+								Cust_Drawing_NO='$custdrawingno',
 								Component_Name='$componentname',
 								Component_Material='$mspec',
+								Material_Code='$mcode',
 								Raw_Material_Size='$cblank',
 								Pre_Machined_Blank_Size='$pmblank',
 								Finish_Size='$fsize',

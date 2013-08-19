@@ -38,14 +38,15 @@ $bno=array_values($bnos);  //to reassign array values in an order ie, 1,3,7 to 0
 $bnomax=count($bno);
 
 
-$j="SELECT Component_Name, Customer_Name, Drawing_NO,Drawing_Rev FROM
+$j="SELECT Component_Name, Customer_Name, Drawing_NO,Drawing_Rev,Cust_Drawing_NO FROM
 		 Operation as op INNER JOIN Component as  comp ON comp.Drawing_ID=op.Drawing_ID
 		 INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID WHERE op.Operation_ID='$opid';";
 	$rr = mysql_query($j, $cxn) or die(mysql_error($cxn));
 while($rrs=mysql_fetch_assoc($rr))
 {
 	$cname=$rrs['Component_Name'];
-	$partno=$rrs['Drawing_NO']."/".$rrs['Drawing_Rev'];
+	$partno=$rrs['Drawing_NO']."-".$rrs['Drawing_Rev'];
+	if($rrs['Cust_Drawing_NO']!=''){$partno.=' /'.$rrs['Cust_Drawing_NO'];}
 	$custname=$rrs['Customer_Name'];
 }
 
@@ -162,9 +163,12 @@ function Header()
     $this->Cell(110,6,'Material Stock NO: '.$materialcode,'R',0,'L');
     $this->Cell(85,6,'Batch NO: '.$batchdesc,'T R',1,'L');
     $this->Cell(80,6,'Customer: '.$custname,'L R',0,'L');
-	$this->Cell(110,6,'HEAT NO: '.$heatcode,'T R',0,'L');
+	$this->MultiCell(110, 6, 'HEAT NO: '.$heatcode, 1, 'L', 0, 0, '', '', true,0,false,true,12,'M',true);	
+//	$this->Cell(110,6,'HEAT NO: '.$heatcode,'T R',0,'L');
+    
     $this->Cell(85,6,'DATE: '.$jdate,'L B R',1,'L');
-    $this->Cell(80,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
+    $this->MultiCell(80, 6,'Drg No/Rev No: '.$partno, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
+//    $this->Cell(80,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
 	$this->Cell(110,6,"",'B R',0,'L');
     $this->Cell(85,6,"OP No: ".$opdesc. "  Note: ".$comment,'B R',0,'L');
 
@@ -308,13 +312,14 @@ $bno=array_values($bnos);  //to reassign array values in an order ie, 1,3,7 to 0
 $bnomax=count($bno);
 
 
-$j="SELECT Component_Name, Customer_Name, Drawing_NO,Drawing_Rev FROM Component as comp 
+$j="SELECT Component_Name, Customer_Name, Drawing_NO,Drawing_Rev,Cust_Drawing_NO FROM Component as comp 
 			INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID WHERE Drawing_ID='$drawingid';";
 	$rr = mysql_query($j, $cxn) or die(mysql_error($cxn));
 while($rrs=mysql_fetch_assoc($rr))
 {
 	$cname=$rrs['Component_Name'];
-	$partno=$rrs['Drawing_NO']."/".$rrs['Drawing_Rev'];
+	$partno=$rrs['Drawing_NO']."-".$rrs['Drawing_Rev'];
+	if($rrs['Cust_Drawing_NO']!=''){$partno.=' /'.$rrs['Cust_Drawing_NO'];}
 	$custname=$rrs['Customer_Name'];
 }
 
@@ -440,9 +445,9 @@ function Header()
     $this->Cell(110,6,'Material Stock NO: '.$materialcode,'R',0,'L');
     $this->Cell(85,6,'Batch NO: '.$batchdesc,'T R',1,'L');
     $this->Cell(80,6,'Customer: '.$custname,'L R',0,'L');
-	$this->Cell(110,6,'HEAT NO: '.$heatcode,'T R',0,'L');
+	$this->MultiCell(110, 6, 'HEAT NO: '.$heatcode, 1, 'L', 0, 0, '', '', true,0,false,true,12,'M',true);	
     $this->Cell(85,6,'DATE: '.$jdate,'L B R',1,'L');
-    $this->Cell(80,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
+    $this->MultiCell(80, 6,'Drg No/Rev No: '.$partno, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 	$this->Cell(110,6,"",'B R',0,'L');
     $this->Cell(85,6,"Note: ".$comment,'B R',0,'L');
 
