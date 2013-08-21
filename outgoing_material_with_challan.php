@@ -174,7 +174,7 @@ while($j<count($dq_list))
 
 
 $pdf->setY(180);
-$pdf->SetFont('helvetica','',8); //body font
+$pdf->SetFont('helvetica','',10); //body font
 $pdf->MultiCell(80, 8, "Material Received Vide", 0, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 $j=0;
 while($j<count($cqr_list))

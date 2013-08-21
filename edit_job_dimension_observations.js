@@ -4,7 +4,7 @@ $('#s').hide();
 $('#customer').load("get_customer.php"); //load customer list on to div customer
 
 
-$(document).on("keyup", '*[id^="obser"]', function(event){//function to check if observed dimn is with in tolerance
+$(document).on("blur", '*[id^="obser"]', function(event){//function to check if observed dimn is with in tolerance
 	var ok="";
 	var eid=$(this).attr("id");
 	var p1=eid.indexOf("[")+1;
@@ -19,6 +19,31 @@ $(document).on("keyup", '*[id^="obser"]', function(event){//function to check if
 	var bdim=document.getElementById(bd).value;
 	var edimn=$(this).val();
 //console.log("tlow="+tlow+"tup="+tup+"bdim="+bdim+"edim="+edimn);
+
+	if($('#inch').prop('checked')) {
+    var inch=1;
+} else {
+    var inch=0;
+}
+
+if(inch==1)
+{
+
+	console.log(edimn);
+			var url="converttomm.php?&edimn="+edimn;
+			$.ajax({  
+      					type: "GET",
+      					url: url,
+      					async:false,
+      					success: function(html) {
+						ok=html;
+						console.log("back from ajax html="+html);
+													}
+    							});
+						if(ok!=""){$(this).val(ok);}
+
+}
+	var edimn=$(this).val();
 
 	if(edimn!="")
 		{

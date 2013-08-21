@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>View Dispatch Details</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="fullcalendar.js"></script>
+
+ <link rel='stylesheet' type='text/css' href='fullcalendar.css' />
+ <style type="text/css">
+* { font-family: Verdana; font-size: 14px; }
+label { width: 10em; float: left;font-weight: bold; clear: both; color:green; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.q { clear: both; background-color:#CCCCCD; color:#0B173B;}
+.s { clear: both; background-color:#F0F0F0; color:#0B173B;}
+.t { font-weight: bold; clear: both; background-color:#58ACFA; color:#F6CECE}
+.s.hover { background-color:#4A779D}
+.q.hover { background-color:#4A779D}
+.submit { margin-left: 12em; }
+
+</style>
+  <script>
+  $(document).ready(function(){
+ 
+		$('#calendar').fullCalendar({
+        eventSources: ['dispatch_details.php'],
+        height: 400,
+      eventClick: function(calEvent, jsEvent, view) {
+
+        console.log('Event id: ' + calEvent.id);
+        var url="get_dispatch_details.php?id="+ calEvent.id;
+      $.get(url, function(data) {
+      $('#footer').html(data);
+      });
+
+
+        $(this).css('border-color', 'red');
+      }
+
+
+
+
+    });
+
+  	});
+
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+<div id="adraw">
+ <fieldset>
+<legend>Dispatch Calender for Current Month</legend>
+   <p>
+     <div id="calendar"> </div>
+ </fieldset>
+<div id="footer"></div>
+<div id="footer2"></div>
+</div>
+
+</body>
+</html>
