@@ -19,13 +19,12 @@ $jsonArray = array();
 
 while($row = mysql_fetch_array($res))
 {
-$color="blue";
+
 if($row['SPM_ID']!=0)
 {
 	$q5="SELECT SPM_Title,SPM_Interval FROM Scheduled_PM WHERE SPM_ID=$row[SPM_ID];";
 	$res5=mysql_query($q5, $cxn) or die(mysql_error($cxn));	
 	$f5=mysql_fetch_assoc($res5);
-	$mainttype=$f5['SPM_Title'];
 	$spminterval=$f5['SPM_Interval'];
 
 		$q6="SELECT *,DATE_FORMAT(End_Date_Time,'%Y/%m/%d')as edt FROM Maintenance as maint 
@@ -50,21 +49,32 @@ if($row['SPM_ID']!=0)
 
 			$maintinterval=floor($seconds_diff/3600/24)+$spminterval;
 
-				if(($maintinterval<=-3)&&($maintinterval>=3))
+				if(($maintinterval<=-3)||($maintinterval>=3))
 				{
 					$color="red";
 				}else{
 						$color="green";
 				}
-				
+				if($maintinterval<=-3)
+				{
+					$td=" Late By $maintinterval Days";
+				}else
+				if($maintinterval>=3)
+				{
+					$td=" Early By $maintinterval Days";
+				}else{
+					$td=" On Time";
+				}
+
 								
 	 		}
 
-
+$mainttype=$f5['SPM_Title'].$td;
 
 }else{
 
 $mainttype = $row['Maintenance_Description'];		
+$color="blue";
 }
  $sdt = $row['Start_Date_Time'];
  $edt=$row['End_Date_Time'];

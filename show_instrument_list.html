@@ -31,7 +31,11 @@ color: #ffffff;
   });
 
 $('#export').click(function(){
-url="show_instruments_list.php?type=export";
+var t=$('input[name=type]:radio:checked').val();
+if(t==''){t='list';}
+
+url="show_instruments_list.php?type="+t+"&rpt=export";
+
       $.get(url, function(data) {
       window.open('listofinstruments.pdf');
       });

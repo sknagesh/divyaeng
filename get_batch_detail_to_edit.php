@@ -22,7 +22,7 @@ if($row['cdate']!='00/00/0000'){$dt=$row['cdate'];}else{$dt=$row['prf'];}
 $bremark=$row['Batch_Remarks'];
 if($row['EX_Challan_NO']!=''){$cno=$row['EX_Challan_NO'];}else{$cno=$row['Purchase_Ref'];}
 print('Challan/Inv NO '.$cno.' dated '.$dt);
-print("<input type=\"hidde\" id=\"bncid[$i]\" name=\"bncid[$i]\" value=\"$row[BNo_MI_Challan_ID]\">");
+print("<input type=\"hidden\" id=\"bncid[$i]\" name=\"bncid[$i]\" value=\"$row[BNo_MI_Challan_ID]\">");
 print("Heat Code <input type=\"text\" id=\"hcode[$i]\" name=\"hcode[$i]\" value=\"$row[Heat_Code]\"><br>");
 }
 

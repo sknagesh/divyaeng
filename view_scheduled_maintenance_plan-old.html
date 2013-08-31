@@ -5,7 +5,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>View Scheduled Maintenance Plan</title>
         <script src="jquery.js"></script>
-        <script src="jquery.qtip.js"></script>
         <script src="jquery.validate.js"></script>
         <script src="fullcalendar.js"></script>
 
@@ -29,42 +28,22 @@ p { font-weight: bold; clear: both; }
 		$('#calendar').fullCalendar({
         eventSources: ['scheduled_maintenance_plan.php'],
         height: 400,
-      eventClick: function(event, element) {
+      eventClick: function(calEvent, jsEvent, view) {
 
-        console.log('Event id: ' + event.id);
-        if(event.id!='')
-        {
-        var url="get_maint_details.php?id="+ event.id;
+        console.log('Event id: ' + calEvent.id);
+        var url="get_maint_details.php?id="+ calEvent.id;
       $.get(url, function(data) {
-
-
-    $(this).qtip({
-      overwrite: false, // Make sure another tooltip can't overwrite this one without it being explicitly destroyed
-      content: data,
-      position: {tooltip: 'bottomLeft'},
-      show: {
-         ready: true // Needed to make it show on first mouseover event
-      }
-   });
-
-
-
-
+      $('#footer').html(data);
       });
 
-}
+
         $(this).css('border-color', 'red');
       }
 
-   
 
 
 
     });
-
-
-
-
 
   	});
 

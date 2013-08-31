@@ -132,9 +132,9 @@ $pdf->Cell(15,7,'No',1,0,'L');
 $pdf->Cell(45,7,'Operation Desc',1,0,'L');
 $pdf->MultiCell(55,7,'Place/Ref Doc/Name Of Supervisor', 1, 'L', 0, 0, '', '', true,0,false,true,7,'M',true);
 $pdf->MultiCell(35,7,'       Quantity         Accepeted   Rejected', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
-$pdf->MultiCell(14,7,'Start Date', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
+$pdf->MultiCell(16,7,'Start Date', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
 $pdf->MultiCell(16,7,'Completed Date', 1, 'C', 0, 0, '', '', true,0,false,true,7,'M',true);
-$pdf->Cell(18,7,'Remarks',1,1,'L');
+$pdf->Cell(16,7,'Remarks',1,1,'L');
 /*
 //incomming
 $pdf->Cell(15,7,'',1,0,'L');
@@ -166,7 +166,15 @@ if(strpos($row['Operation_Desc'],'CMM'))
 	$o=explode(':', $row['Operation_Desc']);
 $odesc=$o[1];
 $p='';
-}else{
+}else
+if(strpos($row['Operation_Desc'],'Hand'))
+{
+
+	$o=explode(':', $row['Operation_Desc']);
+$odesc=$o[1];
+$p=$row['Operation_Notes'];
+}else
+{
 	$odesc=$row['Operation_Desc'];
 	$p='Process Sheet, Activity Log';
 }
@@ -175,20 +183,29 @@ $pdf->Cell(15,6,'',1,0,'L');
 $pdf->MultiCell(45, 6, $odesc, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);				
 $pdf->MultiCell(55,6,$p, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 $pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 $pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-$pdf->Cell(18,6,'',1,1,'L');
+$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+$pdf->Cell(16,6,'',1,1,'L');
 	for($c=0;$c<=2;$c++)
 		{
 		$pdf->Cell(15,6,'',1,0,'L');
 		$pdf->Cell(45,6,'',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
+		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->Cell(16,6,'',1,1,'L');
 		}
-if(!strpos($row['Operation_Desc'],'CMM'))
+if(strpos($row['Operation_Desc'],'CMM'))
+{
+$in='';
+$ir='';
+}else
+if(strpos($row['Operation_Desc'],'Hand'))
+{
+$in='';
+$ir='';
+}else
 {
 $in="Inspection";
 $ir="Inprocess Inspection Report";
@@ -198,58 +215,77 @@ $ir="Inprocess Inspection Report";
 		$pdf->Cell(45,6,$in,1,0,'L');
 		$pdf->MultiCell(55,6,$ir, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
+		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->Cell(16,6,'',1,1,'L');
 		$in='';
 		$ir='';
 		}
 }
 
+		if ($pdf->getY() > $pdf->getPageHeight() - 46.5) {
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+//		$pdf->setY(36);
+		}
+
+
+
+
 }
 
+		if ($pdf->getY() > $pdf->getPageHeight() - 46.5) {
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+//		$pdf->setY(36);
+		}
 
 		$pdf->Cell(15,6,'',1,0,'L');
 		$pdf->Cell(45,6,'Fianl Inspection',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
+		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->Cell(16,6,'',1,1,'L');
 
 		$pdf->Cell(15,6,'',1,0,'L');
 		$pdf->Cell(45,6,'',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
+		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->Cell(16,6,'',1,1,'L');
 
+		if ($pdf->getY() > $pdf->getPageHeight() - 46.5) {
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+//		$pdf->setY(36);
+		}
 
 		$pdf->Cell(15,6,'',1,0,'L');
 		$pdf->Cell(45,6,'Despatch Details',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
+		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->Cell(16,6,'',1,1,'L');
 
 		$pdf->Cell(15,6,'',1,0,'L');
 		$pdf->Cell(45,6,'Customer Lot No',1,0,'L');
 		$pdf->MultiCell(55,6,'Quantity Despatched', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'Balance Qty', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'Date', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->MultiCell(16,6,'Date', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'DC No', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'Remarks',1,1,'L');
+		$pdf->Cell(16,6,'Remarks',1,1,'L');
 
 		for($d=0;$d<=3;$d++){
 		$pdf->Cell(15,6,'',1,0,'L');
 		$pdf->Cell(45,6,'',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
+		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->Cell(16,6,'',1,1,'L');
 		}
 
 		$pdf->Cell(198,6,'Major Deviations/Rejection Data',1,1,'C');
@@ -259,9 +295,9 @@ $ir="Inprocess Inspection Report";
 		$pdf->Cell(45,6,'Quantity Rejected',1,0,'L');
 		$pdf->MultiCell(55,6,'Machine', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'Fixture', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'Tool', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->MultiCell(16,6,'Tool', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'Operator', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'Other',1,1,'L');
+		$pdf->Cell(16,6,'Other',1,1,'L');
 
 	for($e=0;$e<=5;$e++)
 	{
@@ -269,10 +305,17 @@ $ir="Inprocess Inspection Report";
 		$pdf->Cell(45,6,'',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->MultiCell(14,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
-		$pdf->Cell(18,6,'',1,1,'L');
+		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
+		$pdf->Cell(16,6,'',1,1,'L');
 	}
+
+		if ($pdf->getY() > $pdf->getPageHeight() - 46.5) {
+        $pdf->rollbackTransaction(true);
+        $pdf->AddPage();
+//		$pdf->setY(36);
+		}
+
 		$pdf->Cell(198,6,'Customer Feed Back Data',1,1,'C');
 
 		$pdf->Cell(198,40,'',1,1,'C');

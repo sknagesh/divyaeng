@@ -176,13 +176,26 @@ while($j<count($dq_list))
 $pdf->setY(180);
 $pdf->SetFont('helvetica','',10); //body font
 $pdf->MultiCell(80, 8, "Material Received Vide", 0, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
+$pdf->ln();
 $j=0;
+
+		if($custid==3){
+
+		$pdf->Cell(80,8,'GP_NO',0,0,'C');
+		$pdf->Cell(50,8,'EX_Challan_NO',0,0,'L');
+		$pdf->Cell(55,8,'DA_NO',0,0,'L');
+
+		}else{
+					$pdf->Cell(80,8,'EX_Challan_NO',0,0,'C');
+		}
+
+
 while($j<count($cqr_list))
 {
 	if($cqr_list[$j][0]!='')  //only if we have some quantity defined
 	{
 		$pdf->ln(8);
-		$pdf->Cell(20,8,$j+1,0,0,'C');
+		$pdf->Cell(10,8,$j+1,0,0,'C');
 		$qmdq="SELECT Material_Inward_ID FROM MI_Drg_Qty WHERE MI_Drg_Qty_Id=".$cqr_list[$j][0].";";
 		$rmdq = mysql_query($qmdq, $cxn) or die(mysql_error($cxn));
 		$remdq=mysql_fetch_assoc($rmdq);
@@ -195,15 +208,16 @@ while($j<count($cqr_list))
 		$rowch=mysql_fetch_assoc($rchdet);
 
 		if($custid==3){
+
 		$pdf->Cell(50,8,$rowch['GP_NO']." Dated: ".$rowch['gpd'],0,0,'L');
-		$pdf->Cell(50,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');
-		$pdf->Cell(50,8,$rowch['DA_NO']." Dated: ".$rowch['dad'],0,0,'L');
+		$pdf->Cell(50,8,",  ".$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');
+		$pdf->Cell(55,8,",  ".$rowch['DA_NO']." Dated: ".$rowch['dad'],0,0,'L');
 
 		}else{
 					$pdf->Cell(80,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');
 		}
 
-		$pdf->Cell(20,8,"Quantity: ".$cqr_list[$j][1],0,0,'L');
+		$pdf->Cell(20,8,"Qty: ".$cqr_list[$j][1],0,0,'L');
 
 	}
 			$j++;

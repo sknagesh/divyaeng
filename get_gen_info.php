@@ -10,7 +10,7 @@ $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 
 print("<table cellspacing=\"5\" cellpadding=\"5\" border=\"1\">");
 	print("<tr>");
-$i=0;
+$i=1;
 		while($row=mysql_fetch_assoc($resa))
 		{
 
@@ -21,7 +21,7 @@ $i=0;
 	$i=0;
 	print("<tr>");		
 		}
-
+$i++;
 		}
 	
 

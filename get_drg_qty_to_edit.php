@@ -6,7 +6,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
 $miid=$_GET['cid'];
 $csid=$_GET['csid'];
-$query="SELECT MI_Drg_Qty_ID,Material_Qty,Material_Code,Component_Name,Drawing_NO,mdq.Drawing_ID  
+$query="SELECT MI_Drg_Qty_ID,Material_Qty,mdq.Material_Code,Component_Name,Drawing_NO,mdq.Drawing_ID  
 		FROM MI_Drg_Qty AS mdq INNER JOIN Material_Inward as mi ON
 		mi.Material_Inward_ID=mdq.Material_Inward_ID
 		INNER JOIN Component AS comp ON comp.Drawing_ID=mdq.Drawing_ID WHERE mdq.Material_Inward_ID='$miid';";
