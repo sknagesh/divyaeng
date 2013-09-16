@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<meta name='author' content='Adam Shaw'>
+
+	<title>FullCalendar - Full-sized Calendar jQuery Plugin</title>
+	<link rel='stylesheet' type='text/css' href='fullcalendar.css' />
+		<link rel='stylesheet' type='text/css' href='jquery.qtip.css' />
+	<script type="text/javascript" src='jquery.js'></script>
+	<script type="text/javascript" src='jquery-ui.custom.min.js'></script>
+	<script type="text/javascript" src='fullcalendar.js'></script>
+	<script type="text/javascript" src="jquery.qtip.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		$('#calendar').fullCalendar({
+        eventSources: ['scheduled_maintenance_plan.php'],
+
+eventRender: function(event, element) {
+	  element.qtip({
+            content:{
+					ajax: {
+                           url:  "get_maint_plan_details.php?id="+event.id,
+                           method: 'get'
+                        },
+                      title:event.title
+                    },
+             style:{
+
+             	width:500
+             }
+      
+        });
+    }
+
+		});
+		
+	});
+
+	</script>
+
+	</head>
+<body>
+	<div id='calendar' style='margin:3em 0;font-size:13px'></div>
+</body>

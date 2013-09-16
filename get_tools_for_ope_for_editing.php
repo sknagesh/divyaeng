@@ -33,7 +33,8 @@ $rtyper=mysql_query($qtype) or die(mysql_error());
 $rtype=mysql_fetch_assoc($rtyper);
 
 
-$qtool="SELECT Tool_ID,Tool_Part_NO,Tool_Desc FROM Tool WHERE Tool_Type_ID='$rtype[Tool_Type_ID]' AND Tool_Dia='$rtype[Tool_Dia]';";
+$qtool="SELECT Tool_ID,Tool_Part_NO,Tool_Desc,Brand_Description FROM Tool as t 
+		INNER JOIN Tool_Brand as tb ON tb.Brand_ID=t.Brand_ID WHERE Tool_Type_ID='$rtype[Tool_Type_ID]' AND Tool_Dia='$rtype[Tool_Dia]';";
 $rtool=mysql_query($qtool) or die(mysql_error());
 
 echo '<select name="Tool_ID_1['.$i.']" id="Tool_ID_1['.$i.']" class="required">
@@ -44,7 +45,7 @@ while ($tlist=mysql_fetch_assoc($rtool))
 if($tlist[Tool_ID]==$row[Tool_ID_1]){$sel="selected=selected";}else{$sel="";}
 
 echo '<option value="'.$tlist[Tool_ID].'"'. $sel.'>';
-echo $tlist[Tool_Part_NO].' - '.$tlist[Tool_Desc].'</option>';
+echo $tlist[Brand_Description].' Make '.$tlist[Tool_Desc].'</option>';
 }
 echo '</select>';
 if($row['Insert_ID_1']!='0')
@@ -76,7 +77,8 @@ $rtypear=mysql_query($qtypea) or die(mysql_error());
 $rtypea=mysql_fetch_assoc($rtypear);
 
 
-$qtoola="SELECT Tool_ID,Tool_Part_NO,Tool_Desc FROM Tool WHERE Tool_Type_ID='$rtypea[Tool_Type_ID]' AND Tool_Dia='$rtypea[Tool_Dia]';";
+$qtoola="SELECT Tool_ID,Tool_Part_NO,Tool_Desc,Brand_Description FROM Tool as t 
+		INNER JOIN Tool_Brand as tb ON tb.Brand_ID=t.Brand_ID WHERE Tool_Type_ID='$rtypea[Tool_Type_ID]' AND Tool_Dia='$rtypea[Tool_Dia]';";
 $rtoola=mysql_query($qtoola) or die(mysql_error());
 
 echo '<td><select name="Tool_ID_2['.$i.']" id="Tool_ID_2['.$i.']">
@@ -87,7 +89,7 @@ while ($tlista=mysql_fetch_assoc($rtoola))
 
 if($tlista[Tool_ID]==$row[Tool_ID_2]){$sel="selected=selected";}else{$sel="";}
 echo '<option value="'.$tlista[Tool_ID].'" '.$sel.'>';
-echo $tlista[Tool_Part_NO].' - '.$tlista[Tool_Desc].'</option>';
+echo $tlista[Brand_Description].' Make '.$tlista[Tool_Desc].'</option>';
 }
 echo '</select>';
 

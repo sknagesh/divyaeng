@@ -10,10 +10,10 @@ $opid=$_POST['Operation_ID'];
 $opeid=$_POST['Ope_Tool_ID'];
 if(isSet($_POST['Insert_ID_1'])){$insertid1=$_POST['Insert_ID_1'];}else{$insertid1='';}
 if(isSet($_POST['Insert_ID_2'])){$insertid2=$_POST['Insert_ID_2'];}else{$insertid2='';}
-if(isSet($_POST['Tool_ID_2'])){$toolid2=$_POST['Tool_ID_2'];}else{$toolid2='';}
+$toolid2=$_POST['Tool_ID_2'];
 $toolid1=$_POST['Tool_ID_1'];
 $holderid1=$_POST['Holder_ID_1'];
-if(isSet($_POST['Holder_ID_2'])){$holderid2=$_POST['Holder_ID_2'];}else{$holderid2='';}
+$holderid2=$_POST['Holder_ID_2'];
 if(isSet($_POST['tsl'])){$tsl=$_POST['tsl'];}else{$tsl='';}
 $mdesc=$_POST['mdesc'];
 if(isSet($_POST['toh'])){$toh=$_POST['toh'];}else{$toh='';}
@@ -57,19 +57,19 @@ if($_FILES['timg']['name'][$key]!='')
 
 
 $nooftools=count($toolid1);
+//print("<br>no of tools=$nooftools");
 for($x=0;$x<$nooftools;$x++)
-
 {
-
-if($insertid1[$x]!=''){$ins1="Insert_ID_1='$insertid1[$x]',";}else{$ins1="";}
-if($toolid2[$x]!=''){$tid2="Tool_ID_2='$toolid2[$x]',";}else{$tid2="";}
-if($insertid2[$x]!=''){$ins2="Insert_ID_2='$insertid2[$x]',";}else{$ins2="";}
-if($tlife[$x]!=''){$tlif="Ope_Tool_Life='$tlife[$x]',";}else{$tlif="";}
-if($odrgfileNames[$x]!=''){$tpath="Ope_Tool_Image_Path='$odrgfileNames[$x]',";}else{$tpath="";}
+//print("<p>x=$x");
+if(isSet($insertid1[$x])){$ins1="Insert_ID_1='$insertid1[$x]',";}else{$ins1="";}
+if(isSet($toolid2[$x])){$tid2="Tool_ID_2='$toolid2[$x]',";}else{$tid2="";}
+if(isSet($insertid2[$x])){$ins2="Insert_ID_2='$insertid2[$x]',";}else{$ins2="";}
+if(isSet($tlife[$x])){$tlif="Ope_Tool_Life='$tlife[$x]',";}else{$tlif="";}
+if(isSet($odrgfileNames[$x])){$tpath="Ope_Tool_Image_Path='$odrgfileNames[$x]',";}else{$tpath="";}
 
 $query="UPDATE Ope_Tool SET
 			Tool_ID_1='$toolid1[$x]',
-			$ins1 $tid $ins2 $tlif $tpath
+			$ins1 $tid2 $ins2 $tlif $tpath
 				Holder_ID_1='$holderid1[$x]',
 				Holder_ID_2='$holderid2[$x]',
 				Ope_Tool_Desc='$mdesc[$x]',
@@ -78,17 +78,10 @@ $query="UPDATE Ope_Tool SET
 				WHERE Ope_Tool_ID='$opeid[$x]';";
 
 //			print($query);
-//			print("<br");
+//			print("<p>");
 			$res=mysql_query($query) or die(mysql_error());
 
 			$result=mysql_affected_rows();
-			if($result!=0)
-				{
-				print("One tool added to This Operation");
-
-					
-	
-				}
 
 }
 

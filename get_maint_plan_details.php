@@ -26,14 +26,8 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 		WHERE actl.Activity_Log_ID='$id';";
 
 
-		  print("<br><h1>Maintenance Details</h1><br>");
 		  $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 
-		  print("<table cellspacing=\"1\" cellborder=\"1\" >");
-		  print("<tr class=\"t\" ><th>ID</th><th>Machine</th><th>Activity</th><th>Problem Description</th>
-		  						<th>Maintenance Desc</th><th>Start Date Time</th><th>End Date Time</th>
-		  						<th>Total Time</th><th>Spares Used</th><th>Operator Name</th><th>Maintenance Engineer</th>
-		  						<th>Remarks</th></tr>");
 		  while ($row = mysql_fetch_assoc($resa))
 		  {
 		  		
@@ -42,7 +36,7 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 		  		{
 
 		  				$pm=explode(',', $row['pm']);
-		  					$spmdesc='Maintenance Activites carried out are ';
+		  					$spmdesc='';
 		  				for($j=0;$j<count($pm);$j++)
 		  				{
 
@@ -97,8 +91,14 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 		  		}
 		  		
 
-		  print("<tr><td>$id</td><td>$mname</td><td>$ip</td><td>$prob</td><td>$wd</td><td>$sdt</td><td>$edt</td><td align=\"center\">$td</td>
-		  		<td>$spare</td><td>$opename</td><td>$me</td><td>$remarks</td></tr>");
+		  print("ID: $id
+		  		<p>Problem Desc: $prob
+		  		<p>Work Carriedout: $wd
+		  		<p>Start: $sdt
+		  		<p>End Date: $edt
+		  		<p>Name: $opename
+		  		<p>Service Engr: $me
+		  		<p>Remarks: $remarks");
 
 
 }

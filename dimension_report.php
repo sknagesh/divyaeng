@@ -116,8 +116,8 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,DATE_FORMAT(Insp_Date,'%d/%m/%
 		$x=0;
 		while($row=mysql_fetch_assoc($res))  //for each job get dimensions measured and store it in an array
 		{
-			if($row['Comment']==''){$ob=$row['Observed_Dimn'];}else{$ob=$row['Comment'];}
-			$rrow[$z][$x]=$ob.' '.$row['Remarks'];
+			if($row['Comment']==''){$ob='<font color="black" size="9">'.$row['Observed_Dimn'].'</font>';}else{$ob='<font color="black" size="5">'.$row['Comment'].'</font>';}
+			$rrow[$z][$x]=$ob.'<font color="blue" size="5">'.$row['Remarks'].'</font>';
 			if(($jdate=='')&&($name==''))
 				{
 			$jdate=$row['sdt'];
@@ -181,7 +181,13 @@ function Footer()
     $this->SetY(-32);
 	// Arial italic 8
     $this->SetFont('helvetica','',16);
-	$this->Cell(220,10,"Note: ".$jcomment,'0',0,'L');
+if($this->page==1)
+{
+	$this->MultiCell(220, 15,"Note: ".$jcomment, 0, 'L', 0, 0, '', '', true,0,false,true,15,'M',true);
+	//$this->Cell(220,10,"Note: ".$jcomment,'0',0,'L');
+}else{
+	$this->Cell(220,10,"Note: ",'0',0,'L');
+}
 	$this->Cell(140,10,"Verified By: U.S",'0',1,'L');
 	
     // Page number
@@ -261,7 +267,10 @@ else {
 					{
 
 
-						$pdf->MultiCell(35, 8, $rrow[$s][$z], 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
+//						$pdf->MultiCell(35, 8, $rrow[$s][$z], 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
+						$cury=$pdf->getY();
+						$curx=$pdf->getX();
+						$pdf->writeHTMLCell(35, 8,$curx,$cury,$rrow[$s][$z], 1, 0,false,false,'',true);
 //						$pdf->MultiCell(35, 8, $rrow[$s][$z],1,0,$xp,$yp);   //multi
 						array_push($xldata[$xy],$rrow[$s][$z]);
 					
