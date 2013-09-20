@@ -10,7 +10,7 @@ $q="SELECT * FROM Scheduled_PM WHERE SPM_ID='$spmid';";
 $resm=mysql_query($q) or die(mysql_error());
 
 $rowm=mysql_fetch_assoc($resm);
-$data=$rowm['SPM_Interval'].'<|>'.$rowm['SPM_Title'];
+$data=$rowm['SPM_Interval'].'<|>'.$rowm['SPM_Title'].'<|>'.$rowm['SPM_Tol'];
 
 
 $qs="SELECT * FROM SPM_Desc WHERE SPM_ID='$spmid';";

@@ -14,12 +14,19 @@
 <script type="text/javascript">
     $(document).ready(function() {
     
-        var date = new Date();
-        var d = date.getDate();
-        var m = date.getMonth();
-        var y = date.getFullYear();
         
         $('#calendar').fullCalendar({
+
+viewDisplay: function(view) {
+  
+  var date = $("#calendar").fullCalendar('getDate');
+  var m = date.getMonth();
+
+  url="get_maint_summary.php?month="+m;
+  console.log(m);
+},
+
+
         eventSources: ['scheduled_maintenance_plan.php'],
 
 eventRender: function(event, element) {

@@ -4,7 +4,7 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawingid=$_GET['drawingid'];
 
-$query="SELECT Program_NO,Operation_Desc,Stage_Drawing_Path,NC_Prog_Path,
+$query="SELECT Program_NO,Operation_Desc,Stage_Drawing_Path,NC_Prog_Path,Operation_Notes,
 		(SELECT GROUP_CONCAT(Fixture_NO) FROM Ope_Fixt_Map as fmp 
 		WHERE fmp.Operation_ID=op.Operation_ID) AS fxtno,
 		(SELECT GROUP_CONCAT('/drawings/',Operation_Image_Path) FROM Operation_Image as oi 
@@ -18,7 +18,7 @@ $r=mysql_num_rows($res);
 if($r!=0)
 {
 print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\">");
-print("<tr><th>Operation Description</th><th>Program NO</th><th>Fixture Number</th><th>Operation Images</th></tr>");
+print("<tr><th>Operation Description</th><th>Program NO</th><th>Fixture Number</th><th>Operation Images</th><th>Notes</th></tr>");
 while($row=mysql_fetch_assoc($res))
 {
 
@@ -40,44 +40,57 @@ while($row=mysql_fetch_assoc($res))
 
 	print("<tr><td>$p</td><td>$n</td><td>$row[fxtno]</td><td>");
 	
-if($row['opim']!='')
-{
+	if($row['opim']!='')
+	{
 			$images=explode(',', $row['opim']);
 			
 			print("<table><tr>");
-$y=1;
+	$y=1;
 			for($z=0;$z<count($images);$z++)
 			{
 				print("<td><a class=\"opimg\" href=\"$images[$z]\">Image $y</a></td>");
-$y++;
+	$y++;
 			}
-			print("</tr></table>");			
+			
+		print("</tr></table>");
+	}	
 	
-}	
-	
-	print("</td></tr>");
+	print("</td><td>$row[Operation_Notes]</td></tr>");
 	
 }
 print("</table>");
 
+}
+else {
+	print("No Operations Added For this Drawing Yet<p>");
+}
 
+
+///cust clarifications
 
 
 $q2="SELECT * FROM Cust_Clarification WHERE Drawing_ID='$drawingid';";
 $r2 = mysql_query($q2, $cxn) or die(mysql_error($cxn));	
-$r=mysql_affected_rows();
-if($r!=0)
+$r=mysql_num_rows($r2);
+if($r)
 {
 
 	print("Customer Clarifications For this Part:");
-$z=1;
+	$z=1;
+	print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\">");
+	print("<tr><th>Clarification</th><th>Reply</th><th>Remarks</th></tr>");
 	while($row2=mysql_fetch_assoc($r2))
 	{
 				$ppath='/enquiry/'.$row2['PDF_Path'];
-				print("<a class=\"pdf\" href=\"$ppath\" target=\"_NEW\" >Clarification $z</a>");
+				$replaypath='/enquiry/'.$row2['Replay_Path'];
+				print("<tr><td><a class=\"pdf\" href=\"$ppath\" target=\"_NEW\" > $z Dated $row2[Date_Of_Request] </a></td>");
+			if($row2['Replay_Path']!='')
+			{
+				print("<td><a class=\"pdf\" href=\"$replaypath\" target=\"_NEW\" >  $z Dated $row2[Date_Of_Clarification]</a></td><td>$row2[Remarks]</td></tr>");
+			}
 				$z++;
 	}
-
+print("</table>");
 
 }
 
@@ -88,8 +101,8 @@ $q3="SELECT *,Operation_Desc,Operator_Name,(SELECT GROUP_CONCAT('/logimages/',Im
 	INNER JOIN Operator as oper ON oper.Operator_ID=pr.Operator_ID
 	WHERE comp.Drawing_ID='$drawingid' ORDER BY Change_Date Desc;";
 $r3 = mysql_query($q3, $cxn) or die(mysql_error($cxn));	
-$r=mysql_affected_rows();
-if($r>0)
+$r=mysql_num_rows($r3);
+if($r)
 {
 
 	print("Improvement History DEW\PRD\R\\11:");
@@ -98,7 +111,7 @@ if($r>0)
 	while($row3=mysql_fetch_assoc($r3))
 	{	
 
-				if($row3['ip']!='')
+				if((isSet($row3['ip']))&&($row3['ip']!=''))
 		{
 			$images=explode(',', $row3['ip']);
 			
@@ -125,8 +138,9 @@ if($r>0)
 
 
 
-}
-else {
-	print("No Operations Added For this Drawing Yet");
-}
+
+
+
+
+
 ?>

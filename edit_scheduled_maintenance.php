@@ -8,6 +8,7 @@ $uploadDir = '/home/www/drawings/';
 $pmid=$_POST['SPM_ID'];
 $interval=$_POST['interval'];
 $spmdesc=$_POST['spmdesc'];
+$spmtol=$_POST['spmtol'];
 if(isSet($_POST['mdesch'])){$mdesch=explode('<|>',$_POST['mdesch']);}else{$mdesch='';}
 if(isSet($_POST['spmid'])){$spmid=$_POST['spmid'];}else{$spmid='';}
 if(isSet($_POST['mdescedit'])){$mdescedit=$_POST['mdescedit'];}else{$mdescedit='';}
@@ -17,7 +18,8 @@ if(isSet($_POST['delspmd'])){$delspmd=$_POST['delspmd'];}else{$delspmd='';}
 
 
 $query="UPDATE Scheduled_PM SET SPM_Interval='$interval',
-								SPM_Title='$spmdesc' WHERE SPM_ID='$pmid';";
+								SPM_Title='$spmdesc',
+								SPM_Tol='$spmtol' WHERE SPM_ID='$pmid';";
 	 						
 
 //print($query);

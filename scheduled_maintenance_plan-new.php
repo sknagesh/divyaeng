@@ -3,16 +3,12 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
-$start=$_GET['start'];	///dummy not used
-$starton = date('Y-m-d H:i',$start);  //dummy not used
-$m = date("m",strtotime($starton)); ///dummy not used
-
 $query="SELECT *,Start_Date_Time,End_Date_Time,Machine_Name,Operator_Name,Maintenance_Description,SPM_ID From Maintenance as maint
 		INNER JOIN ActivityLog as actl ON actl.Activity_Log_ID=maint.Activity_Log_ID
 		INNER JOIN Machine as mach ON mach.Machine_ID=actl.Machine_ID
 		INNER JOIN Operator as ope ON ope.Operator_ID=actl.Operator_ID
 		INNER JOIN Maintenance_Type as mty ON mty.Maintenance_Type_ID=maint.Maintenance_Type_ID
-		WHERE actl.Activity_ID=5;";
+		WHERE actl.Activity_ID=5 ORDER BY mach.Machine_ID;";
 
 
 
@@ -21,20 +17,21 @@ $res=mysql_query($query, $cxn) or die(mysql_error($cxn));
 // Initializes a container array for all of the calendar events
 $jsonArray = array();
 
+print("<table><tr><td>id</td><td>machine</td><td>edt</td>
+		<td>spmid</td><td>spmtitle</td><td>spmtol</td><td>maintinterval</td><td>spminterval</td><th>color</th><td>lastmaintdate</td></tr>");
+
 while($row = mysql_fetch_array($res))
 {
  $sdt = $row['Start_Date_Time'];
  $edt=$row['End_Date_Time'];
  $id=$row['Activity_Log_ID'];
 
-///clear previous values 
 $spminterval='';
 $spmtol='';
 $spmtitle='';
 $maintinterval='';
 $td='';
-
-
+$color='';
 if(($row['SPM_ID']!='')&&($row['SPM_ID']!=0))
 {
 	$q5="SELECT SPM_Title,SPM_Interval,SPM_Tol FROM Scheduled_PM WHERE SPM_ID=$row[SPM_ID];";
@@ -43,7 +40,7 @@ if(($row['SPM_ID']!='')&&($row['SPM_ID']!=0))
 	$f5=mysql_fetch_assoc($res5);
 	$spminterval=$f5['SPM_Interval'];
 	$spmtol=$f5['SPM_Tol'];
-	$mainttype=$f5['SPM_Title'];
+	$mainttype=$f5['SPM_Title'].' ok ';
 
 		$q6="SELECT *,DATE_FORMAT(End_Date_Time,'%Y/%m/%d')as edt FROM Maintenance as maint 
 			INNER JOIN ActivityLog as actl ON actl.Activity_Log_ID=maint.Activity_Log_ID 
@@ -73,28 +70,31 @@ if(($row['SPM_ID']!='')&&($row['SPM_ID']!=0))
 				}else{
 						$color="green";
 				}
+			
+			
+			
 
-				if($maintinterval<-$spmtol)
+				if($maintinterval<=-$spmtol)
 				{
-					$td=" Late By $maintinterval Days";
+					$td=" Late By $maintinterval Days spmtol=-$spmtol";
 				}else
-				if($maintinterval>$spmtol)
+				if($maintinterval>=$spmtol)
 				{
-					$td=" Early By $maintinterval Days";
+					$td=" Early By $maintinterval Days spmtol=$spmtol";
 				}else{
-					$td=" On Time";
+					$td=" On Time $maintinterval ($spmtol)";
 				}
 
-								
-	 		}
+			
 
-if($maintinterval=='')
+	 		}
+	 		if($maintinterval=='')
 			{
 				$color="green";
 			}
 
 $mainttype.=$td;
-
+$mainttype.='id='.$id;
 
 }else{
 
@@ -103,10 +103,14 @@ $color="blue";
 }
 
  // Stores each database record to an array
- $buildjson = array('title' => "$row[Machine_Name] - $mainttype",'id' => "$id", 'start' => "$sdt",'end' => "$edt", 'allday' => false,'backgroundColor' => "$color");
+// $buildjson = array('title' => "$row[Machine_Name] - $mainttype",'id' => "$id", 'start' => "$sdt",'end' => "$edt", 'allday' => false,'backgroundColor' => "$color");
 
  // Adds each array into the container array
- array_push($jsonArray, $buildjson);
+ //array_push($jsonArray, $buildjson);
+print("<tr><td>$id</td><td>$row[Machine_Name]</td><td>$row[End_Date_Time]</td>
+		<td align=\"center\">$row[SPM_ID]</td><td>$mainttype</td>
+		<td>$spmtol</td><td>$maintinterval</td><td>$spminterval</td><td>$color</td><td>$row6[edt]</td></tr>");
+
 }
 
 
@@ -126,7 +130,7 @@ while($spm=mysql_fetch_assoc($res))
 			if($r!=0)
 			{
 				$rfe=mysql_fetch_assoc($resspm);
-				$nextspmdate=date('Y-m-d', strtotime($rfe['edt']. ' + '.$spm['SPM_Interval'].' days'));
+				$nextspmdate=date('Y-m-d', strtotime($rfe[edt]. ' + '.$spm[SPM_Interval].' days'));
 //				$lastpmdate = strtotime($rfe['edt']);
 //				$nextspmdate = date('Y-m-d', mktime(0,0,0,date('m',$lastpmdate),date('d',lastpmdate)+$spm['SPM_Interval'],date('Y',$lastpmdate)));
 //				print("machine=$rfe[Machine_Name] lastpm=$rfe[edt] and interval=$spm[SPM_Interval] and next pm=$nextspmdate<br>");
@@ -139,5 +143,5 @@ while($spm=mysql_fetch_assoc($res))
 
 
 // Output the json formatted data so that the jQuery call can read it
-echo json_encode($jsonArray);
+//echo json_encode($jsonArray);
 ?>

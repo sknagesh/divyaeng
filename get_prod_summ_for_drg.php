@@ -201,7 +201,7 @@ $tidle=min2hm($tidle);$tidleper=round((($tidle/$totalaccounted)*100),2);
 	print("<tr class=\"s\"><td>Fixture Work</td><td>$tfixture</td><td>$tfxtper</td></tr>");
 	print("<tr class=\"s\"><td>FAI</td><td>$tfai</td><td>$tfaiper</td></tr>");
 	print("<tr class=\"q\"><td>Maintenance</td><td>$tmaint</td><td>$tmaintper</td></tr>");
-	print("<tr class=\"s\"><td>Idle</td><td>$tidle</td><td>$tidleper</td></tr>");
+	print("<tr class=\"s\"><td>Machine Stop</td><td>$tidle</td><td>$tidleper</td></tr>");
 	print("<tr class=\"q\"><td>Total Accounted</td><td>$totalaccounted</td><td>100%</td></tr>");
 	print("<tr class=\"s\"><td>Total Available</td><td>$availablehours</td></tr>");
 

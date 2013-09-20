@@ -48,8 +48,9 @@ p { font-weight: bold; clear: both; }
            datae=html.split('<|>');
           $('#interval').val(datae[0]);
           $('#spmdesc').val(datae[1]);
+          $('#spmtol').val(datae[2]);
             var tmp='';
-          for(var j=2;j<datae.length;j++)
+          for(var j=3;j<datae.length;j++)
           {
               tmp+=datae[j];
           }
@@ -141,6 +142,10 @@ $('#Add').click(function(){
 
      <label>Maintenance Interval in Days</label>
      <input type="text" name="interval" id="interval" size="25" class="required number" >
+
+    <p>
+     <label>Deviation allowed in No of Days</label>
+     <input type="text" name="spmtol" id="spmtol" size="25" class="required number" >
 
      <p>
      <label>Maintenance Description</label>

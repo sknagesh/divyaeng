@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+        <script src="jquery.form.js"></script>
+  
+ <style type="text/css">
+* { font-family: Verdana; font-size: 13px; }
+label { width: 10em; float: left; color:green;font-weight: bold; clear: both; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+	$('#clarification').validate();
+ 	$('#customer').load("get_customer.php");
+	$('#enquiry').load("get_enquires.php");
+
+  	$('#customer').click(function(){
+  	var cid=$('#Customer_ID').val();
+  	var url="get_drawing.php?custid="+cid+'&hcomp=1';
+  		if(cid!='')
+  		{
+  		$('#drawing').load(url);
+    	$('#Enquiry_ID' ).removeClass("required");
+  		$('#Enquiry_ID').val("");
+  		}
+  	});
+
+    $('#drawing').click(function(){
+    var drawid=$('#Drawing_ID').val();
+    var url="get_cust_clarifications_for_drawing.php?drawid="+drawid;
+      if(drawid!='')
+      {
+      $('#custclari').load(url);
+      $('#Enquiry_ID' ).removeClass("required");
+      $('#Enquiry_ID').val("");
+      }
+    });
+
+
+
+  	$('#enquiry').click(function(){
+  	var eid=$('#Enquiry_ID').val();
+  	if(eid!='')
+  	{
+    var url="get_cust_clarifications_for_drawing.php?eid="+eid;
+    $('#custclari').load(url);
+    $( '#Customer_ID' ).removeClass("required");
+  	$('#Customer_ID').val("");
+	  $('#drawing').text("");
+  	}
+  	});
+
+    $('#custclari').click(function(){
+    var cid=$('#Clarification_ID').val();
+    if(cid!='')
+    {
+    var url="get_pdf_for_cid.php?cid="+cid;
+    $('#ccpdf').load(url);
+    }
+    });
+
+
+
+$(function () {
+	$('#rdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#rdatedb', altFormat: 'Y-O-D'});
+	
+	
+	});  
+
+
+
+var options = {  ///options for ajaxSubnit function 
+                        success: function(html) {
+                          $('#footer').html(html);
+                    },
+
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+
+    };
+
+  $("#addp").click(function(event) {
+
+   if( $('#clarification').valid())
+    {
+      event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+      $("#clarification").ajaxSubmit(options);
+    }
+
+    });
+
+
+
+
+
+});
+
+
+
+  </script>
+
+
+    </head>
+    <body>
+
+  <form name ="clarification" id="clarification" action="cust_clarification_replay.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>Clarification Details</legend>
+   <p>
+    <div id="customer"> </div>
+    <div id="drawing"> </div>
+    <div id="enquiry"> </div>
+    <div id="custclari"> </div>
+	  <p>
+     <label>Date of Reply</label>
+     <input type="text" name="rdate" id="rdate" size="25" class="required">
+      <input type="hidden" name="rdatedb" id="rdatedb" >
+	   <p>
+
+	   <p>
+     <label>Remarks</label>
+     <textarea name="remarks" rows="4" cols="50" id="remarks" maxlength="250"> </textarea> 
+	   <p>
+		
+   <p>
+     <label>Upload Supporting Images/PDFs if any </label>
+     <input id="drg" name="drg" type="file" />
+   </p>
+ 
+ <p>
+     <input class="submit" id="addp" type="submit" value="Submit"/>
+   </p>
+ 
+</fieldset>
+ </form>
+<div id="footer"></div>
+</body>
+</html>

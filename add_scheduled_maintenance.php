@@ -9,13 +9,15 @@ print_r($_POST);
 $machineid=$_POST['Machine_ID'];
 $interval=$_POST['interval'];
 $spmdesc=$_POST['spmdesc'];
+$spmtol=$_POST['spmtol'];
 $mdesch=explode('<|>',$_POST['mdesch']);
 
 
 $query="INSERT INTO Scheduled_PM (Machine_ID,
 								SPM_Interval,
-								SPM_Title) 
-	 						VALUES('$machineid','$interval','$spmdesc');";
+								SPM_Title,
+								SPM_Tol) 
+	 						VALUES('$machineid','$interval','$spmdesc','$spmtol');";
 
 
 $res=mysql_query($query) or die(mysql_error());
