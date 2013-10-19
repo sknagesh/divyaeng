@@ -17,6 +17,8 @@ if($edate!=''){$ed=" AND Start_Date_Time<='$edate' ";}else{$ed='';}
 
 if($aid!=''){$a=" AND actl.Activity_ID='$aid' ";}else{$a='';}
 
+if(($mid=='')&&($sdate=='')&&($edate=='')&&($aid=='')){$lim='LIMIT 50';}else{$lim='';}
+
 $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, Machine_Name,
 		(SELECT GROUP_CONCAT('/logimages/',Image_Path) FROM ActivityLog_Image as ali 
 		WHERE ali.Activity_Log_ID=actl.Activity_Log_ID) as ip,
@@ -28,7 +30,7 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, Machine_Name,
 		INNER JOIN Operator as ope ON ope.Operator_ID=actl.Operator_ID
 		INNER JOIN Machine as mach ON mach.Machine_ID=actl.Machine_ID
 		WHERE actl.Activity_ID NOT IN(10,15) $m $sd $ed $a  
-		 ORDER BY End_Date_Time DESC;";
+		 ORDER BY End_Date_Time DESC $lim;";
 	
 //print("$query<br>");
 print("<br><h1>Activity Log DEW/MR/R/15</h1><br>");

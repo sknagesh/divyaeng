@@ -18,11 +18,15 @@ p { font-weight: bold; clear: both; }
 .t { font-weight: bold; clear: both; background-color:#58ACFA; color:#F6CECE}
 .s.hover { background-color:#4A779D}
 .q.hover { background-color:#4A779D}
+.tt { font-weight: bold; clear: both; background-color:#F5A9F2; color:#0404B4}
+.qq { clear: both; background-color:#CCCCCD; color:#B40404;}
+.ss { clear: both; background-color:#EFFBF2; color:#01DF01;}
 .submit { margin-left: 12em; }
 
 </style>
   <script>
   $(document).ready(function(){
+var lastdiv='';
   	$('#footer').load("get_dispatch_index.php");
 
 
@@ -32,6 +36,34 @@ $(function () {
 	$('#edate').datetimeEntry({datetimeFormat: 'D-O-Y', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D'});
 	
 	});  
+
+
+
+
+  $(document).on('click', ".dinfo", function(event) {
+    var dispatchid=$(this).val();
+    console.log(dispatchid);
+  var did=$(this).attr('id');
+  var p1=did.indexOf("[")+1;
+    var p2=did.indexOf("]");
+    var id=did.substring(p1,p2);
+if(lastdiv=='')
+{
+  lastdiv='#'+id;
+}else{
+  $(lastdiv).text('');
+  lastdiv='#'+id;
+}
+console.log("id="+id);
+    var url='get_dispatch_details_for_month.php?mid='+dispatchid;
+    $('#'+id).load(url);
+    $('#'+id).css("background-color","lightgreen");
+  
+  });
+
+
+
+
 
   });
 

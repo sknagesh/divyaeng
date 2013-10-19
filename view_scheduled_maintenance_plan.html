@@ -43,7 +43,13 @@ eventRender: function(event, element) {
                 width:500
              },
              position: {
-                viewport: $(window)
+        viewport: $(window),
+            my: 'bottom center', 
+          at: 'top center'  ,
+                adjust: {
+            method: 'shift'
+
+        }
    }
       
         });

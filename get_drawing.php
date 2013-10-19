@@ -8,7 +8,7 @@ if(isSet($_GET['hcomp'])){$hcomp=$_GET['hcomp'];}else{$hcomp="";}
 if(isSet($_GET['rcr'])){$rcr="";}else{$rcr="class=\"required\"";}
 if(isSet($_GET['id'])){$id=$_GET['id'];}else{$id="";}
 //print_r($_POST);
-if($hcomp!=1)
+if(($hcomp!='') && ($hcomp!=1))
 {
 $query="SELECT * FROM Component WHERE Customer_ID='$custid' ORDER BY Drawing_NO;";
 }else

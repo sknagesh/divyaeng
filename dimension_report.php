@@ -166,11 +166,11 @@ function Header()
 	$this->MultiCell(110, 6, 'HEAT NO: '.$heatcode, 1, 'L', 0, 0, '', '', true,0,false,true,12,'M',true);	
 //	$this->Cell(110,6,'HEAT NO: '.$heatcode,'T R',0,'L');
     
-    $this->Cell(85,6,'DATE: '.$jdate,'L B R',1,'L');
+    $this->Cell(85,6,'DATE: '.$jdate."  Note: ".$comment,'L B R',1,'L');
     $this->MultiCell(80, 6,'Drg No/Rev No: '.$partno, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 //    $this->Cell(80,6,'Drg No/Rev No: '.$partno,'L B R',0,'L');
 	$this->Cell(110,6,"",'B R',0,'L');
-    $this->Cell(85,6,"OP No: ".$opdesc. "  Note: ".$comment,'B R',0,'L');
+    $this->Cell(85,6,"OP No: ".$opdesc,'B R',0,'L');
 
 	}
 
