@@ -4,13 +4,22 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawingd=$_GET['drawingid'];
 if(isSet($_GET['bid'])){$oid=$_GET['bid'];}else{$oid="";}
+if(isSet($_GET['cbi'])){$cbi=$_GET['cbi'];}else{$cbi="";}
 //print_r($_POST);
 
+if($cbi==1)
+{
+$query2="SELECT DISTINCT(bn.Batch_ID),Mfg_Batch_NO FROM Batch_NO as bn
+		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=bn.Batch_ID
+		INNER JOIN MI_Drg_Qty AS mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID 
+		WHERE mdq.Drawing_ID='$drawingd';";
+
+}else{
 $query2="SELECT DISTINCT(bn.Batch_ID),Mfg_Batch_NO FROM Batch_NO as bn
 		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=bn.Batch_ID
 		INNER JOIN MI_Drg_Qty AS mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID 
 		WHERE mdq.Drawing_ID='$drawingd' and Batch_Under_Progress='1';";
-
+}
 //print($query2);
 
 print("<label for=\"bno\">Select Batch ID</label>");

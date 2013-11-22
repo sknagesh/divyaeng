@@ -34,7 +34,7 @@ $(document).ready(function(){
 		url2='get_drawing.php?custid='+cid+'&rcr=1';  //load drawings to add new items for same challan
 		$('#challans').load(url);
 		$('#drawingadd').load(url2);
-		if(cid!=3)
+		if((cid!=3)&&(cid!=10))
 		{
 			$('#beml').hide();
 		}

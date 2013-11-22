@@ -35,7 +35,7 @@ $('#drawing').click(function() {
 	var drawid=$('#Drawing_ID').val();
 	
 	if(drawid!='')
-	{	url="get_open_batch_no.php?drawingid="+drawid;
+	{	url="get_open_batch_no.php?drawingid="+drawid+"&cbi=1";
 	$('#bno').load(url);
 	$('#editdetails').text('');
 	$('#dates').hide();

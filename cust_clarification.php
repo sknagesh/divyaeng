@@ -154,7 +154,8 @@ if($oimgfiles!=0)
 
 
 
-$pdfname=$enquiryid.$drawingid.'.pdf';
+$td=strtotime("H-i-s");
+$pdfname=$td.$enquiryid.$drawingid.'.pdf';
 $pdfsname=$uploadDir.$pdfname;
 //	$pdf->Output($pdfname,'I');
  	$pdf->Output($pdfsname,'F');

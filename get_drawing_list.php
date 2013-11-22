@@ -3,7 +3,7 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $custid=$_GET['cid'];
-$query="SELECT * FROM Component WHERE Customer_ID='$custid';";
+$query="SELECT * FROM Component WHERE Customer_ID='$custid' ORDER BY Drawing_NO;";
 		print("<h2>Drawing Configuration List</h2>");
 		print("<h3>Document. Ref: DEW/MR/R/16 Issue NO.: 0  Date: 01-08-2013</h3>");
 

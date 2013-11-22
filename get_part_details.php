@@ -32,9 +32,11 @@ $row = mysql_fetch_assoc($resa);
 //	print("<tr><td><label>Total Clamping Time (h:m:s)</label></td><td height=\"55\">$cltime</td>
 //			<td><label>Total Machining Time (h:m:s)</label></td><td height=\"35\">$mctime</td></tr>");
 	print("<tr><td><label>Raw Material Size</label></td><td height=\"35\">$row[Raw_Material_Size]</td>");
-	print("<td><label>Pre Machined Blank Size</label></td><td height=\"10\">$row[Pre_Machined_Blank_Size]</td><tr>");
+	print("<td><label>Pre Machined Blank Size</label></td><td height=\"10\">$row[Pre_Machined_Blank_Size]</td>
+		<td>Weight Difference</td><td>$row[Scrap_Weight] Kg</td><tr>");
 	print("<tr><td><label>Finish Size</label></td><td height=\"10\">$row[Finish_Size]</td>");
-	print("<td><label>Component Material</label></td><td height=\"10\">$row[Component_Material]</td><tr>");
+	print("<td><label>Component Material</label></td><td height=\"10\">$row[Component_Material]</td>
+			<td>Material Code</td><td>$row[Material_Code]</td><tr>");
 	print('</table>');
 
 

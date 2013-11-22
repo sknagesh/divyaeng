@@ -5,6 +5,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawingid=$_GET['drawingid'];
 
 $query="SELECT Program_NO,Operation_Desc,Stage_Drawing_Path,NC_Prog_Path,Operation_Notes,
+		ADDTIME(Clamping_Time,Machining_Time) as Total_Time,
 		(SELECT GROUP_CONCAT(Fixture_NO) FROM Ope_Fixt_Map as fmp 
 		WHERE fmp.Operation_ID=op.Operation_ID) AS fxtno,
 		(SELECT GROUP_CONCAT('/drawings/',Operation_Image_Path) FROM Operation_Image as oi 
@@ -18,10 +19,10 @@ $r=mysql_num_rows($res);
 if($r!=0)
 {
 print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\">");
-print("<tr><th>Operation Description</th><th>Program NO</th><th>Fixture Number</th><th>Operation Images</th><th>Notes</th></tr>");
+print("<tr><th>Operation Description</th><th>Program NO</th><th>Fixture Number</th><th>Total Time</th><th>Operation Images</th><th>Notes</th></tr>");
 while($row=mysql_fetch_assoc($res))
 {
-
+if($row['Total_Time']=='00:00:00'){$tt='';}else{$tt=$row['Total_Time'];}
 	if($row['Stage_Drawing_Path']!='')
 	{
 		$p='<a class="pdf" href="/drawings/'.$row['Stage_Drawing_Path'].'" target="_NEW" title="View Image in New Tab">'.$row['Operation_Desc'].'</a>';
@@ -38,7 +39,7 @@ while($row=mysql_fetch_assoc($res))
 
 
 
-	print("<tr><td>$p</td><td>$n</td><td>$row[fxtno]</td><td>");
+	print("<tr><td>$p</td><td>$n</td><td>$row[fxtno]</td><td>$tt</td><td>");
 	
 	if($row['opim']!='')
 	{

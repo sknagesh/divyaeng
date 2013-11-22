@@ -13,7 +13,7 @@ $query="SELECT DATE_FORMAT(mo.date,'%M,%Y') as m,DATE_FORMAT(mo.date,'%m,%Y') as
 		INNER JOIN BNo_MI_Challans as bmc ON bmc.MI_Drg_Qty_ID=modq.MI_Drg_Qty_ID
 		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=bmc.Batch_ID
 		INNER JOIN Component as comp ON comp.Drawing_ID=modq.Drawing_ID
-		WHERE mo.Date<NOW() GROUP BY MONTH(mo.Date);";
+		WHERE mo.Date<NOW() AND comp.Customer_ID=1 GROUP BY MONTH(mo.Date);";
 
 
 		  $res1 = mysql_query($query, $cxn) or die(mysql_error($cxn));
@@ -24,15 +24,19 @@ $query="SELECT DATE_FORMAT(mo.date,'%M,%Y') as m,DATE_FORMAT(mo.date,'%m,%Y') as
 		  	print("<table cellspacing=\"1\">");
 	print("<tr class=\"t\"><th>Details</th><th>Month and Year</th>
 							<th>Total Dispatches</th>
-							<th>On Time</th><th>Late</th></tr>");
+							<th>On Time</th><th>Late</th><th>On Time Delivery %</th></tr>");
 	$i=0;
+	$c='q';
 		  while ($row = mysql_fetch_assoc($res1))
 		  {
+		  	$dper=round((($row['ontime']/$row['total'])*100),2);
+
 	print("<tr class=\"$c\"><td><input type=\"radio\" name=\"dinfo\" class=\"dinfo\" id=\"dinfo[$i]\" value=\"$row[mm]\"></input></td>
 							<td>$row[m]</td>
 							<td>$row[total]</td>
 							<td>$row[ontime]</td>
-							<td>$row[late]</td></tr>
+							<td>$row[late]</td>
+							<td>$dper</td></tr>
 							<tr><td colspan=\"5\"><div id=\"$i\"></div></td></tr>");
 	if($c=="q"){$c="s";}else{$c="q";}
 	$i++;

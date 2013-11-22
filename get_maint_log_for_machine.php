@@ -59,7 +59,7 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 		INNER JOIN Maintenance as maint ON maint.Activity_Log_ID=actl.Activity_Log_ID
 		INNER JOIN Machine AS ma ON ma.Machine_ID=actl.Machine_ID
 		INNER JOIN Maintenance_Type AS mt ON mt.Maintenance_Type_ID=maint.Maintenance_Type_ID 
-		WHERE actl.Activity_ID='5' $mid $sdate $edate $mtype $stext 
+		WHERE actl.Activity_ID='5' $mid $sdate $edate $mtype $setext 
 		  ORDER BY End_Date_Time DESC;";
 	
 //print("$query<br>");

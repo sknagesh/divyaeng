@@ -179,11 +179,11 @@ $pdf->MultiCell(80, 8, "Material Received Vide", 0, 'L', 0, 0, '', '', true,0,fa
 $pdf->ln();
 $j=0;
 
-		if($custid==3){
+		if(($custid==3)||($custid==10)){
 
-		$pdf->Cell(80,8,'GP_NO',0,0,'C');
-		$pdf->Cell(50,8,'EX_Challan_NO',0,0,'L');
-		$pdf->Cell(55,8,'DA_NO',0,0,'L');
+		$pdf->Cell(80,8,'MGP_NO',0,0,'C');
+		$pdf->Cell(50,8,'DA_NO',0,0,'L');
+		$pdf->Cell(55,8,'EX_Challan_NO',0,0,'L');
 
 		}else{
 					$pdf->Cell(80,8,'EX_Challan_NO',0,0,'C');
@@ -207,11 +207,11 @@ while($j<count($cqr_list))
 		$rchdet = mysql_query($qchdet, $cxn) or die(mysql_error($cxn));
 		$rowch=mysql_fetch_assoc($rchdet);
 
-		if($custid==3){
+		if(($custid==3)||($custid==10)){
 
 		$pdf->Cell(50,8,$rowch['GP_NO']." Dated: ".$rowch['gpd'],0,0,'L');
-		$pdf->Cell(50,8,",  ".$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');
-		$pdf->Cell(55,8,",  ".$rowch['DA_NO']." Dated: ".$rowch['dad'],0,0,'L');
+		$pdf->Cell(50,8," , ".$rowch['DA_NO']." Dated: ".$rowch['dad'],0,0,'L');
+		$pdf->Cell(55,8," , ".$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');
 
 		}else{
 					$pdf->Cell(80,8,$rowch['EX_Challan_NO']." Dated: ".$rowch['exd'],0,0,'L');

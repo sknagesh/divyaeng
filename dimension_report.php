@@ -247,8 +247,8 @@ else {
 		$oktodisplay=0;
 			foreach($lrows[$z] as $x) //print dimension details
 			{
-					
-				if($x==$bno[$bna] || $oktodisplay==1)  //if baloon no is the one selected to be displayed
+				
+				if(($x==$bno[$bna]) || ($oktodisplay==1))  //if baloon no is the one selected to be displayed
 				{
 					$pdf->MultiCell(20, 8, $x, 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 //					$pdf->MultiCell(20,8,$x,1,0,$xp,$yp);   //multi
