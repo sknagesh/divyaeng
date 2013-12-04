@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Add New Part To Database</title>
+        <title>Machine Log</title>
         <script src="jquery.js"></script>
         <script src="jquery.validate.js"></script>
-        <script src="jquery.form.js"></script>
-
+        <script src="jquery.datetimeentry.js"></script>
+        
  <style type="text/css">
-* { font-family: Verdana; font-size: 96%; }
-label { width: 15em; float: left; color: green}
+* { font-family: Verdana; font-size: 14px; }
+label { width: 10em; float: left;font-weight: bold; clear: both; color:green; }
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { font-weight: bold; clear: both; }
 .q { clear: both; background-color:#CCCCCD; color:#0B173B;}
@@ -19,19 +19,25 @@ p { font-weight: bold; clear: both; }
 .s.hover { background-color:#4A779D}
 .q.hover { background-color:#4A779D}
 .submit { margin-left: 12em; }
+
 </style>
   <script>
   $(document).ready(function(){
- 	$("#customer").load('get_customer.php');  //load customer list from get_customer.php
-	$('#customer').click(function(){
-		var cid=$('#Customer_ID').val();
-		if(cid!=''){
-		$('#footer').load("get_drawing_list.php?cid="+cid);
-		}
-		
+  	$("#tplan").load('get_training_plan.php');  //load customer list from get_customer.php
+
+	$('#tplan').click(function(){
+
+	var tid=$('#Training_Plan_ID').val();
+	var url="get_training_feedback.php?tid="+tid;
+	
+	$('#footer').load(url);
+
+	});		
+
+
   });
 
-});
+
   </script>
 
 
@@ -39,13 +45,17 @@ p { font-weight: bold; clear: both; }
 
     </head>
     <body>
+<div id="adraw">
+  <form name ="adddrawing" id="adddrawing" >
  <fieldset>
-<legend>Drawing Configuration List</legend>
+<legend>Select Training Plan to See Feedback</legend>
    <p>
-     <div id="customer"> </div>
+     <label">Select Training Plan</label>
+     <div id="tplan"> </div>
  </fieldset>
  </form>
 <div id="footer"> </div>
+<div id="footer2"> </div>
 </div>
 
 </body>

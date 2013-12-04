@@ -17,6 +17,9 @@ p { font-weight: bold; clear: both; }
 </style>
   <script>
   $(document).ready(function(){
+var lastdiv='';
+  	$('#footer2').load("list_most_used_tools.php");
+
   	$("#ttype").load('get_tool_types.php');  //get list of tools with inserts from get_inserted_tools.php
 
 	$('#ttype').click(function(){
@@ -41,6 +44,8 @@ p { font-weight: bold; clear: both; }
 		
 	});
 
+
+
 	$('#tlist').click(function(){
 		var tid=$('#Tool_ID_1').val();
 	if(tid!="")
@@ -49,6 +54,31 @@ p { font-weight: bold; clear: both; }
 		$('#footer').load(url);
 		}
 	});
+
+
+
+
+	$(document).on('click', ".tinfo", function(event) {
+	var toolid=$(this).val();
+	console.log(toolid);
+	var tid=$(this).attr('id');
+	var p1=tid.indexOf("[")+1;
+  	var p2=tid.indexOf("]");
+  	var id=tid.substring(p1,p2);
+		if(lastdiv=='')
+		{
+  		lastdiv='#'+id;
+		}else{
+  		$(lastdiv).text('');
+  		lastdiv='#'+id;
+		}
+
+		var url='view_tool_usage.php?tid='+toolid;
+		$('#'+id).load(url);
+		$('#'+id).css("background-color","lightgreen");
+	
+	});
+
 
 
 
@@ -81,7 +111,7 @@ p { font-weight: bold; clear: both; }
   </form>
  
  <div id="footer"> </div>
-
+ <div id="footer2"> </div>
 
 </body>
 </html>

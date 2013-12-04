@@ -22,7 +22,7 @@ $("#drawing").click(function() {      //populate operation list based on drawing
 	var drawingid=$('#Drawing_ID').val();
 	if(drawingid!='')
 	{
-	var url2='get_open_batch_no.php?drawingid='+drawingid;
+	var url2='get_open_batch_no.php?drawingid='+drawingid+"&cbi=1";
 	$('#batch').load(url2);
 	}
 

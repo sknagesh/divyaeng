@@ -34,7 +34,7 @@ p { font-weight: bold; clear: both; }
   	$('#drawing').click(function(){
 
 	var did=$('#Drawing_ID').val();
-	var url2='get_open_batch_no.php?drawingid='+did;
+	var url2='get_open_batch_no.php?drawingid='+did+"&cbi=1";
 
 		if(did!="")
 		{
@@ -93,7 +93,7 @@ p { font-weight: bold; clear: both; }
 
 
 $(function () {
-	$('#edate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#edatedb', altFormat: 'Y-O-D'});
+	$('#edate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma',altField: '#edatedb', altFormat: 'Y-O-D H:M:S'});
 	
 	
 	});  
@@ -133,25 +133,8 @@ $(function () {
      <textarea name="ncdesc" rows="4" cols="50" id="ncdesc" class="required"> </textarea> 
 	   <p>
 		
-	<label for="remarks">Root Cause For NC</label>
-     <textarea name="rootca" rows="4" cols="50" id="rootca" class="required"> </textarea> 
-	   <p>
-		
-	<label for="remarks">Corrective Action</label>
-     <textarea name="corract" rows="4" cols="50" id="corract" class="required"> </textarea> 
-	   <p>
-	   	
-	   <p>
-     <label for="sdate">NC Percentage </label>
-     <input type="text" name="ncp" id="ncp" size="25">
-	   <p>
-	   	
-	   	
-	   <label for="remarks">Remarks</label>
-     <textarea name="remarks" rows="4" cols="50" id="remarks" > </textarea> 
-	   <p>
    <p>
-     <label>Upload Images if any </label>
+     <label>Upload NC Report </label>
      <input id="oimg" class="multi" name="oimg[]" type="file" />
    </p>
 	   	

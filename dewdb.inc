@@ -70,4 +70,7 @@ $h = (int)($secs / 60); $m = $secs % 60;
 return $h." H and ".$m." M";
 }
 
+
+
+
 ?>

@@ -9,7 +9,7 @@ $query="SELECT ot.Operation_ID, Tool_Dia, Tool_Fl, Tool_OAL,Tool_ID_1, Drawing_N
 				INNER JOIN Tool as t ON t.Tool_ID=ot.Tool_ID_1
 				INNER JOIN Operation as ope ON ope.Operation_ID=ot.Operation_ID
 				INNER JOIN Component as p ON p.Drawing_ID=ope.Drawing_ID
-				WHERE ot.Tool_ID_1='$tid';";
+				WHERE ot.Tool_ID_1='$tid' ORDER BY Operation_ID Desc;";
 
 //print($query);
 

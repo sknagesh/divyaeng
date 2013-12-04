@@ -35,7 +35,7 @@ print("</table>");
 
 
 
-$query='SELECT Ope_Tool_ID,Ope_Tool_OH,Ope_Tool_Desc,Tool_ID_1,Ope_Tool_Image_Path,Storage_Location,
+$query='SELECT Ope_Tool_ID,Ope_Tool_OH,Ope_Tool_Desc,Tool_ID_1,Ope_Tool_Image_Path,Storage_Location,Ope_Tool_Life,
 		(SELECT CONCAT(Tool_Desc," ( ",Tool_Part_NO," )") FROM Tool WHERE Tool_ID=ot.Tool_ID_1) as td1, 
 		(SELECT CONCAT(Tool_Desc," ( ",Tool_Part_NO," )") FROM Tool WHERE Tool_ID=ot.Tool_ID_2)as td2, 
 		(SELECT CONCAT(Insert_Part_NO," ",Insert_Description) FROM Inserts WHERE Insert_ID=ot.Insert_ID_1) as i1,
@@ -55,7 +55,7 @@ if($r!=0)
 {
 print("<table border=\"1\" cellspacing=\"1\" id=\"ttble\">");
 print("<tr><th>Tool ID</th><th>Preferred Tool and Insert</th><th>Alternate Tool and Insert</th><th>Description</th><th>Preffered Holder</th>
-		<th>Alternate Holder</th><th>Tool Overhang</th><th>Tool Storage Location</th><th>Tool Images</th></tr>");
+		<th>Alternate Holder</th><th>Tool Overhang</th><th>Tool Stored In</th><th>Approx. Tool Life</th><th>Tool Images</th></tr>");
 $i=0;
 while($row=mysql_fetch_assoc($res))
 {
@@ -66,12 +66,14 @@ while($row=mysql_fetch_assoc($res))
 			$img='<a href="'.$otpath.'" target=\"_NEW\">Tool Image</a>';
 		}else{$img='';}
 
+		if($row['Ope_Tool_Life']!=0){$tl=$row['Ope_Tool_Life'];}else{$tl='';}
+
 	if($row['td2']!=''){$t2='<font color=\"green\">'.$row['tb2'].' Make '.$row['td2'].' '.$row['i2'].'</font>';}else{$t2='';}
 	print("<tr><td><input type=\"radio\" name=\"tinfo\" class=\"tinfo\" id=\"tinfo[$i]\" value=\"$row[Tool_ID_1]\"></input></td>
 	<td >$row[tb1] Make $row[td1] $row[i1]</td>
 	<td >$t2</td>
 	<td>$row[Ope_Tool_Desc]</td>
-	<td>$row[hd1]</td><td>$row[hd2]</td><td>$row[Ope_Tool_OH]</td><td>$row[Storage_Location]</td>
+	<td>$row[hd1]</td><td>$row[hd2]</td><td>$row[Ope_Tool_OH] mm</td><td>$row[Storage_Location]</td><td>$tl</td>
 	<td>$img</td></tr><tr><td colspan=\"12\"><div id=\"$i\"></div></td>");
 	$i++;
 }

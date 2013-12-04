@@ -70,17 +70,18 @@ if(($row['SPM_ID']!='')&&($row['SPM_ID']!=0))
 				if(($maintinterval<-$spmtol)||($maintinterval>$spmtol))
 				{
 					$color="red";
+					$mi=abs($maintinterval)-abs($spmtol);
 				}else{
 						$color="green";
 				}
 
 				if($maintinterval<-$spmtol)
 				{
-					$td=" Late By $maintinterval Days";
+					$td=" Late By $mi Days";
 				}else
 				if($maintinterval>$spmtol)
 				{
-					$td=" Early By $maintinterval Days";
+					$td=" Early By $mi Days";
 				}else{
 					$td=" On Time";
 				}

@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Production Summary</title>
         <script src="jquery.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
 
 
  <style type="text/css">
@@ -28,10 +29,22 @@ p { font-weight: bold; clear: both; }
     var interval=$('#interval').val();
     if(interval!='')
     {
-    var url='get_prod_summ_for_drg.php?interval='+interval;
+      var sdate=$('#sdatedb').val();
+      var edate=$('#edatedb').val();
+    var url='get_prod_summ_for_drg.php?interval='+interval+"&sdate="+sdate+"&edate="+edate;
       $("#footer").load(url)
     }
       });
+
+    $('#edate').keyup(function(){
+
+      var sdate=$('#sdatedb').val();
+      var edate=$('#edatedb').val();
+      var url='get_prod_summ_for_drg.php?sdate='+sdate+"&edate="+edate;
+      $("#footer").load(url)
+
+      });
+
 
 
 		$('#customer').click(function(){
@@ -76,9 +89,21 @@ p { font-weight: bold; clear: both; }
      
       });
 
+$(function () {
+  $('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#sdatedb', altFormat: 'Y-O-D', defaultDatetime: '-7d'});
+  
+  $('#edate').datetimeEntry({datetimeFormat: 'D-O-Y', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D'});
+  
+  });  
 
 
   });
+
+function customRange() { 
+
+return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
+}
+
 
   </script>
 
@@ -94,6 +119,19 @@ p { font-weight: bold; clear: both; }
      <div id="drawing"> </div>
      <div id="batchno"> </div>
      <label>Time Frame in Days</label><input type="text" name="interval" id="interval" class="number"><br>
+
+   <p>
+     <label for="sdate">Start Date</label>
+     <input type="text" id="sdate" name="sdate" size="25"/>
+     <input type="hidden" id="sdatedb" name="sdatedb" />
+   </p>
+   <p>
+     <label for="edate">End Date</label>
+     <input type="text" id="edate" name="edate" size="25"/>
+     <input type="hidden" id="edatedb" name="edatedb" />
+   </p>
+
+
      <label>Monthwise Report</label><input type="checkbox" name="month" id="month">
  </fieldset>
 <div id="footer"> </div>

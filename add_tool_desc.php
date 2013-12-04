@@ -21,6 +21,7 @@ if(isSet($_POST['usel'])){$usel=$_POST['usel'];}else{$usel="";}
 if(isSet($_POST['sdia'])){$sdia=$_POST['sdia'];}else{$sdia="";}
 if(isSet($_POST['tremark'])){$tremark=$_POST['tremark'];}else{$tremark="";}
 if(isSet($_POST['tprice'])){$tprice=$_POST['tprice'];}else{$tprice="";}
+if(isSet($_POST['minstock'])){$minstock=$_POST['minstock'];}else{$minstock="";}
 
 $query="INSERT INTO Tool (Supplier_ID,
 								Tool_Type_ID,
@@ -37,7 +38,8 @@ $query="INSERT INTO Tool (Supplier_ID,
 								Brand_ID,
 								Tool_Coating,
 								Tool_Remarks,
-								Tool_Price) ";
+								Tool_Price,
+								Min_Stock_Qty) ";
 $query.="VALUES('$supid',
 				'$ttypeid',
 				'$tpno',
@@ -53,7 +55,8 @@ $query.="VALUES('$supid',
 				'$tmake',
 				'$coating',
 				'$tremark',
-				'$tprice');";
+				'$tprice',
+				'$minstock');";
 
 //print($query);
 

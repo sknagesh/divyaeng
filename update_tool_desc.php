@@ -22,6 +22,8 @@ if(isSet($_POST['usel'])){$usel=$_POST['usel'];}else{$usel="";}
 if(isSet($_POST['sdia'])){$sdia=$_POST['sdia'];}else{$sdia="";}
 if(isSet($_POST['tremark'])){$tremark=$_POST['tremark'];}else{$tremark="";}
 if(isSet($_POST['tprice'])){$tprice=$_POST['tprice'];}else{$tprice="";}
+if(isSet($_POST['minstock'])){$minstock=$_POST['minstock'];}else{$minstock="";}
+
 
 $query="UPDATE Tool SET
 	Supplier_ID='$supid',
@@ -39,7 +41,8 @@ $query="UPDATE Tool SET
 	Brand_ID='$tmake',
 	Tool_Coating='$coating',
 	Tool_Remarks='$tremark',
-	Tool_Price='$tprice'
+	Tool_Price='$tprice',
+	Min_Stock_Qty='$minstock'
 	 WHERE Tool_ID=$toolid;";
 
 

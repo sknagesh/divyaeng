@@ -108,6 +108,14 @@ print("<p>
      <input type=\"text\" id=\"tprice\" name=\"tprice\" class=\"number\" value=\"$row[Tool_Price]\" />
    </p>");
 
+
+print("<p>
+     <label>Minimum Stock Qty </label>
+     <input type=\"text\" id=\"minstock\" name=\"minstock\" class=\"number\" value=\"$row[Min_Stock_Qty]\" />
+   </p>");
+
+
+
 }
 
 

@@ -9,6 +9,26 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 if(isSet($_GET['drawingid'])){$drawid=$_GET['drawingid'];}else{$drawid='';}
 if(isSet($_GET['bid'])){$bid=$_GET['bid'];}else{$bid="";}
 if(isSet($_GET['interval'])){$interval=$_GET['interval'];}else{$interval="60";}
+if(isSet($_GET['sdate'])){$sdate=$_GET['sdate'];}else{$sdate="";}
+if(isSet($_GET['edate'])){$edate=$_GET['edate'];}else{$edate="";}
+
+if(($sdate=='')&&($edate==''))
+{
+
+	$cri="AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW()";
+}else{
+
+	
+	$cri="AND Start_Date_Time>='$sdate' AND End_Date_Time<='$edate'";
+
+	$interval=(strtotime($edate)-strtotime($sdate))/(60 * 60 * 24);
+	
+//	print("calculated interval=$interval");
+
+}
+
+
+
 
 if($drawid=='')
 {
@@ -23,7 +43,7 @@ INNER JOIN Production as prod ON prod.Activity_Log_ID=actl.Activity_Log_ID
 INNER JOIN Operation as ope On ope.Operation_ID=prod.Operation_ID
 INNER JOIN Component as comp on comp.Drawing_ID=ope.Drawing_ID
 INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
-WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY cust.Customer_ID;";
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY cust.Customer_ID;";
 //print($query);
 
 $res=mysql_query($query) or die(mysql_error());
@@ -80,7 +100,7 @@ INNER JOIN BNo_MI_Challans as bmc on bmc.Batch_ID=nprod.Batch_ID
 INNER JOIN MI_Drg_Qty as mdq on mdq.MI_Drg_Qty_Id=bmc.MI_Drg_Qty_ID
 INNER JOIN Component as comp on comp.Drawing_ID=mdq.Drawing_ID
 INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
-WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY cust.Customer_ID;";
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY cust.Customer_ID;";
 
 
 $r=mysql_query($q2) or die(mysql_error());
@@ -120,7 +140,7 @@ SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS tm From ActivityLog 
 INNER JOIN Maintenance as maint ON maint.Activity_Log_ID=actl.Activity_Log_ID
 INNER JOIN Maintenance_Type as mtype on mtype.Maintenance_Type_ID=maint.Maintenance_Type_ID
 INNER JOIN Machine as m on m.Machine_ID=actl.Machine_ID
-WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY m.Machine_ID;";
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY m.Machine_ID;";
 
 $r4=mysql_query($q4) or die(mysql_error());
 	print("<br><br><table cellspacing=\"1\">");
@@ -155,7 +175,7 @@ $q5="SELECT Machine_Name,
 SUM(CASE WHEN Activity_ID=8 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS idle
 From ActivityLog as actl
 INNER JOIN Machine as m on m.Machine_ID=actl.Machine_ID
-WHERE m.Machine_ID IN(1,2,3,4,5,6,7) AND Start_Date_Time BETWEEN DATE_SUB(NOW(), INTERVAL $interval DAY) AND NOW() GROUP BY m.Machine_ID;";
+WHERE m.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY m.Machine_ID;";
 
 $r5=mysql_query($q5) or die(mysql_error());
 	print("<br><br><table cellspacing=\"1\">");
@@ -168,7 +188,7 @@ $r5=mysql_query($q5) or die(mysql_error());
 	while($row=mysql_fetch_assoc($r5))
 	{
 		if($row['idle']!=''){$idle=min2hm($row['idle']);$tidle+=$row['idle'];}else{$idle='';}
-		if($row['ti']!=''){$ti=min2hm($row['ti']);}else{$ti='';}
+//		if($row['ti']!=''){$ti=min2hm($row['ti']);}else{$ti='';}
 		$totalaccounted+=$row['idle'];
 	print("<tr class=\"$c\"><td>$row[Machine_Name]</td>
 							<td>$idle</td>

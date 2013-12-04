@@ -18,6 +18,7 @@ $rootca=$_POST['rootca'];
 $corract=$_POST['corract'];
 
 
+
 if(isSet($_POST['remark'])){$remark=$_POST['remark'];}else{$remarks="";}
 
 if(isSet($_POST['ncp'])){$ncp=$_POST['ncp'];}else{$ncp="";}
