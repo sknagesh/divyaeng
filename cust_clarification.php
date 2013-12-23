@@ -175,5 +175,5 @@ $q1="INSERT INTO Cust_Clarification (Drawing_ID,
 $r1 = mysql_query($q1, $cxn) or die(mysql_error($cxn));
 
 		$ppath='/enquiry/'.$pdfname;
-	print("<a class=\"pdf\" href=\"$ppath\" target=\"_NEW\" title=\"Opens PDF in a new TAB\">Clarification Request</a>");
+	print("<a class=\"pdf\" href=\"$ppath\" target=\"_NEW\" title=\"Opens PDF in a new TAB\">Clarification Request  ///out put file name is $pdfsname</a>");
 ?>

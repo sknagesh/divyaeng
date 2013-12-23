@@ -20,6 +20,7 @@ $jobno=explode(',', $i['jn']);  //store unique job nos to display in headding
 	inner join Dimn_Observation as do on do.Dimn_Observation_ID=ob.Dimn_Observation_ID
 	 inner join Dimension as dimn on dimn.Dimension_ID=ob.Dimension_ID
 	 WHERE dimn.Operation_ID='$opid' AND do.Batch_ID='$batchid';";
+
 	$r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
 
 	$qry="SELECT dimn.Operation_ID, Basic_Dimn,dimn.Desc_ID,Tol_Lower,Tol_Upper,dimn.Instrument_ID,Instrument_Description, 
