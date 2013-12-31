@@ -32,7 +32,8 @@ p { font-weight: bold; clear: both; }
 	var sdate=$('#sdatedb').val();
 	var edate=$('#edatedb').val();
 	var aid=$('#Activity_ID').val();
-	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid;
+	var st=$('#stext').val();
+	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st;
 	
 	$('#footer').load(url);
 
@@ -44,7 +45,8 @@ p { font-weight: bold; clear: both; }
 	var sdate=$('#sdatedb').val();
 	var edate=$('#edatedb').val();
 	var aid=$('#Activity_ID').val();
-	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid;
+	var st=$('#stext').val();
+	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st;
 	
 	$('#footer').load(url);
 
@@ -57,7 +59,8 @@ p { font-weight: bold; clear: both; }
 	var sdate=$('#sdatedb').val();
 	var edate=$('#edatedb').val();
 	var aid=$('#Activity_ID').val();
-	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid;
+	var st=$('#stext').val();
+	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st;
 	
 	$('#footer').load(url);
 
@@ -105,6 +108,11 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
      <input type="hidden" id="edatedb" name="edatedb" />
    </p>
 </div>
+   <p>
+     <label>Filter for</label>
+     <input type="text" id="stext" name="stext" size="25"/>
+ </p>
+
  </fieldset>
  </form>
 <div id="footer"> </div>

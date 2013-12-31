@@ -48,7 +48,7 @@ echo '<option value="'.$tlist[Tool_ID].'"'. $sel.'>';
 echo $tlist[Brand_Description].' Make '.$tlist[Tool_Desc].'</option>';
 }
 echo '</select>';
-if($row['Insert_ID_1']!='0')
+if(($rtype['Tool_Type_ID']=='5')||($rtype['Tool_Type_ID']=='6'))
 {
 $qins1="SELECT * FROM Inserts WHERE Tool_ID='$row[Tool_ID_1]';";
 $rin1=mysql_query($qins1) or die(mysql_error());
@@ -94,7 +94,7 @@ echo $tlista[Brand_Description].' Make '.$tlista[Tool_Desc].'</option>';
 echo '</select>';
 
 
-if($row['Insert_ID_2']!='0')
+if(($rtype['Tool_Type_ID']=='5')||($rtype['Tool_Type_ID']=='6'))
 {
 $qins2="SELECT * FROM Inserts WHERE Tool_ID='$row[Tool_ID_2]';";
 $rin2=mysql_query($qins2) or die(mysql_error());

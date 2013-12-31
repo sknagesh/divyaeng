@@ -32,7 +32,7 @@ if($fl!='')
 
 $query="SELECT Brand_Description,Tool_Part_NO,Tool_Desc,Tool_Dia,Shank_Dia,Min_Stock_Qty,
 		Tool_Fl,Tool_Useful_Length,Tool_Corner_Rad,Tool_Angle,Tool_OAL,No_Of_Edges,
-		Tool_Coating,Qty_New,Qty_New_SF,Tool_Type FROM Tool as t
+		Tool_Coating,Qty_New,Qty_New_SF,Tool_Type,Tool_Price,Tool_Remarks FROM Tool as t
 		INNER JOIN Tool_Brand as tb ON tb.Brand_Id=t.Brand_ID
 		INNER JOIN Tool_Type as ty ON ty.Tool_Type_ID=t.Tool_Type_ID  
 		LEFT OUTER JOIN Tool_Qty AS tq ON tq.Tool_ID=t.Tool_ID 
@@ -47,7 +47,7 @@ $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 print("<table cellspacing=\"1\">");
 print("<tr class=\"t\"><th>Make</th><th>Tool Type</th><th>Part No</th><th>Description</th><th>Diameter</th><th>Shank Dia</th>
 			<th>Flute Length</th><th>Usefull LEngth</th><th>Corner Radius</th><th>Angle</th>
-			<th>OAL</th><th>No of Edges</th><th>Coating</th><th>New Stock</th><th>In Use S.Floor</th><th>Min Stock Qty</th></tr>");
+			<th>OAL</th><th>No of Edges</th><th>Coating</th><th>Price</th><th>Remarks</th><th>New Stock</th><th>In Use S.Floor</th><th>Min Stock Qty</th></tr>");
 
 while ($row = mysql_fetch_assoc($resa))
 {
@@ -63,6 +63,8 @@ print("<tr class=\"$c\"><td>$row[Brand_Description]</td>
 			<td align=\"center\">$row[Tool_OAL]</td>
 			<td align=\"center\">$row[No_Of_Edges]</td>
 			<td align=\"center\">$row[Tool_Coating]</td>
+			<td align=\"center\">$row[Tool_Price]</td>
+			<td align=\"center\" style=\"width:50px\" >$row[Tool_Remarks]</td>
 			<td align=\"center\">$row[Qty_New]</td>
 			<td align=\"center\">$row[Qty_New_SF]</td>
 			<td align=\"center\">$row[Min_Stock_Qty]</td></tr>");

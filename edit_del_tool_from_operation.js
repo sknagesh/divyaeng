@@ -36,6 +36,61 @@
 		
 	});
 
+	
+$(document).on("click", '*[id^="Tool_ID_1"]', function(event){
+	
+	
+	 var value=$(this).val();
+	 	tid=this.id;
+	 	var j=tid.substring(10);
+	 	var i=parseInt(j);
+	 	console.log("j="+j+"i="+i+"id="+tid);
+	 		
+	 	var tfid='Tool_ID_1['+i+']';
+	 	var iid1='Insert_ID_1['+i+']';
+
+		if(value!='')
+		{	var urli="get_insert_for_tool.php?tid="+value;
+					
+					$( '[id*="Insert_ID_1[' + i + ']"]' ).load(urli);
+
+		}
+	 	
+
+
+});
+
+$(document).on("click", '*[id^="Tool_ID_2"]', function(event){
+	
+	
+	 var value=$(this).val();
+	 	tid=this.id;
+	 	var j=tid.substring(10);
+	 	var i=parseInt(j);
+	 	console.log("j="+j+"i="+i+"id="+tid);
+	 		
+	 	var tfid='Tool_ID_2['+i+']';
+	 	var iid1='Insert_ID_2['+i+']';
+
+		if(value!='')
+		{	var urli="get_insert_for_tool.php?tid="+value;
+					
+					$( '[id*="Insert_ID_2[' + i + ']"]' ).load(urli);
+
+		}
+	 	
+
+
+});
+
+
+
+
+
+
+
+
+
 var options = {  
         target:        '#footer',   // target div id to update result of submit 
 

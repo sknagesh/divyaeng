@@ -85,7 +85,7 @@ function Header()
     $this->MultiCell(70, 12, 'Divya Engineering Works (P) Ltd, Mysore', 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 	$this->Cell(70,12,"Route Card",1,0,'C');
 	$this->SetFont('helvetica','', 10);
-	$this->Cell(58,6,'RECORD REF: DEW/PRD/R/16',1,2,'L');
+	$this->Cell(58,6,'Rec. For Ref: DEW/PRD/R/16',1,2,'L');
 	$this->Cell(35,6,'DATE: 01-08-2012',1,0,'L');
 	$this->Cell(23,6,'REV NO: 00',1,1,'L');
     $this->Cell(20,6,'Customer: ',1,0,'L');
@@ -176,7 +176,7 @@ $p=$row['Operation_Notes'];
 }else
 {
 	$odesc=$row['Operation_Desc'];
-	$p='Process Sheet, Activity Log';
+	$p='Process Sheet, ERP System';
 }
 
 $pdf->Cell(15,6,'',1,0,'L');
@@ -202,6 +202,11 @@ $in='';
 $ir='';
 }else
 if(strpos($row['Operation_Desc'],'Hand'))
+{
+$in='';
+$ir='';
+}else
+if(strpos($row['Operation_Desc'],'Incom'))
 {
 $in='';
 $ir='';
@@ -241,7 +246,7 @@ $ir="Inprocess Inspection Report";
 		}
 
 		$pdf->Cell(15,6,'',1,0,'L');
-		$pdf->Cell(45,6,'Fianl Inspection',1,0,'L');
+		$pdf->Cell(45,6,'Final Inspection',1,0,'L');
 		$pdf->MultiCell(55,6,'', 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(35,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
