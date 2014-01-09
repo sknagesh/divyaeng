@@ -49,7 +49,7 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, NC_Description,Status,
 	
 //print("$query<br>");
 
-print("<br><h1>Non Conformance Reports</h1><br>");
+print("<br><h1>Non Conformance Reports DEW/QA/R/02 Rev 1 Dated 01/07/2013</h1><br>");
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 $noofrecords=mysql_affected_rows();
 if($noofrecords!=0)

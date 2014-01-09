@@ -76,7 +76,7 @@ $r=mysql_num_rows($r2);
 if($r)
 {
 
-	print("Customer Clarifications For this Part:");
+	print("Customer Clarifications : DEW/QA/R/07 Rev 0 Dated 01/07/2013");
 	$z=1;
 	print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\">");
 	print("<tr><th>Clarification</th><th>Reply</th><th>Remarks</th></tr>");
@@ -106,7 +106,7 @@ $r=mysql_num_rows($r3);
 if($r)
 {
 
-	print("Improvement History DEW\PRD\R\\11:");
+	print("Process Improvement History DEW\PRD\R\07 Rev 0 Dated 01/07/2013");
 	print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\"><tr>
 			<th>Operation</th><th>Changed By</th><th>Change Date</th><th>Reason For Change</th><th>Changes</th><th>Remarks</th><th>Images</th></tr>");
 	while($row3=mysql_fetch_assoc($r3))

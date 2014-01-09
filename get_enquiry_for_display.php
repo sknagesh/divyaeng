@@ -39,7 +39,7 @@ $query="SELECT * FROM Enquiry_Record WHERE Customer_Name!='' $mid $sdate $edate;
 	
 //print("$query<br>");
 
-print("<br><h1>Enquires Received </h1><br>");
+print("<br><h1>Enquires Received  DEW/MR/R07 Rev 01, DATED 01/07/2013</h1><br>");
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 $noofrecords=mysql_affected_rows();
 if($noofrecords!=0)

@@ -14,7 +14,7 @@ $query="SELECT EX_Challan_NO,DATE_FORMAT(EX_Challan_Date,'%d/%m/%Y') as ecd,mi.M
 
 //print($query);
 
-print("<h2>Currently Open Challans</h2>");
+print("<h2>Order Register (Active) DEW/PRD/R/03 Rev 1 Dated 01/07/2013</h2>");
 $res=mysql_query($query,$cxn) or die(mysql_error());
 print('<table border="1px"><tr><th>Customer</th><th>Challan No</th><th>Challan Date</th><th>Drawing</th>
 	<th>Qty</th><th>Dispatched Qty</th><th>Age</th>');

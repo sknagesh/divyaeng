@@ -40,7 +40,22 @@ if($edate!='')
 if($mtype!='')
 {
 	
-	$mtype="AND maint.Maintenance_Type_ID='$mtype'";
+	$mty="AND maint.Maintenance_Type_ID='$mtype'";
+
+
+	if($mtype==1){
+		$mr="DEW/PRD/R/01 Rev 1 Dated 01/07/2013";
+	}else
+	if($mtype==2)
+	{
+		$mr="DEW/PRD/R/02 Rev 8 Dated 01/7/2013";
+	}else
+	if($mtype==4)
+	{
+		$mr="DEW/PRD/R/02 Rev 8 Dated 01/7/2013";
+	}else{
+	$mr='';
+	}
 }
 
 
@@ -59,12 +74,12 @@ $query="SELECT actl.Activity_Log_ID,actl.Activity_ID, actl.Machine_ID,Machine_Na
 		INNER JOIN Maintenance as maint ON maint.Activity_Log_ID=actl.Activity_Log_ID
 		INNER JOIN Machine AS ma ON ma.Machine_ID=actl.Machine_ID
 		INNER JOIN Maintenance_Type AS mt ON mt.Maintenance_Type_ID=maint.Maintenance_Type_ID 
-		WHERE actl.Activity_ID='5' $mid $sdate $edate $mtype $setext 
+		WHERE actl.Activity_ID='5' $mid $sdate $edate $mty $setext 
 		  ORDER BY End_Date_Time DESC;";
 	
 //print("$query<br>");
 
-print("<br><h1>Maintenance Entries for this Machine</h1><br>");
+print("<br><h1>Maintenance Entries for this Machine  $mr</h1><br>");
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 $noofrecords=mysql_affected_rows();
 if($noofrecords!=0)

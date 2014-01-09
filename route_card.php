@@ -86,12 +86,13 @@ function Header()
 	$this->Cell(70,12,"Route Card",1,0,'C');
 	$this->SetFont('helvetica','', 10);
 	$this->Cell(58,6,'Rec. For Ref: DEW/PRD/R/16',1,2,'L');
-	$this->Cell(35,6,'DATE: 01-08-2012',1,0,'L');
-	$this->Cell(23,6,'REV NO: 00',1,1,'L');
+	$this->Cell(35,6,'DATE: 01-01-2014',1,0,'L');
+	$this->Cell(23,6,'REV NO: 01',1,1,'L');
     $this->Cell(20,6,'Customer: ',1,0,'L');
 	$this->Cell(50,6,$custname,1,0,'L');
     $this->Cell(128,6,'Material Stock NO: '.$materialcode,'1',1,'L');
-	$this->Cell(70,6,'Part: '.$cname,1,0,'L');
+	$this->MultiCell(70, 6, 'Part: '.$cname, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);				
+//	$this->Cell(70,6,'Part: '.$cname,1,0,'L');
 	$this->MultiCell(70, 6, 'Drg No/Rev No: '.$partno, 1, 'L', 0, 0, '', '', true,0,false,true,6,'M',true);				
 //    $this->Cell(70,6,'Drg No/Rev No: '.$partno,1,0,'L');
     $this->Cell(58,6,'DATE Material Received: '.$cdate,1,1,'L');
@@ -169,10 +170,15 @@ $p='';
 }else
 if(strpos($row['Operation_Desc'],'Hand'))
 {
-
-	$o=explode(':', $row['Operation_Desc']);
+$o=explode(':', $row['Operation_Desc']);
 $odesc=$o[1];
-$p=$row['Operation_Notes'];
+//$p=$row['Operation_Notes'];
+}else
+if(strpos($row['Operation_Desc'],'Inco'))
+{
+$o=explode(':', $row['Operation_Desc']);
+$odesc=$o[1];
+$p='';
 }else
 {
 	$odesc=$row['Operation_Desc'];
@@ -196,24 +202,29 @@ $pdf->Cell(16,6,'',1,1,'L');
 		$pdf->MultiCell(16,6,'', 1, 'C', 0, 0, '', '', true,0,false,true,6,'M',true);
 		$pdf->Cell(16,6,'',1,1,'L');
 		}
-if(strpos($row['Operation_Desc'],'CMM'))
-{
-$in='';
-$ir='';
-}else
-if(strpos($row['Operation_Desc'],'Hand'))
-{
-$in='';
-$ir='';
-}else
-if(strpos($row['Operation_Desc'],'Incom'))
-{
-$in='';
-$ir='';
-}else
-{
 $in="Inspection";
 $ir="Inprocess Inspection Report";
+
+if(strpos($row['Operation_Desc'],'Hand'))
+{
+
+$in=$row['Operation_Notes'];
+$ir='';
+}
+if(strpos($row['Operation_Desc'],'CMM'))
+{
+
+$in='';
+$ir='';
+}
+if(strpos($row['Operation_Desc'],'Inco'))
+{
+
+$in='';
+$ir='';
+}
+
+
 	for($c=0;$c<=2;$c++)
 		{
 		$pdf->Cell(15,6,'',1,0,'L');
@@ -226,7 +237,7 @@ $ir="Inprocess Inspection Report";
 		$in='';
 		$ir='';
 		}
-}
+
 
 		if ($pdf->getY() > $pdf->getPageHeight() - 46.5) {
         $pdf->rollbackTransaction(true);

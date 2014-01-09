@@ -97,7 +97,7 @@ $pdf->AddPage('L','A4');
 $pdf->SetFont('helvetica','',10);
 
 		$pdf->SetY(30);
-		$pdf->MultiCell(200, 18,'Problem Statement:'.$pdesc, 0, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);				
+		$pdf->MultiCell(200, 18,'Problem Statement:'.$pdesc, 0, 'L', 0, 0, '', '', true,0,false,true,10,'M',true);				
 
 /*
 

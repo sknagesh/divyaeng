@@ -20,7 +20,7 @@ if($r!=0)
 
 
 		print("<h2>List Of Measuring Instruments And Gages</h2>");
-		print("<h3>Document. Ref: DEW/QA/D/01 Issue NO.: 06  Date: 01-06-2013</h3>");
+		print("<h3>Document. Ref: DEW/QA/D/01 Issue NO.: 07  Date: 01-01-2014</h3>");
 
 		print("<table border=\"1\" cellspacing=\"1\">");
 		print("<tr><th>Serial No</th><th>Description</th><th>Make</th><th>Range</th>
@@ -40,7 +40,7 @@ if($r!=0)
 	{
 
 		print("<h2>Calibration History Card</h2>");
-		print("<h3>Document. Ref: DEW/QA/R/01 Issue NO.: 01  Date: 01-05-2012</h3>");
+		print("<h3>Document. Ref: DEW/QA/R/03 Issue NO.: 02  Date: 01-07-2013</h3>");
 
 
 
@@ -122,14 +122,14 @@ function Header()
     $this->MultiCell(100, 18, 'List Of Measuring Instruments and Gages', 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
     $this->SetFont('helvetica','', 8);
 	$this->Cell(85,6,'RECORD REF: DEW/QA/D/01','T R',2,'L');
-	$this->Cell(85,6,'DATE: 01-06-2013','R',2,'L');
-	$this->Cell(85,6,'ISSUE NO: 06','B R',0,'L');
+	$this->Cell(85,6,'DATE: 01-01-2014','R',2,'L');
+	$this->Cell(85,6,'ISSUE NO: 07','B R',0,'L');
     }else{
     $this->MultiCell(100, 18, 'Calibration History Card', 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
     $this->SetFont('helvetica','', 8);
-	$this->Cell(85,6,'RECORD REF: DEW/QA/R/01','T R',2,'L');
-	$this->Cell(85,6,'DATE: 01-05-2012','R',2,'L');
-	$this->Cell(85,6,'ISSUE NO: 01','B R',0,'L');
+	$this->Cell(85,6,'RECORD REF: DEW/QA/R/03','T R',2,'L');
+	$this->Cell(85,6,'DATE: 01-07-2013','R',2,'L');
+	$this->Cell(85,6,'ISSUE NO: 02','B R',0,'L');
 	}
 	$this->ln();
 

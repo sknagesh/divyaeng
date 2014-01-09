@@ -155,9 +155,9 @@ function Header()
     $this->Cell(80,18,'Divya Engineering Works (P) Ltd, Mysore',1,0,'C');
 	$this->Cell(110,18,$reptype,1,0,'C');
 	$this->SetFont('helvetica','', 10);
-	$this->Cell(85,6,'RECORD REF: '.$docref,'T R',2,'L');
-	$this->Cell(85,6,'DATE: 01-06-2003','R',2,'L');
-	$this->Cell(85,6,'REV NO: 00','B R',0,'L');
+	$this->Cell(85,6,'Rec. For REF: '.$docref,'T R',2,'L');
+	$this->Cell(85,6,'DATE: 01-07-2013','R',2,'L');
+	$this->Cell(85,6,'REV NO: 01','B R',0,'L');
 	$this->ln();
     $this->Cell(80,6,'ITEM: '.$cname,'L T R',0,'L');
     $this->Cell(110,6,'Material Stock NO: '.$materialcode,'R',0,'L');
@@ -446,9 +446,9 @@ function Header()
     $this->Cell(80,18,'Divya Engineering Works (P) Ltd, Mysore',1,0,'C');
 	$this->Cell(110,18,$reptype,1,0,'C');
 	$this->SetFont('helvetica','', 10);
-	$this->Cell(85,6,'RECORD REF: '.$docref,'T R',2,'L');
-	$this->Cell(85,6,'DATE: 01-06-2003','R',2,'L');
-	$this->Cell(85,6,'REV NO: 00','B R',0,'L');
+	$this->Cell(85,6,'Rec. For Ref: '.$docref,'T R',2,'L');
+	$this->Cell(85,6,'DATE: 01-07-2013','R',2,'L');
+	$this->Cell(85,6,'REV NO: 01','B R',0,'L');
 	$this->ln();
     $this->Cell(80,6,'ITEM: '.$cname,'L T R',0,'L');
     $this->Cell(110,6,'Material Stock NO: '.$materialcode,'R',0,'L');
