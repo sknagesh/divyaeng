@@ -69,7 +69,7 @@ if($r!=0)
   							if ($duedate < $monthperiod)
   							{
 							$s='style="background-color: orange"';
-							$c="Calibration Due This Month";
+							$c="Calibration Due With In next 30 Days";
   							}
   							if ($duedate < $today_start)
   							{

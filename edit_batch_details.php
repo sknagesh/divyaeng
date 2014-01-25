@@ -10,7 +10,8 @@ if(isSet($_POST['bncid'])){$bncid=$_POST['bncid'];}else{$bncid='';}
 if(isSet($_POST['bremark'])){$bremark=$_POST['bremark'];}else{$bremark='';}
 if(isSet($_POST['cdatedb'])){$cdatedb=$_POST['cdatedb'];}else{$cdatedb='';}
 
-$query="UPDATE Batch_NO SET Batch_Remarks='$bremark',Commited_Date='$cdatedb' WHERE Batch_ID='$bid';";
+if($cdatedb!=''){$cdb=",Commited_Date='$cdatedb'";}else{$cdb='';}
+$query="UPDATE Batch_NO SET Batch_Remarks='$bremark' $cdb WHERE Batch_ID='$bid';";
 
 //print("<br>Query is '$query'");
 $result = mysql_query($query, $cxn) or die(mysql_error($cxn));

@@ -572,7 +572,7 @@ if($rrr3!=0)
 	print("<tr class=\"t\"><th>Operation</th>
 							<th>Production</th>
 							<th>Avg Time/Component</th>
-							<th>Act mach. & Cl. Time/Component</th>
+							<th>Estimated mach. & Cl. Time/Component</th>
 							<th>Setup</th>
 							<th>Rework</th>
 							<th>CMM</th>
