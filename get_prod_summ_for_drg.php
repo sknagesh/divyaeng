@@ -451,6 +451,13 @@ $tidle=min2hm($tidle);$tidleper=round((($tidle/$totalaccounted)*100),2);
 }else{
 
 
+	$qbq="SELECT SUM(Qty_In_Batch) as qty FROM BNo_MI_Challans WHERE Batch_ID='$bid';";
+//	print($qb);
+	$rbq=mysql_query($qbq) or die(mysql_error());
+	$rowbq=mysql_fetch_assoc($rbq);
+	$qtyq=$rowbq['qty'];
+
+
 $query="SELECT cust.Customer_Name,Machine_Name,
 SUM(CASE WHEN Activity_ID=1 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Production,
 SUM(CASE WHEN Activity_ID=2 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Setup,
@@ -462,7 +469,7 @@ INNER JOIN Operation as ope On ope.Operation_ID=prod.Operation_ID
 INNER JOIN Component as comp on comp.Drawing_ID=ope.Drawing_ID
 INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
 INNER JOIN Machine as mach ON mach.Machine_ID=actl.Machine_ID
-WHERE ope.Drawing_ID=$drawid AND Batch_ID='$bid' GROUP BY mach.Machine_ID;";
+WHERE ope.Drawing_ID=$drawid AND Batch_ID='$bid' AND mach.Machine_ID!=9 GROUP BY mach.Machine_ID;";
 
 $res=mysql_query($query) or die(mysql_error());
 $r=mysql_affected_rows();
@@ -470,31 +477,56 @@ $r=mysql_affected_rows();
 	
 //			print("<br>Batch Quantity : $es[$l] Nos");
 			print("<br><br><table cellspacing=\"1\">");
-			print("<tr class=\"t\"><th>Customer</th><th>Machine</th><th>Production</th><th>Set Up</th><th>Rework</th><th>CMM Programing</th><th>Total</th></tr>");
+			print("<tr class=\"t\"><th>Machines used</th><th>Production</th><th>Set Up</th><th>Rework</th><th>CMM Programing</th><th>Total</th></tr>");
 
 			$c="q";	
-
+$mtime=0;
+$mtimewcmm=0;
 			while($row=mysql_fetch_assoc($res))
 			{
 
-			if($row['Production']!=''){$p=min2hm($row['Production']);}else{$p='';}
-			if($row['Setup']!=''){$s=min2hm($row['Setup']);}else{$s='';}
+			if($row['Production']!=''){$p=min2hm($row['Production']);$mtime+=$row['Production'];}else{$p='';}
+			if($row['Setup']!=''){$s=min2hm($row['Setup']);$mtime+=$row['Setup'];}else{$s='';}
 			if($row['Reowrk']!=''){$rw=min2hm($row['Rework']);}else{$rw='';}
 			if($row['CMM']!=''){$cmm=min2hm($row['CMM']);}else{$cmm='';}
 			if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
-			print("<tr class=\"$c\"><td>$row[Customer_Name]</td>
-									<td>$row[Machine_Name]</td>
+									
+									
+
+			print("<tr class=\"$c\"><td>$row[Machine_Name]</td>
 									<td>$p</td>
 									<td>$s</td>
 									<td>$rw</td>
 									<td>$cmm</td>
 									<td>$t</td>
 									</tr>");
+
 			if($c=="q"){$c="s";}else{$c="q";}
 	
 				}
 			
-/////////////
+$tti=min2hm($mtime);
+$avgtime=$mtime/$qtyq;
+$avt=min2hm($avgtime);
+
+$q8="SELECT TIME_TO_SEC(ADDTIME(Clamping_Time,Machining_Time)) as tmt FROM Operation as ope
+INNER JOIN Component as comp on comp.Drawing_ID=ope.Drawing_ID
+WHERE ope.Drawing_ID=$drawid AND ope.In_Op_List!=1;";
+
+$r8=mysql_query($q8) or die(mysql_error());
+$stime=0;
+while($ror8=mysql_fetch_assoc($r8))
+{
+$stime+=$ror8['tmt'];
+}
+
+$stime=min2hm($stime/60);
+
+
+
+	
+
+			/////////////
 
 
 $q2="SELECT cust.Customer_Name,Machine_Name,
@@ -515,8 +547,7 @@ $rrr=mysql_affected_rows();
 if($rrr!=0)
 {
 	print("<br><br><table cellspacing=\"1\">");
-	print("<tr class=\"t\"><th>Customer</th>
-							<th>Machine</th>							
+	print("<tr class=\"t\"><th>Machine</th>							
 							<th>Fixture Work</th>
 							<th>FAI</th>
 							<th>Total</th>
@@ -529,8 +560,7 @@ if($rrr!=0)
 		if($row['FAI']!=''){$fai=min2hm($row['FAI']);}else{$fai='';}
 		if($row['Fixture']!=''){$fxt=min2hm($row['Fixture']);}else{$fxt='';}
 		if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
-	print("<tr class=\"$c\"><td>$row[Customer_Name]</td>
-							<td>$row[Machine_Name]</td>
+	print("<tr class=\"$c\"><td>$row[Machine_Name]</td>
 							<td>$fxt</td>
 							<td>$fai</td>
 							<td>$t</td>
@@ -570,12 +600,11 @@ if($rrr3!=0)
 
 	print("<br><br><table cellspacing=\"1\">");
 	print("<tr class=\"t\"><th>Operation</th>
-							<th>Production</th>
-							<th>Avg Time/Component</th>
-							<th>Estimated mach. & Cl. Time/Component</th>
-							<th>Setup</th>
+							<th>Standard Time/Part</th>
+							<th>Avg Time/Part</th>
+							<th>Setup/Batch</th>
+							<th>Production/Batch</th>
 							<th>Rework</th>
-							<th>CMM</th>
 							<th>Total</th>
 							</tr>");
 
@@ -590,12 +619,11 @@ if($rrr3!=0)
 			if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
 			if($row['tmt']!=''){$tmt=min2hm($row['tmt']/60);}else{$tmt='';}
 	print("<tr class=\"$c\"><td>$row[Operation_Desc]</td>
-							<td>$p</td>
-							<td>$apt</td>
 							<td>$tmt</td>
+							<td>$apt</td>
 							<td>$s</td>
+							<td>$p</td>
 							<td>$rw</td>
-							<td>$cmm</td>
 							<td>$t</td>
 							</tr>");
 	if($c=="q"){$c="s";}else{$c="q";}
@@ -604,6 +632,12 @@ if($rrr3!=0)
 
 
 	}
+
+print("<br>Cycle Time(STD) $stime");
+print("<br>Cycle Time (Avg)=$avt");
+print("<br>Total hours for the Batch=$tti");
+
+
 
 }
 ?>
