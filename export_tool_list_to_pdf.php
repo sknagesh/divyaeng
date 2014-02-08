@@ -112,9 +112,10 @@ $n=1;
 	{
 		$pdf->Cell(10,8,$n,1,0,'C');
 		$pdf->Cell(135,8,$rowi[td1],1,0,'L');
-		$pdf->Cell(25,8,$rowi[hd1],1,0,'L');
+		$pdf->MultiCell(25, 8, $rowi[hd1], 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);
 		$pdf->Cell(25,8,$rowi[Ope_Tool_OH],1,0,'C');
-		$pdf->Cell(80,8,$rowi[Ope_Tool_Desc],1,1,'L');
+		$pdf->MultiCell(80, 8, $rowi[Ope_Tool_Desc], 1, 'L', 0, 1, '', '', true,0,false,true,8,'M',true);
+//		$pdf->Cell(80,8,$rowi[Ope_Tool_Desc],1,1,'L');
 
 		if (($pdf->getY()) > ($pdf->getPageHeight()-46.5))   //IF TOOL LIST EXCEEDS ONE PAGE FOR THIS OPERATION
 		{

@@ -168,11 +168,11 @@ if(strpos($row['Operation_Desc'],'CMM'))
 $odesc=$o[1];
 $p='';
 }else
-if(strpos($row['Operation_Desc'],'Hand'))
+if(strpos($row['Operation_Desc'],'Bench'))
 {
 $o=explode(':', $row['Operation_Desc']);
 $odesc=$o[1];
-//$p=$row['Operation_Notes'];
+$p='';
 }else
 if(strpos($row['Operation_Desc'],'Inco'))
 {
@@ -205,7 +205,7 @@ $pdf->Cell(16,6,'',1,1,'L');
 $in="Inspection";
 $ir="Inprocess Inspection Report";
 
-if(strpos($row['Operation_Desc'],'Hand'))
+if(strpos($row['Operation_Desc'],'Bench'))
 {
 
 $in=$row['Operation_Notes'];
