@@ -32,12 +32,13 @@ $ipd="";
 	$resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 	$noofdimns=mysql_num_rows($resa);		
 
-	$qoid="SELECT Dimn_Observation_ID FROM Dimn_Observation WHERE Batch_ID='$bid' AND Job_NO='$jobno' AND Operation_ID='$opid';";
+	$qoid="SELECT Dimn_Observation_ID,Insp_Date FROM Dimn_Observation WHERE Batch_ID='$bid' AND Job_NO='$jobno' AND Operation_ID='$opid';";
 //	print($qoid);
 	$reso = mysql_query($qoid, $cxn) or die(mysql_error($cxn));
 	$rowoid = mysql_fetch_assoc($reso);
 	$odid=$rowoid['Dimn_Observation_ID'];
 //print($odid);	
+
 	
 			$i=0;
 		while ($row = mysql_fetch_assoc($resa))

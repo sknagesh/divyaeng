@@ -5,9 +5,9 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
 ///*dispatch details summary*///////
 
-$query="SELECT DATE_FORMAT(mo.date,'%M,%Y') as m,DATE_FORMAT(mo.date,'%m,%Y') as mm,
-		SUM(CASE WHEN DATEDIFF(Commited_Date,mo.Date)<0 THEN 1 END) AS late,
-		SUM(CASE WHEN DATEDIFF(mo.Date,Commited_Date)<=0 THEN 1 END) AS ontime,
+$query="SELECT DATE_FORMAT(mo.date,'%M,%Y') as m,DATE_FORMAT(mo.date,'%m,%Y') as mm,DATE_FORMAT(bn.Deposit_Date,'%M,%Y') as dd,
+		SUM(CASE WHEN DATEDIFF(Commited_Date,Deposit_Date)<0 THEN 1 END) AS late,
+		SUM(CASE WHEN DATEDIFF(Deposit_Date,Commited_Date)<=0 THEN 1 END) AS ontime,
 		SUM(CASE WHEN mo.Date!='' THEN 1 END) AS total FROM MO_Drg_Qty as modq
 		INNER JOIN Material_Outward as mo ON mo.Material_Outward_ID=modq.Material_Outward_ID
 		INNER JOIN BNo_MI_Challans as bmc ON bmc.MI_Drg_Qty_ID=modq.MI_Drg_Qty_ID

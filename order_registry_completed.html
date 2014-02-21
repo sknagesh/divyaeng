@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Open Challan Details</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jQuery.download.js"></script>
+
+  <style type="text/css">
+* { font-family: Verdana; font-size: 14px; }
+label { width: 10em; float: left;font-weight: bold; clear: both; color:green; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.q { clear: both; background-color:#CCCCCD; color:#0B173B;}
+.s { clear: both; background-color:#F0F0F0; color:#0B173B;}
+.t { font-weight: bold; clear: both; background-color:#58ACFA; color:#F6CECE}
+.s.hover { background-color:#4A779D}
+.q.hover { background-color:#4A779D}
+.tt { font-weight: bold; clear: both; background-color:#F5A9F2; color:#0404B4}
+.qq { clear: both; background-color:#CCCCCD; color:#B40404;}
+.ss { clear: both; background-color:#EFFBF2; color:#01DF01;}
+.submit { margin-left: 12em; }
+
+</style>
+
+ <script type="text/javascript">
+ 	$(document).ready(function(){
+  	$("#customer").load('get_customer.php');
+
+  		$('#customer').click(function(){
+
+	var cid=$('#Customer_ID').val();
+	if(cid!='')
+	{
+	var url='get_customer_challans.php?custid='+cid+"&open=1";
+		$('#challans').load(url);
+	}
+	});
+
+	$('#challans').click(function(){
+		var cid=$('#Material_Inward_ID').val();
+		
+		if(cid!='')
+		{
+			url="get_challan_dispatch_details.php?cid="+cid;
+		$('#footer').load(url);		
+
+
+		}
+
+		
+	});
+
+
+
+});
+ </script>
+    </head>
+    <body>
+<fieldset>
+<legend>Select Challan For dispatch Details</legend>
+<div id="customer"> </div>
+<div id="challans"> </div>
+</fieldset>
+<div id="footer"> </div>
+</body>
+</html>

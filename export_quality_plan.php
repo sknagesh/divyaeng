@@ -22,7 +22,9 @@ while($rrs=mysql_fetch_assoc($rr))
 	$custname=$rrs['Customer_Name'];
 }
 $name=$partno;
-$pd=array($cname,$partno,$custname);
+$pd[0]=array("Divya Engineering Works (P) Ltd","Quality Plan (In process)","DEW/QA/R/09");
+$pd[1]=array($cname,$partno);
+//print_r($pd);
 $xls = new Excel_XML;
 $xls->addArray($pd);
 

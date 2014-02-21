@@ -1,6 +1,7 @@
 $(document).ready(function() {
 $('#inputdimn').validate(); //attach form to validation engine
 $('#s').hide();
+$('#date').hide();
 $('#customer').load("get_customer.php"); //load customer list on to div customer
 
 
@@ -122,13 +123,32 @@ $('#jobno').click(function() {      //show dimensions based on selection
 	var bid=$('#Batch_ID').val();
 	var opid=$('#Operation_ID').val();
 	var url="get_job_for_operation_for_editing.php?opid="+opid+'&jobno='+jobno+"&bid="+bid;
+	
 if(jobno!='')
 {
+					$.ajax({
+      					type: "GET",
+      					url: "get_insp_date.php?opid="+opid+'&jobno='+jobno+"&bid="+bid,
+      					success: function(html) {
+		if(html!='')
+		{
+		var data=html.split('<|>');
+		$('#sdate').val(data[0]);
+		$('#sdatedb').val(data[1]);
+		$('#dobid').val(data[2]);
+		}
+	}
+});
+
+
 	$('#ipdimns').load(url);
+	
 	$('#s').show();
+	$('#date').show();
 }else{
 	$('#ipdimns').text(' ');
 	$('#s').hide();
+	$('#date').hide();
 }
 	
 
@@ -182,6 +202,6 @@ if($('#inputdimn').valid())
 });
 
 $(function () {
-	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#dbdate', altFormat: 'Y-O-D'});
+	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#sdatedb', altFormat: 'Y-O-D'});
 	
 });  

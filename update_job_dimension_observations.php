@@ -10,11 +10,21 @@ $jobno=$_POST['Job_NO'];
 $dimid=$_POST['dimid'];
 $observation=$_POST['observation'];
 $remark=$_POST['remarks'];
+$sdatedb=$_POST['sdatedb'];
+$dobid=$_POST['dobid'];
 if(isSet($_POST['comment'])){$comment=$_POST['comment'];}else{$comment='';}
 
 $obserid=$_POST['obserid']; //id for old measured dimensions, we need to update these dimensions
 
 $observationid=$_POST['observationid'];  //this id contains job_no, date measured, batch id, opid etc
+
+
+		$q1="UPDATE Dimn_Observation SET Insp_Date='$sdatedb' WHERE Dimn_Observation_ID=$dobid;";
+//print("<br>$queryo");
+		print($q1);
+		$r1 = mysql_query($q1, $cxn) or die(mysql_error($cxn));
+
+
 
 $i=0;
 $j=0;

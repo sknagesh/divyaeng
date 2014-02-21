@@ -13,8 +13,8 @@ $year=$amid[1];
 
 
 
-$query="SELECT DC_NO,DATE_FORMAT(Date,'%d/%m/%Y') as dcd,Component_Name,Drawing_NO,Mfg_Batch_NO,DATE_FORMAT(Commited_Date,'%d/%m/%Y') as cdt,Delivery_Comments,
-DATEDIFF(Commited_Date,Date) as dd FROM MO_Drg_Qty as modq
+$query="SELECT DC_NO,DATE_FORMAT(Date,'%d/%m/%Y') as dcd,DATE_FORMAT(Deposit_Date,'%d/%m/%Y') as cd,Component_Name,Drawing_NO,Mfg_Batch_NO,
+DATE_FORMAT(Commited_Date,'%d/%m/%Y') as cdt,Delivery_Comments,DATEDIFF(Commited_Date,Deposit_Date) as dd FROM MO_Drg_Qty as modq
 		INNER JOIN Material_Outward as mo ON mo.Material_Outward_ID=modq.Material_Outward_ID
 		INNER JOIN BNo_MI_Challans as bmc ON bmc.MI_Drg_Qty_ID=modq.MI_Drg_Qty_ID
 		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=bmc.Batch_ID
@@ -23,14 +23,14 @@ DATEDIFF(Commited_Date,Date) as dd FROM MO_Drg_Qty as modq
 
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 
-print("<table><tr class=\"tt\"><th>Dispatch Date</th><th>Comited Date</th><th>DC NO</th><th>Drawing No</th><th>Component Name</th><th>Batch NO</th><th>Remarks</th></tr>");
+print("<table><tr class=\"tt\"><th>diff</th><th>Dispatch Date</th><th>Comited Date</th><th>Deposit Date</th><th>DC NO</th><th>Drawing No</th><th>Component Name</th><th>Batch NO</th><th>Remarks</th></tr>");
 $c="ss";
 while($row=mysql_fetch_assoc($resa))
 {
 
 	if($row['dd']<0){$c="qq";}else{$c="ss";}
 
-	print("<tr class=\"$c\"><td>$row[dcd]</td><td>$row[cdt]</td><td>$row[DC_NO]</td><td>$row[Drawing_NO]</td><td>$row[Component_Name]</td>
+	print("<tr class=\"$c\"><td>$row[dd]</td><td>$row[dcd]</td><td>$row[cdt]</td><td>$row[cd]</td><td>$row[DC_NO]</td><td>$row[Drawing_NO]</td><td>$row[Component_Name]</td>
 				<td>$row[Mfg_Batch_NO]</td><td>$row[Delivery_Comments]</td></tr>");
 	
 

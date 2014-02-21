@@ -30,12 +30,12 @@ print("<p>Trainer: $trainer");
 print("<p>");
 $c="q";
 print("<table cellspacing=\"1\">");
-print("<tr class=\"t\"><th>Trainee Name</th><th>Further Training Required?</th><th>Trainee Feedback</th></tr>");
+print("<tr class=\"t\"><th>Trainee Name</th><th>Trainee Feedback</th></tr>");
 while($row=mysql_fetch_assoc($res))
 {
 
 	if($row['Further_Training_Required']==1){$ftr="Yes";}else{$ftr="No";}
-	print("<tr class=\"$c\"><td>$row[Operator_Name]</td><td>$ftr</td><td>$row[Trainee_Feedback]</tr>");
+	print("<tr class=\"$c\"><td>$row[Operator_Name]</td><td>$row[Trainee_Feedback]</tr>");
 	if($c=="q"){$c="s";}else{$c="q";}
 }
 print("</table>");
