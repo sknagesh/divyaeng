@@ -16,6 +16,9 @@ $pdfxl=$_POST['pdfxl'];
 $rtype=$_POST['Report_Type'];
 $comment=$_POST['comment'];
 $drawingid=$_POST['Drawing_ID'];
+if(isSet($_POST['convert'])){$cinch=$_POST['convert'];}else{$cinch='';}
+if($cinch==1){$inch=25.4;}else{$inch=1;}
+
 if(isSet($_POST['jcomment'])){$jcomment=$_POST['jcomment'];}else{$jcomment='';}
 if($rtype==1){
 $docref="DEW/QA/R/01";	
@@ -89,9 +92,12 @@ while($krrs=mysql_fetch_assoc($krr))
 //print("<br>$qry");
 	$j=0;
 	$resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
-	while ($row = mysql_fetch_assoc($resa))  //get all dimensions for thi operation and store them in an array
+	while ($row = mysql_fetch_assoc($resa))  //get all dimensions for this operation and store them in an array
         		{
-	$lrows[$j]=array($row['Baloon_NO'],$row['Dimn_Desc'],$row['Basic_Dimn'],$row['tl'].'/'.$row['tu'],$row['Instrument_SLNO'].' '.$row['Instrument_Description']);		
+        				if(is_numeric($row['Basic_Dimn'])){$bd=round($row['Basic_Dimn']/$inch,4);}else{$bd=$row['Basic_Dimn'];}
+        				if(is_numeric($row['tl'])){$tl=round($row['tl']/$inch,4);}else{$tl=$row['tl'];}
+        				if(is_numeric($row['tu'])){$tu=round($row['tu']/$inch,4);}else{$tu=$row['tu'];}
+	$lrows[$j]=array($row['Baloon_NO'],$row['Dimn_Desc'],$bd,$tl.'/'.$tu,$row['Instrument_SLNO'].' '.$row['Instrument_Description']);		
 	$j++;
 		        }
 //print("<br>lrows");
@@ -116,7 +122,7 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,DATE_FORMAT(Insp_Date,'%d/%m/%
 		$x=0;
 		while($row=mysql_fetch_assoc($res))  //for each job get dimensions measured and store it in an array
 		{
-			if($row['Comment']==''){$ob='<font color="black" size="9">'.$row['Observed_Dimn'].'</font>';}else{$ob='<font color="black" size="5">'.$row['Comment'].'</font>';}
+			if($row['Comment']==''){$ob='<font color="black" size="9">'.round($row['Observed_Dimn']/$inch,4).'</font>';}else{$ob='<font color="black" size="5">'.$row['Comment'].'</font>';}
 			$rrow[$z][$x]=$ob.'<font color="blue" size="5">'.$row['Remarks'].'</font>';
 			if(($jdate=='')&&($name==''))
 				{

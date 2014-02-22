@@ -8,7 +8,7 @@ $opid=$_GET['opid'];
 $query="SELECT Drawing_ID,Program_NO,Operation_Desc,NC_Prog_Path,Operation_Notes,Setup_Time,Clamping_Time,Machining_Time,Only_In_Route_Card,
 		(Select GROUP_CONCAT(Fixture_NO) FROM Ope_Fixt_Map WHERE Operation_ID='$opid')as fno,
 		(Select GROUP_CONCAT(CONCAT(OP_Image_ID, ',' ,Operation_Image_Path)) FROM Operation_Image WHERE Operation_ID='$opid')as oip,
-		Stage_Drawing_Path,In_Tool_List FROM Operation WHERE Operation_ID='$opid';";
+		Stage_Drawing_Path,In_Tool_List,Gage_List FROM Operation WHERE Operation_ID='$opid';";
 
 
 $res=mysql_query($query) or die(mysql_error());
@@ -31,7 +31,8 @@ $sdpath=$row['Stage_Drawing_Path'];
 $ippath=$row['oip'];
 $itl=$row['In_Tool_List'];
 $rco=$row['Only_In_Route_Card'];
-$data=$opedesc.'<|>'.$ctime.'<|>'.$mtime.'<|>'.$progno.'<|>'.$ppath.'<|>'.$onote.'<|>'.$fixtno.'<|>'.$ippath.'<|>'.$sdpath.'<|>'.$stime.'<|>'.$itl.'<|>'.$rco;
+$gagelist=$row['Gage_List'];
+$data=$opedesc.'<|>'.$ctime.'<|>'.$mtime.'<|>'.$progno.'<|>'.$ppath.'<|>'.$onote.'<|>'.$fixtno.'<|>'.$ippath.'<|>'.$sdpath.'<|>'.$stime.'<|>'.$itl.'<|>'.$rco.'<|>'.$gagelist;
 }else{
 	$data='';
 }

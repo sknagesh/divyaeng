@@ -34,11 +34,11 @@ class PDF_SKN extends TCPDF {
     	$this->SetFont('helvetica','',16);
 //		$this->MultiCell(100,18, 'Divya Engineering Works (P) Ltd', 1, 'C', 0, 0, '', '', true,0,false,true,8,'M',true);
     	$this->Cell(100,18,'Divya Engineering Works (P) Ltd',1,0,'C');
-		$this->Cell(100,18,'CNC Machining Tool List',1,0,'C');
+		$this->Cell(100,18,'CNC Process Sheet & Tool List',1,0,'C');
 		$this->SetFont('helvetica','', 10);
-		$this->Cell(75,6,'Doc. Ref: '.'DEW/PRD/D/03','T R',2,'L');
-		$this->Cell(75,6,'REV NO: 00','T B R',2,'L');
-		$this->Cell(75,6,'DATE: 01-06-2003','R',0,'L');
+		$this->Cell(75,6,'Doc. For Ref: '.'DEW/PRD/D/03','T R',2,'L');
+		$this->Cell(75,6,'REV NO: 01','T B R',2,'L');
+		$this->Cell(75,6,'DATE: 01-07-2013','R',0,'L');
 		$this->ln();
     	$this->Cell(200,6,'Part Name: '.$partname,'L T R',0,'L');
     	$this->Cell(75,6,'Drg No '.$partno.' Rev No: '.$revno,'T R',1,'L');

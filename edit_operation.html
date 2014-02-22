@@ -90,6 +90,7 @@ p { font-weight: bold; clear: both; }
           }else{
             $('#rco2').prop("checked",true);
           }
+          $('#ogage').html(data[12]);
 
 			$('#eop').show();
 						}
@@ -152,46 +153,52 @@ var options = {  ///options for ajaxSubnit function
 
 
    <p>
-     <label for="ctime">Clamping Time in Mins.</label>
+     <label>Clamping Time in Mins.</label>
      <input id="ctime" name="ctime" size="25"  class="number" />
    </p>
 
    <p>
-     <label for="mtime">Machining Time in Mins.</label>
+     <label>Machining Time in Mins.</label>
      <input id="mtime" name="mtime" size="25"  class="number" />
    </p>
 
    <p>
-     <label for="prno">Program No</label>
+     <label>Program No</label>
      <input id="progno" name="progno" size="25"  />
    </p>
 
    <p>
-     <label for="ppath">Path To Program No</label>
+     <label>Path To Program No</label>
      <input id="ppath" name="ppath" size="25"  />
    </p>
 
 
    <p>
-     <label for="drg">Notes Related to Operation </label>
+     <label>Notes Related to Operation </label>
      <textarea name="onote" rows="4" cols="50" id="onote" > </textarea>
      </p>
 
    <p>
-     <label for="fno">Fixture Numbers</label>
+     <label>Fixture Numbers</label>
      <input id="fixtno" name="fixtno" size="25"  />
    </p>
 
 
    <p>
-     <label for="drg">Select Setup Image </label>
+     <label>Select Setup Image </label>
      <input id="oimg" class="multi" name="oimg[]" type="file" /><div id="simg"> </div>
    </p>
 
    <p>
-     <label for="drg">Upload Stage Drawing </label>
+     <label>Upload Stage Drawing </label>
      <input id="odwg" name="odwg" type="file" /><div id="sdrg"> </div>
    </p>
+
+   <p>
+     <label>Upload Pin and Gage List </label>
+     <input id="gage" name="gage" type="file" /><div id="ogage"> </div>
+   </p>
+
 
    <p>
      <label>Required In Tool List?</label>

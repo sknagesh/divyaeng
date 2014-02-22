@@ -7,7 +7,7 @@ $drawingid=$_GET['drawingid'];
 $query="SELECT Program_NO,Operation_Desc,Stage_Drawing_Path,NC_Prog_Path,Operation_Notes,
 		ADDTIME(Clamping_Time,Machining_Time) as Total_Time,
 		(SELECT GROUP_CONCAT(Fixture_NO) FROM Ope_Fixt_Map as fmp 
-		WHERE fmp.Operation_ID=op.Operation_ID) AS fxtno,
+		WHERE fmp.Operation_ID=op.Operation_ID) AS fxtno,Gage_List,
 		(SELECT GROUP_CONCAT('/drawings/',Operation_Image_Path) FROM Operation_Image as oi 
 		WHERE oi.Operation_ID=op.Operation_ID) as opim 
 		FROM Operation as op WHERE Drawing_ID='$drawingid' AND In_Op_List=0 ORDER BY Operation_Desc ASC;";
@@ -19,7 +19,7 @@ $r=mysql_num_rows($res);
 if($r!=0)
 {
 print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\">");
-print("<tr><th>Operation Description</th><th>Program NO</th><th>Fixture Number</th><th>Total Time</th><th>Operation Images</th><th>Notes</th></tr>");
+print("<tr><th>Operation Description</th><th style=\"width:50px\">Program NO</th><th>Fixture Number</th><th>Total Time</th><th>Operation Images</th><th>Notes</th><th>Gage List</th></tr>");
 while($row=mysql_fetch_assoc($res))
 {
 if($row['Total_Time']=='00:00:00'){$tt='';}else{$tt=$row['Total_Time'];}
@@ -37,6 +37,12 @@ if($row['Total_Time']=='00:00:00'){$tt='';}else{$tt=$row['Total_Time'];}
 		$n=$row['Program_NO'];
 	}
 
+	if($row['Gage_List']!='')
+	{
+		$g='<a class="pdf" href="/drawings/'.$row['Gage_List'].'" target="_NEW" title="View Gage List in New Tab">Gage List</a>';
+	}else{
+		$g='';
+	}
 
 
 	print("<tr><td>$p</td><td>$n</td><td>$row[fxtno]</td><td>$tt</td><td>");
@@ -56,7 +62,7 @@ if($row['Total_Time']=='00:00:00'){$tt='';}else{$tt=$row['Total_Time'];}
 		print("</tr></table>");
 	}	
 	
-	print("</td><td>$row[Operation_Notes]</td></tr>");
+	print("</td><td>$row[Operation_Notes]</td><td>$g</td></tr>");
 	
 }
 print("</table>");

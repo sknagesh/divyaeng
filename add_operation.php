@@ -46,7 +46,7 @@ if($mtime!="")
 }
 
 
-
+////operation images
 if($oimgfiles!=0)
 {
 	foreach ($_FILES['oimg']['name'] as $key => $name) {
@@ -73,7 +73,7 @@ if($oimgfiles!=0)
 
 }else{$drgfileNames='';}
 
-
+///stage drawing
 if((isSet($_FILES['odwg']['name']))&&($_FILES['odwg']['name']!=''))
 {
 	$odrgfileName = $drawid."-".$_FILES['odwg']['name'];
@@ -96,8 +96,28 @@ if((isSet($_FILES['odwg']['name']))&&($_FILES['odwg']['name']!=''))
 }else{$odrgfileName='';}
 
 
+///pin and gage list
 
+if((isSet($_FILES['gage']['name']))&&($_FILES['gage']['name']!=''))
+{
+	$gagefileName = $drawid."-gage-".$_FILES['gage']['name'];
+	$gagetmpName = $_FILES['gage']['tmp_name'];
+	$gagefileSize = $_FILES['gage']['size'];
+	$gagefileType = $_FILES['gage']['type'];
+	$gagefilePath = $uploadDir . $gagefileName;
+	$oresult = move_uploaded_file($gagetmpName, $gagefilePath);
+	if (!$oresult) {
+						echo "<br>Error uploading Operation Drawing $odrgfileName";
+						exit;
+						}
 
+	if(!get_magic_quotes_gpc())
+						{
+						$gagefileName = addslashes($gagefileName);
+						$gagefilePath = addslashes($gagefilePath);
+						}
+
+}else{$gagefileName='';}
 
 
 
@@ -112,7 +132,8 @@ $query="INSERT INTO Operation (Drawing_ID,
 								Operation_Notes,
 								Stage_Drawing_Path,
 								In_Tool_List,
-								Only_In_Route_card) 
+								Only_In_Route_card,
+								Gage_List) 
 	 						VALUES('$drawid',
 									'$opedesc',
 									'$sltime',
@@ -123,7 +144,8 @@ $query="INSERT INTO Operation (Drawing_ID,
 									'$onote',
 									'$odrgfileName',
 									'$itl',
-									'$rco');";
+									'$rco',
+									'$gagefileName');";
 
 //print($query);
 

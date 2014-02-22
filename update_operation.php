@@ -83,6 +83,13 @@ if((isSet($_FILES['odwg']['name']))&&($_FILES['odwg']['name']!=''))
 	$odrgfileSize = $_FILES['odwg']['size'];
 	$odrgfileType = $_FILES['odwg']['type'];
 	$odrgfilePath = $uploadDir . $odrgfileName;
+
+	 if(file_exists($drgfilePath))
+                {
+						print("deleting old file...<br>");
+                        unlink($drgfilePath);
+                }
+
 	$oresult = move_uploaded_file($odrgtmpName, $odrgfilePath);
 	if (!$oresult) {
 						echo "<br>Error uploading Operation Drawing $odrgfileName";
@@ -105,6 +112,51 @@ if($odrgfileName!='')
 	$stagedrg='';
 }
 
+
+
+///pin and gage list
+
+if((isSet($_FILES['gage']['name']))&&($_FILES['gage']['name']!=''))
+{
+	$gagefileName = $drawid."-gage-".$_FILES['gage']['name'];
+	$gagetmpName = $_FILES['gage']['tmp_name'];
+	$gagefileSize = $_FILES['gage']['size'];
+	$gagefileType = $_FILES['gage']['type'];
+	$gagefilePath = $uploadDir . $gagefileName;
+	 if(file_exists($gagefilePath))
+                {
+						print("deleting old gage list of same name...<br>");
+                        unlink($gagefilePath);
+                }
+
+
+	$oresult = move_uploaded_file($gagetmpName, $gagefilePath);
+	if (!$oresult) {
+						echo "<br>Error uploading Operation Drawing $odrgfileName";
+						exit;
+						}
+
+	if(!get_magic_quotes_gpc())
+						{
+						$gagefileName = addslashes($gagefileName);
+						$gagefilePath = addslashes($gagefilePath);
+						}
+
+}else{$gagefileName='';}
+
+
+if($gagefileName!='')
+{
+	
+	$gagelist=",Gage_List='$gagefileName'";
+}else{
+	$gagelist='';
+}
+
+
+
+
+
 $query="UPDATE Operation 
 			SET Operation_Desc='$opedesc',
 				Setup_Time='$sltime',
@@ -115,7 +167,7 @@ $query="UPDATE Operation
 				In_tool_List='$itl',
 				Operation_Notes='$onote',
 				Only_In_Route_Card='$rco'
-				$stagedrg
+				$stagedrg $gagelist
 			WHERE Operation_ID=$opid;";
 
 //print($query);
