@@ -78,8 +78,7 @@ while($krrs=mysql_fetch_assoc($krr))
 //print("heat code=$heatcode materialcode= $materialcode batch desc=$batchdesc");
 
 
-	$jobq="SELECT Job_NO FROM Dimn_Observation WHERE Operation_ID='$opid' AND Batch_ID='$batchid';";
-	$r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
+
 
 	$qry="SELECT ip.Operation_ID, Basic_Dimn,Dimn_Desc,
 	TRIM(TRAILING '0' FROM Tol_Lower) as tl, TRIM(TRAILING '0' FROM Tol_Upper) as tu,ip.Instrument_ID,Instrument_Description,
@@ -106,6 +105,13 @@ while($krrs=mysql_fetch_assoc($krr))
 	$z=0;
 	while($z<sizeof($jobno))  //loop through each job inspected
 	{
+	
+
+	$jobq="SELECT Dimn_Observation_ID FROM Dimn_Observation WHERE Operation_ID='$opid' AND Batch_ID='$batchid' AND Job_NO='$jobno[$z]';";
+	$rip = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
+	$reip=mysql_fetch_assoc($rip);
+	$doid=$reip['Dimn_Observation_ID'];
+
 $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,DATE_FORMAT(Insp_Date,'%d/%m/%y') as sdt,Operator_Name, 
 					Basic_Dimn, ob.Dimn_Observation_ID, Batch_ID,Remarks,
 					Job_NO, Observed_Dimn,ob.Comment_ID,Comment FROM Observations as ob
@@ -113,7 +119,7 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,DATE_FORMAT(Insp_Date,'%d/%m/%
 					INNER JOIN Operator as ope ON ope.Operator_ID=do.Operator_ID 
 					LEFT OUTER JOIN Dimn_Comment AS dc ON dc.Comment_ID=ob.Comment_ID 
 					RIGHT OUTER JOIN Dimension as dimn ON dimn.Dimension_ID = ob.Dimension_ID 
-					AND do.Job_NO='$jobno[$z]'  AND Batch_ID='$batchid'
+					AND do.Job_NO='$jobno[$z]'  AND do.Dimn_Observation_ID=$doid
 					WHERE dimn.Operation_ID = '$opid' ORDER BY Baloon_NO ASC";				
 			
 		

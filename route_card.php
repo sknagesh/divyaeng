@@ -155,7 +155,7 @@ $pdf->Cell(18,7,'',1,1,'L');
 */
 
 
-$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' ORDER BY Operation_Desc ASC;";
+$query="SELECT * FROM Operation WHERE Drawing_ID='$drawingid' AND In_Op_List=0 ORDER BY Operation_Desc ASC;";
 
 $res = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while($row=mysql_fetch_assoc($res))

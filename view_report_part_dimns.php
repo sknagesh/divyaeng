@@ -41,7 +41,7 @@ $jobno=explode(',', $i['jn']);  //store unique job nos to display in headding
 //print("<br>lrows");
 //print_r($lrows);
 
-$jobq="SELECT DISTINCT(Job_NO) FROM Dimn_Observation WHERE Operation_ID='$opid' AND Batch_ID='$batchid';";
+$jobq="SELECT DISTINCT(Job_NO),Dimn_Observation_ID FROM Dimn_Observation WHERE Operation_ID='$opid' AND Batch_ID='$batchid';";
 $r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
 
 	$z=0;
@@ -53,9 +53,9 @@ $r = mysql_query($jobq, $cxn) or die(mysql_error($cxn));
 					INNER JOIN Dimn_Observation as do ON do.Dimn_Observation_ID=ob.Dimn_Observation_ID
 					LEFT OUTER JOIN Dimn_Comment AS dc ON dc.Comment_ID=ob.Comment_ID 
 					RIGHT OUTER JOIN Dimension as dimn ON dimn.Dimension_ID = ob.Dimension_ID 
-					AND do.Job_NO='$i[Job_NO]'  AND Batch_ID='$batchid'
+					AND do.Dimn_Observation_ID='$i[Dimn_Observation_ID] AND do.Job_NO=$i[Job_NO]'
 					WHERE dimn.Operation_ID = '$opid' ORDER BY Baloon_NO ASC";
-	//	print("$qry<br>");
+//		print("$qry<br>");
 		$res = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 		$x=0;
 		while($row=mysql_fetch_assoc($res))  //for each job get dimensions measured and store it in an array
@@ -156,6 +156,8 @@ $z=0;
 	while($i=mysql_fetch_assoc($rj))  //loop through each job inspected
 	{
 		$x=0;
+
+
 				$qry="SELECT dimn.Dimension_ID, Basic_Dimn,
 				(SELECT Observed_Dimn FROM Observations as ob 
 				INNER JOIN Dimn_Observation as do ON do.Dimn_Observation_ID=ob.Dimn_Observation_ID 
