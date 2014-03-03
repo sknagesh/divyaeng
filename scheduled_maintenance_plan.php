@@ -3,16 +3,25 @@ include('dewdb.inc');
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
+if(isSet($_GET['mid'])){$mid=$_GET['mid'];}else{$mid='';}
+
+
+
 $start=$_GET['start'];	///dummy not used
 $starton = date('Y-m-d H:i',$start);  //dummy not used
 $m = date("m",strtotime($starton)); ///dummy not used
+
+if($mid!='')
+{
+	$mid= "AND mach.Machine_ID=".$mid;
+}
 
 $query="SELECT *,Start_Date_Time,End_Date_Time,Machine_Name,Operator_Name,Maintenance_Description,SPM_ID From Maintenance as maint
 		INNER JOIN ActivityLog as actl ON actl.Activity_Log_ID=maint.Activity_Log_ID
 		INNER JOIN Machine as mach ON mach.Machine_ID=actl.Machine_ID
 		INNER JOIN Operator as ope ON ope.Operator_ID=actl.Operator_ID
 		INNER JOIN Maintenance_Type as mty ON mty.Maintenance_Type_ID=maint.Maintenance_Type_ID
-		WHERE actl.Activity_ID=5;";
+		WHERE actl.Activity_ID=5 $mid;";
 
 
 
@@ -120,7 +129,7 @@ while($spm=mysql_fetch_assoc($res))
 		$qs="SELECT *,DATE_FORMAT(End_Date_Time,'%Y/%m/%d')as edt,Machine_Name FROM Maintenance as maint 
 			INNER JOIN ActivityLog as actl ON actl.Activity_Log_ID=maint.Activity_Log_ID 
 			INNER JOIN Machine as mach ON mach.Machine_ID=actl.Machine_ID 
-			WHERE SPM_ID='$spm[SPM_ID]' ORDER BY End_Date_Time Desc LIMIT 1;";
+			WHERE SPM_ID='$spm[SPM_ID]' $mid ORDER BY End_Date_Time Desc LIMIT 1;";
 //print("$qs<br>");
 			$resspm=mysql_query($qs, $cxn) or die(mysql_error($cxn));
 			$r=mysql_affected_rows();

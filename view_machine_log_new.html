@@ -3,7 +3,7 @@
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 <meta name='author' content='Adam Shaw'>
 
-    <title>FullCalendar - Full-sized Calendar jQuery Plugin</title>
+    <title>Machine Log view</title>
     <link rel='stylesheet' type='text/css' href='fullcalendar.css' />
         <link rel='stylesheet' type='text/css' href='jquery.qtip.css' />
     <script type="text/javascript" src='jquery.js'></script>
@@ -21,7 +21,7 @@
       var mid=$('#Machine_ID').val();
             machineid=mid;
             var events= {
-            url: "scheduled_maintenance_plan.php",
+            url: "get_machine_log_new.php",
             type: 'GET',
             data: {
                 mid: machineid
@@ -42,15 +42,15 @@ viewDisplay: function(view) {
   var date = $("#calendar").fullCalendar('getDate');
   var m = date.getMonth();
 
-//  url="get_maint_summary.php?month="+m;
-//  console.log(m);
 },
-
-
-///        eventSources: ['scheduled_maintenance_plan.php?mid='+machineid],
+header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'agendaDay,agendaWeek,month'
+      },
 
 events: {
-            url: "scheduled_maintenance_plan.php",
+            url: "get_machine_log_new.php",
             type: 'GET',
             data: {
                 mid: machineid
@@ -61,14 +61,14 @@ eventRender: function(event, element) {
       element.qtip({
             content:{
                     ajax: {
-                           url:  "get_maint_plan_details.php?id="+event.id,
+                           url:  "get_log_details.php?id="+event.id,
                            method: 'get'
                         },
                       title:event.title
                     },
              style:{
 
-                width:500
+                width:600
              },
              position: {
         viewport: $(window),
