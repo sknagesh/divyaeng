@@ -6,7 +6,7 @@ mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $lid=$_GET['lid'];
 
 $qact="SELECT Activity_ID FROM ActivityLog WHERE Activity_Log_ID='$lid';";
-
+//print("$qact");
 $resa = mysql_query($qact, $cxn) or die(mysql_error($cxn));
 $aid=mysql_fetch_assoc($resa);
 $activityid=$aid['Activity_ID'];
@@ -24,7 +24,7 @@ if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
 	INNER JOIN Component as comp ON comp.Drawing_ID=mdq.Drawing_ID 
 	INNER JOIN Customer as cust on cust.Customer_ID=comp.Customer_ID 
 	WHERE prod.Activity_Log_ID='$lid';";
-
+//print("$q");
 
 	$resa = mysql_query($q, $cxn) or die(mysql_error($cxn));
 

@@ -4,8 +4,10 @@ $("#viewpart").validate();  //attach validater to form
 	$('#customer').click(function(){ ///load drawing list based on customer
 		var custid=$('#Customer_ID').val();
 		var url='get_drawing.php?custid='+custid;
-  		$("#drawing").load(url)
-	});
+		$('#drawing').load(url);
+});
+
+
 
 	$('#drawing').click(function(){  //load operation list based on drawing
 		var drawingid=$('#Drawing_ID').val();
@@ -20,6 +22,10 @@ $("#viewpart").validate();  //attach validater to form
 		$('#operation').load(ourl);
 		}	
   	});
+
+
+
+
 
 
 	$(document).on('click', "a", function(event) {

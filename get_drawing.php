@@ -16,7 +16,7 @@ $query="SELECT * FROM Component WHERE Customer_ID='$custid' ORDER BY Drawing_NO;
 		$query="SELECT * FROM Component WHERE Customer_ID='$custid' AND Hide_In_Prod=0 ORDER BY Drawing_NO;";
 	}
 print("<label for=\"draw\">Select Drawing</label>");
-print("<select name=\"Drawing_ID$id\" id=\"Drawing_ID$id\" $rcr>");
+print("<select name=\"Drawing_ID$id\" id=\"Drawing_ID$id\" class=\"did\" $rcr>");
 echo '<option value="">Select Drawing</option>';
 $resa = mysql_query($query, $cxn) or die(mysql_error($cxn));
 while ($row = mysql_fetch_assoc($resa))
