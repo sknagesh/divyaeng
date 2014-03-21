@@ -54,7 +54,21 @@ if(batchid=="")
 	$('#deldate').hide();
 	$('#submit').attr("disabled",true);
 }else
-{	$('#deldate').show();
+{	
+
+				var bid=$('#Batch_ID').val();
+			var url="get_batch_date_remark.php?bid="+bid;
+			
+			$.get(url, function(data) {
+			
+			d=data.split("<|>");
+			console.log(data);
+			$('#dcomm').val(d[2]);
+			$('#ddate').val(d[0]);
+			$('#ddatedb').val(d[1]);
+			});
+
+	$('#deldate').show();
 	$('#submit').attr("disabled",false);
 }
 

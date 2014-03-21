@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>View Part Timing Details</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.form.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 100%; }
+label { width: 10em; float: left; color: Green; font-weight: bold; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+    body,
+    html {
+    margin:0;
+    padding:0;
+    color:#000;
+    }
+
+</style>
+
+  <script>
+  $(document).ready(function(){
+var drawinglist='';
+var drawingname='';
+var qty='';
+    $("#customer").load('get_customer.php');  //load customer list from get_customer.php
+    $('#vpd').validate();
+
+    $('#customer').click(function(){ ///load drawing list based on customer
+        var custid=$('#Customer_ID').val();
+        var url='get_drawing.php?custid='+custid;
+        $("#drawing").load(url)
+    });
+
+
+    $('#addmat').click(function(){
+        
+        var did=$('#Drawing_ID').val();
+        var qt=$('#qty').val();
+        var drawingname=$('#Drawing_ID option:selected').text()+','+$('#qty').val()+'<p>';
+        if($('#vpd').valid())
+        {
+        drawinglist+=did+'-'+qt+',';
+        console.log(drawinglist);
+        $('#footer').append(drawingname);
+        $('#dlist').val(drawinglist);
+        $('#qty').val('0');
+        }
+    });
+
+
+    $("#submit").click(function(event) {
+
+if(drawinglist!='')
+{
+        return true;
+}
+
+});
+
+
+  });
+  </script>
+
+
+
+    </head>
+    <body>
+<form id="vpd" method="post" action="export_part_timings.php" >
+<div id="cleft">
+	<div id="customer"> </div>
+	<div id="drawing"> </div>
+    Enter Quantity <input type="text" id="qty" name="qty" class="required">
+    <div id="addbutton">
+    <input type="button" id="addmat" name="addmat" value="Add Drawing To List">
+
+	<div id="footer"> </div>
+    <input type="submit" id="submit" value="Export Tool Matrix To Excel">
+    <input type="hidden" id="dlist" name="dlist">
+</div>
+</form>
+</body>
+</html>
+
+

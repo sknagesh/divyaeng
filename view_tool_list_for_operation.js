@@ -1,7 +1,9 @@
 $(document).ready(function(){
 var lastdiv='';
 $('#footer2').hide();
-//$("#customer").load('get_customer.php');  //load customer list from get_customer.php
+$("#customer").load('get_customer.php');  //load customer list from get_customer.php
+
+
 
 $("#viewpart").validate();  //attach validater to form
 var pageSize = 20;
@@ -31,14 +33,14 @@ $('#drawing').select2({
 }
 
 });
-/*
+
 
 	$('#customer').click(function(){ ///load drawing list based on customer
 		var custid=$('#Customer_ID').val();
 		var url='get_drawing.php?custid='+custid;
-  		$("#drawing").load(url)
+  		$("#drg").load(url)
 	});
-*/
+
 	$('#drawing').click(function(){  //load operation list based on drawing
 ///*		var drawingid=$('#Drawing_ID').val();*//
 		var drawingid=$('#drawing').val();
@@ -51,6 +53,22 @@ $('#drawing').select2({
 		$('#footer2').show();
 	}
   	});
+
+
+  $('#drg').click(function(){  //load operation list based on drawing
+    var drawingid=$('#Drawing_ID').val();
+    
+    var url='get_operations.php?drawingid='+drawingid+"&itl=1";
+    if(drawingid!='')
+    {
+      $("#operation").load(url)
+    var pdfurl="export_tool_list_to_pdf.php?Drawing_ID="+drawingid;   
+      $('#footer2').load(pdfurl);
+    $('#footer2').show();
+  }
+    });
+
+
 
 	$('#operation').click(function(){  
 		var opid=$('#Operation_ID').val();  //get selected opid

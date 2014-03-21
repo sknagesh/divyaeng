@@ -8,7 +8,7 @@ if(isSet($_POST['searchTerm'])){$dn=$_POST['searchTerm'];}else{$dn="";}
 if($dn!='')
 {
 
-$query="SELECT * FROM Component WHERE Drawing_NO LIKE '%$dn%'";	
+$query="SELECT * FROM Component WHERE Drawing_NO LIKE '%$dn%' AND Hide_In_Prod=0";	
 }else{
 	$query="SELECT * FROM Component;";	
 }
