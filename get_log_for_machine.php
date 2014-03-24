@@ -71,7 +71,7 @@ while ($row = mysql_fetch_assoc($resa))
 		$qty=$rr['Quantity'];
 		$pno=$rr['Program_NO'];
 	}else
-		if($row['Activity_ID']==2)
+		if(($row['Activity_ID']==2)||($row['Activity_ID']==16))
 	{
 		
 

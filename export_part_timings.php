@@ -134,7 +134,16 @@ $z=$y-2;
 $objPHPExcel->getActiveSheet()->SetCellValue('B'.$z,$tp[1]);
 $objPHPExcel->getActiveSheet()->getStyle('B'.$z)->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->SetCellValue('C'.$z,'Total Hours');
+$styleArray = array(
+    'font'  => array(
+        'bold'  => true,
+        'color' => array('rgb' => 'GREEN'),
+        'size'  => 12,
+        'name'  => 'Verdana'
+    ));
+
 $objPHPExcel->getActiveSheet()->SetCellValue('D'.$z,'=SUM(E'.$y.':E'.$x.')');
+$objPHPExcel->getActiveSheet()->getStyle('D'.$z)->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('D'.$z)->getNumberFormat()->setFormatCode('0.0');
 $objPHPExcel->getActiveSheet()->SetCellValue('E'.$z,'Last Batch Qty:'.$bqty);
 if($tasum=='')

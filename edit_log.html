@@ -41,7 +41,7 @@ p { font-weight: bold; clear: both; }
       						{
 							console.log(html);
 							data=html.split("<|>");
-					if((data[0]==1)||(data[0]==2)||(data[0]==3)) ///production,setup, rework and cmm logs
+					if((data[0]==1)||(data[0]==2)||(data[0]==3)||(data[0]==16)) ///production,setup,program proving, rework and cmm logs
 				{
 					$('#maint').hide();
 					$('#machine').load("get_machine.php?mid="+data[1]);

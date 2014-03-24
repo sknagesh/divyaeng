@@ -85,6 +85,11 @@ var options = {  ///options for ajaxSubnit function
 	{
 		var url="non_conformance_log.html";
 		phpfile="non_conformance_log.php";
+	}else
+	if(aid==16)  //program proving: as there is no difference we are using production_log.html and php files
+	{
+		var url="production_log.html";
+		phpfile="production_log.php";
 	}
 
 

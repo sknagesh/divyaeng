@@ -39,7 +39,7 @@ while ($row = mysql_fetch_assoc($resa))
 		$operationdesc=$rr['Operation_Desc'];
 		$batchno=$rr['Mfg_Batch_NO'];
 	}else
-		if($row['Activity_ID']==2)
+		if(($row['Activity_ID']==2)||($row['Activity_ID']==16))
 	{
 		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Operation_Desc FROM Production as pro 
 		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=pro.Batch_ID 
