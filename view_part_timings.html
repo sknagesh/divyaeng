@@ -54,14 +54,21 @@ var qty='';
     });
 
 
-    $("#submit").click(function(event) {
 
-if(drawinglist!='')
-{
-        return true;
-}
+var options = {  ///options for ajaxSubnit function 
+        target:        '#footer',   // target div id to update result of submit 
+//        success:       showResponse  // post-submit callback 
+        clearForm: false,        // clear all form fields after successful submit 
+        resetForm: false        // reset the form after successful submit 
+    };
 
-});
+    $("#addp").click(function(event) {
+
+        event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+        $("#vpd").ajaxSubmit(options);
+
+        });
+
 
 
   });
@@ -71,17 +78,23 @@ if(drawinglist!='')
 
     </head>
     <body>
-<form id="vpd" method="post" action="export_part_timings.php" >
+<form id="vpd" method="post" action="export_part_timings.php" enctype="multipart/form-data">
 <div id="cleft">
+    Select Excel file <input type="file" id="drg" name="drg">
+    <p>
+        Note: First row will be ignored. Make sure Column A has drawing No and Column B has quantity Data. Only these two columns are Processed.
+    <p>
+<!--
 	<div id="customer"> </div>
 	<div id="drawing"> </div>
     Enter Quantity <input type="text" id="qty" name="qty" class="required">
     <div id="addbutton">
     <input type="button" id="addmat" name="addmat" value="Add Drawing To List">
-
-	<div id="footer"> </div>
-    <input type="submit" id="submit" value="Export Tool Matrix To Excel">
     <input type="hidden" id="dlist" name="dlist">
+-->
+    <input class="submit" id="addp" type="submit" value="View scheduling Data"/>
+    <div id="footer"> </div>
+
 </div>
 </form>
 </body>

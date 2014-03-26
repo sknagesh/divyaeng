@@ -11,7 +11,7 @@ $resa = mysql_query($qact, $cxn) or die(mysql_error($cxn));
 $aid=mysql_fetch_assoc($resa);
 $activityid=$aid['Activity_ID'];
 
-if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
+if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==16))
 {
 
 	$q="SELECT prod.Activity_Log_ID, mdq.Drawing_ID,prod.Batch_ID,Activity_ID,Machine_ID, comp.Customer_ID,Operation_ID,Start_Date_Time,End_Date_Time,
@@ -216,7 +216,7 @@ $irs.="</select>";
 
 }else{
 		print("inside nothing");
-	$data='Not a defined actgivity';
+	$data='Not a defined activity';
 }
 //print($q);
 
