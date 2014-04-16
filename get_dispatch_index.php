@@ -13,7 +13,7 @@ $query="SELECT DATE_FORMAT(mo.date,'%M,%Y') as m,DATE_FORMAT(mo.date,'%m,%Y') as
 		INNER JOIN BNo_MI_Challans as bmc ON bmc.MI_Drg_Qty_ID=modq.MI_Drg_Qty_ID
 		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=bmc.Batch_ID
 		INNER JOIN Component as comp ON comp.Drawing_ID=modq.Drawing_ID
-		WHERE mo.Date<NOW() AND comp.Customer_ID=1 GROUP BY MONTH(mo.Date);";
+		WHERE mo.Date<NOW() AND comp.Customer_ID=1 GROUP BY YEAR(mo.Date),MONTH(mo.Date);";
 
 
 		  $res1 = mysql_query($query, $cxn) or die(mysql_error($cxn));

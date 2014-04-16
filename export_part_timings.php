@@ -128,6 +128,7 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 		$q4="SELECT ope.Operation_Desc,TIME_TO_SEC(ADDTIME(Clamping_Time,Machining_Time)) as tmt,
 		SUM(CASE WHEN Activity_ID=1 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Production,
 		SUM(CASE WHEN Activity_ID=2 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Setup,
+		SUM(CASE WHEN Activity_ID=16 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Proving,
 		SUM(CASE WHEN Activity_ID=3 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Rework,
 		SUM(CASE WHEN Activity_ID=9 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS CMM,
 		SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS Total From ActivityLog as actl
@@ -149,6 +150,7 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 					{
 					if($row4['Production']!=''){$p=$row4['Production'];}else{$p='';}
 					if($row4['Setup']!=''){$s=$row4['Setup'];}else{$s='';}
+					if($row4['Proving']!=''){$pp=$row4['Proving'];}else{$pp='';}
 					if($row4['Rework']!=''){$rw=min2hm($row4['Rework']);}else{$rw='';}
 					if($row4['CMM']!=''){$cmm=min2hm($row4['CMM']);}else{$cmm='';}
 					if($row4['Total']!=''){$t=min2hm($row4['Total']);}else{$t='';}
@@ -158,7 +160,8 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 					$objPHPExcel->getActiveSheet()->SetCellValue('C'.$x,round($p/$bqty,2));
 					$objPHPExcel->getActiveSheet()->SetCellValue('E'.$x,'=((C'.$x.'*B'.$w.')+B'.$x.')/60');
 					$objPHPExcel->getActiveSheet()->getStyle('E'.$x)->getNumberFormat()->setFormatCode('0.0');
-					$objPHPExcel->getActiveSheet()->SetCellValue('B'.$x,$s);
+					$spp=$s+$pp;
+					$objPHPExcel->getActiveSheet()->SetCellValue('B'.$x,$spp);
 					$tahours+=(($p/$bqty)*$drgqty)/60;
 					$x++;
 					}

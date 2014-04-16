@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Open Challan Details</title>
+        <link href="select2.css" rel="stylesheet"/>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="select2.min.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+
+  <style type="text/css">
+* { font-family: Verdana; font-size: 14px; }
+label { width: 10em; float: left;font-weight: bold; clear: both; color:green; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.q { clear: both; background-color:#CCCCCD; color:#0B173B;}
+.s { clear: both; background-color:#F0F0F0; color:#0B173B;}
+.t { font-weight: bold; clear: both; background-color:#58ACFA; color:#F6CECE}
+.s.hover { background-color:#4A779D}
+.q.hover { background-color:#4A779D}
+.tt { font-weight: bold; clear: both; background-color:#F5A9F2; color:#0404B4}
+.qq { clear: both; background-color:#CCCCCD; color:#B40404;}
+.ss { clear: both; background-color:#EFFBF2; color:#01DF01;}
+.submit { margin-left: 12em; }
+
+</style>
+
+ <script type="text/javascript">
+ 	$(document).ready(function(){
+
+var pageSize = 20;
+	$('#grn').hide();
+    $("#addgrn").validate();  //attach validater to form
+	$('#customer').click(function(){ ///load drawing list based on customer
+		var custid=$('#Customer_ID').val();
+		var url='get_drawing.php?custid='+custid;
+		$('#drg').load(url);
+});
+
+	$('#drg').click(function(){  //load operation list based on drawing
+		var drawingid=$('#Drawing_ID').val();
+
+		if(drawingid!='')
+		{
+		var purl='get_dcno_and_date.php?drawingid='+drawingid;
+		$('#dcno').load(purl);
+		}	
+  	});
+
+
+$('#drawing').select2({
+	placeholder: 'Type Drawing Number',
+	allowClear: true,
+	minimumInputLength: 2,
+    multiple: false,
+    width: 'resolve',
+    ajax: {
+        dataType: "json",
+        type:'POST',
+        url: 'get_drawing-select2.php',
+		data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    //Used to determine whether or not there are more results available,
+                    //and if requests for more data should be sent in the infinite scrolling                    
+                    var more = (page * pageSize) < data.Total; 
+                    return { results: data};
+                }
+}
+
+});
+
+	$('#drawing').click(function(){  //load operation list based on drawing
+		var drawingid=$('#drawing').val();
+
+		if(drawingid!='')
+		{
+		var purl='get_dcno_and_date.php?drawingid='+drawingid;
+		$('#dcno').load(purl);
+
+		}	
+  	});
+
+
+
+	$('#dcno').click(function(){
+		var cid=$('#Mo_Drg_Qty_ID').val();
+		var drawingid=$('#drawing').val();
+		console.log(cid);
+		if(cid!='')
+		{console.log(cid);
+			
+			$('#grn').show();
+			var url="get_grn_no_for_part.php?drawingid="+drawingid+"&modq="+cid;
+			$('#footer').load(url);
+		}else{
+			$('#grn').val();
+			$('#grn').hide();
+		}
+
+		
+	});
+
+
+	$("#submit").click(function(event) {
+	 if($("#addgrn").valid())
+  	{
+  		event.preventDefault();
+		$.ajax({
+      					data: $('#addgrn').serializeArray(),
+      					type: "POST",
+      					url: "add_grn.php",
+      					success: function(html) {
+				document.getElementById("footer").innerHTML=html;
+				$('#addgrn')[0].reset();
+
+      							}
+    							});
+  	}
+		});
+
+});
+
+
+	$(function () {
+	$('#grdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#grdatedb', altFormat: 'Y-O-D'});
+	
+	});  
+
+
+ </script>
+    </head>
+    <body>
+  <form name ="addgrn" id="addgrn">
+<fieldset>
+<legend>Select Challan For dispatch Details</legend>
+	<label>Enter Search Text </label> <input type="text" id="drawing" size="25" name="drawing">
+    <div id="customer"> </div>
+    <div id="drg"> </div>
+	<div id="dcno"> </div>
+    <div id="grn"> Enter Gr No <input type="text" id="grno" size="25" name="grno" class="required"> 
+    				GRN Date <input type="text" id="grdate" size="25" name="grdate" class="required"> 
+    				<input type="hidden" id="grdatedb" name="grdatedb"> 
+   <p>
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+
+
+    </div>
+
+</fieldset>
+</form>
+<div id="footer"> </div>
+</body>
+</html>

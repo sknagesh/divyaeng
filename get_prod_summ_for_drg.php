@@ -37,13 +37,14 @@ if($drawid=='')
 $query="SELECT cust.Customer_Name,
 SUM(CASE WHEN Activity_ID=1 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Production,
 SUM(CASE WHEN Activity_ID=2 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Setup,
+SUM(CASE WHEN Activity_ID=16 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Proving,
 SUM(CASE WHEN Activity_ID=3 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Rework,
 SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS Total From ActivityLog as actl
 INNER JOIN Production as prod ON prod.Activity_Log_ID=actl.Activity_Log_ID
 INNER JOIN Operation as ope On ope.Operation_ID=prod.Operation_ID
 INNER JOIN Component as comp on comp.Drawing_ID=ope.Drawing_ID
 INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
-WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY cust.Customer_ID;";
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7,18) $cri GROUP BY cust.Customer_ID;";
 //print($query);
 
 $res=mysql_query($query) or die(mysql_error());
@@ -64,6 +65,7 @@ $r=mysql_affected_rows();
 	print("<tr class=\"t\"><th>Customer</th>
 							<th>Production</th>
 							<th>Set Up</th>
+							<th>Prog. Proving</th>
 							<th>Rework</th>
 							<th>Total</th>
 							</tr>");
@@ -74,6 +76,7 @@ $r=mysql_affected_rows();
 	{
 		if($row['Production']!=''){$p=min2hm($row['Production']);$tproduction+=$row['Production'];}else{$p='';}
 		if($row['Setup']!=''){$s=min2hm($row['Setup']); $tsetup+=$row['Setup'];}else{$s='';}
+		if($row['Proving']!=''){$pp=min2hm($row['Proving']); $tpp+=$row['Proving'];}else{$pp='';}
 		if($row['Rework']!=''){$rw=min2hm($row['Rework']);$trework+=$row['Rework'];}else{$rw='';}
 		if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
 
@@ -81,6 +84,7 @@ $r=mysql_affected_rows();
 	print("<tr class=\"$c\"><td>$row[Customer_Name]</td>
 							<td>$p</td>
 							<td>$s</td>
+							<td>$pp</td>
 							<td>$rw</td>
 							<td>$t</td>
 							</tr>");
@@ -100,7 +104,7 @@ INNER JOIN BNo_MI_Challans as bmc on bmc.Batch_ID=nprod.Batch_ID
 INNER JOIN MI_Drg_Qty as mdq on mdq.MI_Drg_Qty_Id=bmc.MI_Drg_Qty_ID
 INNER JOIN Component as comp on comp.Drawing_ID=mdq.Drawing_ID
 INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
-WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY cust.Customer_ID;";
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7,18) $cri GROUP BY cust.Customer_ID;";
 
 
 $r=mysql_query($q2) or die(mysql_error());
@@ -140,7 +144,7 @@ SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS tm From ActivityLog 
 INNER JOIN Maintenance as maint ON maint.Activity_Log_ID=actl.Activity_Log_ID
 INNER JOIN Maintenance_Type as mtype on mtype.Maintenance_Type_ID=maint.Maintenance_Type_ID
 INNER JOIN Machine as m on m.Machine_ID=actl.Machine_ID
-WHERE actl.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY m.Machine_ID;";
+WHERE actl.Machine_ID IN(1,2,3,4,5,6,7,18) $cri GROUP BY m.Machine_ID;";
 
 $r4=mysql_query($q4) or die(mysql_error());
 	print("<br><br><table cellspacing=\"1\">");
@@ -175,7 +179,7 @@ $q5="SELECT Machine_Name,
 SUM(CASE WHEN Activity_ID=8 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS idle
 From ActivityLog as actl
 INNER JOIN Machine as m on m.Machine_ID=actl.Machine_ID
-WHERE m.Machine_ID IN(1,2,3,4,5,6,7) $cri GROUP BY m.Machine_ID;";
+WHERE m.Machine_ID IN(1,2,3,4,5,6,7,18) $cri GROUP BY m.Machine_ID;";
 
 $r5=mysql_query($q5) or die(mysql_error());
 	print("<br><br><table cellspacing=\"1\">");
@@ -201,6 +205,7 @@ $availablehours=$interval*24*8;
 $totalaccounted=min2hm($totalaccounted);
 $tproduction=min2hm($tproduction);$tper=round((($tproduction/$totalaccounted)*100),2);
 $tsetup=min2hm($tsetup);$tsper=round((($tsetup/$totalaccounted)*100),2);
+$tpp=min2hm($tpp);$tppper=round((($tpp/$totalaccounted)*100),2);
 $trework=min2hm($trework);$trwper=round((($trework/$totalaccounted)*100),2);
 $tfixture=min2hm($tfixture);$tfxtper=round((($tfixture/$totalaccounted)*100),2);
 $tcmm=min2hm($tcmm);$tcmmper=round((($tcmm/$totalaccounted)*100),2);
@@ -217,8 +222,9 @@ $tidle=min2hm($tidle);$tidleper=round((($tidle/$totalaccounted)*100),2);
 
 	print("<tr class=\"q\"><td>Production</td><td>$tproduction</td><td>$tper</td></tr>");
 	print("<tr class=\"s\"><td>Set Up</td><td>$tsetup</td><td>$tsper</td></tr>");
-	print("<tr class=\"q\"><td>Rework</td><td>$trework</td><td>$trwper</td></tr>");
-	print("<tr class=\"s\"><td>Fixture Work</td><td>$tfixture</td><td>$tfxtper</td></tr>");
+	print("<tr class=\"q\"><td>Prog. Proving</td><td>$tpp</td><td>$tppper</td></tr>");
+	print("<tr class=\"s\"><td>Rework</td><td>$trework</td><td>$trwper</td></tr>");
+	print("<tr class=\"q\"><td>Fixture Work</td><td>$tfixture</td><td>$tfxtper</td></tr>");
 	print("<tr class=\"s\"><td>FAI</td><td>$tfai</td><td>$tfaiper</td></tr>");
 	print("<tr class=\"q\"><td>Maintenance</td><td>$tmaint</td><td>$tmaintper</td></tr>");
 	print("<tr class=\"s\"><td>Machine Stop</td><td>$tidle</td><td>$tidleper</td></tr>");
@@ -241,6 +247,7 @@ else{
 $query="SELECT cust.Customer_Name,Machine_Name,
 SUM(CASE WHEN Activity_ID=1 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Production,
 SUM(CASE WHEN Activity_ID=2 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Setup,
+SUM(CASE WHEN Activity_ID=16 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Proving,
 SUM(CASE WHEN Activity_ID=3 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Rework,
 SUM(CASE WHEN Activity_ID=9 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS CMM,
 SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS Total From ActivityLog as actl
@@ -257,7 +264,7 @@ $r=mysql_affected_rows();
 	
 //			print("<br>Batch Quantity : $es[$l] Nos");
 			print("<br><br><table cellspacing=\"1\">");
-			print("<tr class=\"t\"><th>Machines used</th><th>Production</th><th>Set Up</th><th>Rework</th><th>CMM Programing</th><th>Total</th></tr>");
+			print("<tr class=\"t\"><th>Machines used</th><th>Production</th><th>Set Up</th><th>Prog. Proving</th><th>Rework</th><th>CMM Programing</th><th>Total</th></tr>");
 
 			$c="q";	
 $mtime=0;
@@ -267,6 +274,7 @@ $mtimewcmm=0;
 
 			if($row['Production']!=''){$p=min2hm($row['Production']);$mtime+=$row['Production'];}else{$p='';}
 			if($row['Setup']!=''){$s=min2hm($row['Setup']);$mtime+=$row['Setup'];}else{$s='';}
+			if($row['Proving']!=''){$pp=min2hm($row['Proving']);$mtime+=$row['Proving'];}else{$pp='';}
 			if($row['Reowrk']!=''){$rw=min2hm($row['Rework']);}else{$rw='';}
 			if($row['CMM']!=''){$cmm=min2hm($row['CMM']);}else{$cmm='';}
 			if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
@@ -276,6 +284,7 @@ $mtimewcmm=0;
 			print("<tr class=\"$c\"><td>$row[Machine_Name]</td>
 									<td>$p</td>
 									<td>$s</td>
+									<td>$pp</td>
 									<td>$rw</td>
 									<td>$cmm</td>
 									<td>$t</td>
@@ -356,6 +365,7 @@ if($rrr!=0)
 $q3="SELECT ope.Operation_Desc,TIME_TO_SEC(ADDTIME(Clamping_Time,Machining_Time)) as tmt,
 SUM(CASE WHEN Activity_ID=1 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Production,
 SUM(CASE WHEN Activity_ID=2 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Setup,
+SUM(CASE WHEN Activity_ID=16 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Proving,
 SUM(CASE WHEN Activity_ID=3 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS Rework,
 SUM(CASE WHEN Activity_ID=9 THEN TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time) END) AS CMM,
 SUM(TIMESTAMPDIFF(minute,Start_Date_Time,End_Date_Time)) AS Total From ActivityLog as actl
@@ -383,6 +393,7 @@ if($rrr3!=0)
 							<th>Standard Time/Part</th>
 							<th>Avg Time/Part</th>
 							<th>Setup/Batch</th>
+							<th>Proving/Batch</th>
 							<th>Production/Batch</th>
 							<th>Rework</th>
 							<th>Total</th>
@@ -394,6 +405,7 @@ if($rrr3!=0)
 	{
 			if($row['Production']!=''){$p=min2hm($row['Production']);$apt=min2hm($row['Production']/$qty);}else{$p='';}
 			if($row['Setup']!=''){$s=min2hm($row['Setup']);}else{$s='';}
+			if($row['Proving']!=''){$pp=min2hm($row['Proving']);}else{$pp='';}
 			if($row['Reowrk']!=''){$rw=min2hm($row['Rework']);}else{$rw='';}
 			if($row['CMM']!=''){$cmm=min2hm($row['CMM']);}else{$cmm='';}
 			if($row['Total']!=''){$t=min2hm($row['Total']);}else{$t='';}
@@ -402,6 +414,7 @@ if($rrr3!=0)
 							<td>$tmt</td>
 							<td>$apt</td>
 							<td>$s</td>
+							<td>$pp</td>
 							<td>$p</td>
 							<td>$rw</td>
 							<td>$t</td>

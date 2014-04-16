@@ -44,15 +44,15 @@ if($mtype!='')
 
 
 	if($mtype==1){
-		$mr="DEW/PRD/R/01 Rev 1 Dated 01/07/2013";
+		$mr="DEW/PRD/R/01 Rev 2 Dated 01/04/2014";
 	}else
 	if($mtype==2)
 	{
-		$mr="DEW/PRD/R/02 Rev 8 Dated 01/7/2013";
+		$mr="DEW/PRD/R/02 Rev 9 Dated 01/04/2014";
 	}else
 	if($mtype==4)
 	{
-		$mr="DEW/PRD/R/02 Rev 8 Dated 01/7/2013";
+		$mr="DEW/PRD/R/02 Rev 9 Dated 01/04/2014";
 	}else{
 	$mr='';
 	}

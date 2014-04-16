@@ -74,7 +74,7 @@ $query="UPDATE ActivityLog SET Activity_ID='$activityid',
 
 $res=mysql_query($query) or die(mysql_error());
 
-if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==14))
+if(($activityid==1)||($activityid==2)||($activityid==3)||($activityid==16))
 {
 
 $pquery="UPDATE Production SET Operation_ID=$operationid,
