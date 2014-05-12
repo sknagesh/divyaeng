@@ -14,17 +14,22 @@ p { font-weight: bold; clear: both; }
 color: #ffffff;
 } 
 </style>
+     <link href="select2.css" rel="stylesheet"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="jquery.validate.js"></script>
 <script src="jquery.datetimeentry.js"></script>
+ <script src="select2.min.js"></script>
 <script type="text/javascript" src="job_dimension_observations.js"></script>
 </head>
 <body>
 <form name="inputdimn" id="inputdimn" >
 <fieldset><legend>Drawing and Operation</legend>
 <table border="0" width = "100%" cellspacing="10">		
-<tr><td><div id="customer"> </div></td>		
-<td><div id="drawing"> </div></td>
+
+
+<tr><td><label>Enter Search Text </label> <input type="text" id="drawing" size="25" name="drawing"></td>
+    <div id="customer"> </div>
+    <td><div id="drg"> </div></td>
 <td><div id="operation"> </div></td>
 <td><div id="batch"> </div></td>
 <td><div id="inspector"> </div></td></tr>

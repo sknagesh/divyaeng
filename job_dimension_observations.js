@@ -2,7 +2,7 @@ $(document).ready(function() {
 $('#inputdimn').validate(); //attach form to validation engine
 $('#s').hide();
 $('#customer').load("get_customer.php"); //load customer list on to div customer
-
+var pageSize = 20;
 $('#insp').hide();
 
 $(document).on("blur", '*[id^="obser"]', function(event){//function to check if observed dimn is with in tolerance
@@ -67,7 +67,7 @@ $('#customer').click(function() {     //populate drawing list based on customer
 	var url="get_drawing.php?custid="+custid;
 	if(custid!='')
 	{
-	$('#drawing').load(url);
+	$('#drg').load(url);
 	$('#operation').text(' ');
 	$('#ipdimns').text(' ');
 	}else{
@@ -76,21 +76,73 @@ $('#customer').click(function() {     //populate drawing list based on customer
     });
 
 
-$("#drawing").click(function() {      //populate operation list based on drawing no
-	var drawingid=$('#Drawing_ID').val();
-	if(drawingid!='')
+
+	$('#drg').click(function(){  //load operation list based on drawing
+		var drawingid=$('#Drawing_ID').val();
+
+		if(drawingid!='')
 		{
 		var url="get_operations.php?drawingid="+drawingid;
 		$('#operation').load(url);
 		}else{
 		$('#operation').text('');
-		}
+		$('#batch').text('');
+		}	
+  	});
+
+
+$('#drawing').select2({
+	placeholder: 'Type Drawing Number',
+	allowClear: true,
+	minimumInputLength: 2,
+    multiple: false,
+    width: 'resolve',
+    ajax: {
+        dataType: "json",
+        type:'POST',
+        url: 'get_drawing-select2.php',
+		data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    //Used to determine whether or not there are more results available,
+                    //and if requests for more data should be sent in the infinite scrolling                    
+                    var more = (page * pageSize) < data.Total; 
+                    	$('#drg').text('');
+                    return { results: data};
+                }
+}
+
+});
+
+
+
+$("#drawing").click(function() {      //populate operation list based on drawing no
+		var drawingid=$('#drawing').val();
+
+		if(drawingid!='')
+		{
+		var url="get_operations.php?drawingid="+drawingid;
+		$('#operation').load(url);
+		}else{
+		$('#operation').text('');
+		$('#batch').text('');
+		}	
+
 });
 
 
 
 $("#batch").change(function() {      //populate operation list based on drawing no
 	var drawingid=$('#Drawing_ID').val();
+	if(drawingid=='')
+	{
+				var drawingid=$('#drawing').val();
+	}
 	var oid=$('#Operation_ID').val();
 	var batchid=$('#Batch_ID').val();
 	if(batchid!="")
@@ -111,6 +163,13 @@ $("#batch").change(function() {      //populate operation list based on drawing 
 $("#operation").click(function() {     //show inprocess dimensions based on operation no
 	var oid=$('#Operation_ID').val();
 	var did=$('#Drawing_ID').val();
+	console.log(did);
+	if(undefined == did)
+	{
+		
+				var did=$('#drawing').val();
+				console.log(did);
+	}
 	if(oid!='')
 	{
 	var url2='get_open_batch_no.php?drawingid='+did;
@@ -121,6 +180,10 @@ $("#operation").click(function() {     //show inprocess dimensions based on oper
 
 $('input[id^="fai"]').click(function() {      //show dimensions based on selection
 	var drawingid=$('#Drawing_ID').val();
+	if(drawingid=='')
+	{
+				var drawingid=$('#drawing').val();
+	}
 	var fai=$(this).val();
 	var opid=$('#Operation_ID').val();
 //console.log(fai);
