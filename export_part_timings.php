@@ -112,7 +112,7 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 		INNER JOIN BNo_MI_Challans as bmc ON bmc.Batch_ID=bn.Batch_ID
 		INNER JOIN MI_Drg_Qty as midq ON midq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
 		WHERE midq.Drawing_ID=$did ORDER BY Deposit_Date Desc;";
-
+			//print("$q3");
 		$r3=mysql_query($q3) or die(mysql_error());
 		$nr3=mysql_affected_rows();
 		if($nr3!=0)

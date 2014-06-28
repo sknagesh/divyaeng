@@ -73,6 +73,45 @@ else {
 }
 
 
+////gages list and availability
+print("<label>Gages Required for this Operation</label>");
+$q5="SELECT * FROM Operation WHERE Drawing_ID=$drawingid;";
+$r5 = mysql_query($q5, $cxn) or die(mysql_error($cxn));	
+while($row5=mysql_fetch_assoc($r5))
+{
+$opdesc=$row5['Operation_Desc'];
+$qgage="SELECT Gage_Desc,(SELECT COUNT(gsl.Gage_ID) FROM Gage_SlNo as gsl WHERE gsl.Gage_ID=g.Gage_ID) as qty 
+		FROM Gage as g INNER JOIN Operation_Gage as og ON og.Gage_ID=g.Gage_ID 
+		WHERE Operation_ID=$row5[Operation_ID];";
+//print("<p>$qgage");
+print("<p>$opdesc");
+$r6 = mysql_query($qgage, $cxn) or die(mysql_error($cxn));	
+
+$noofgages=mysql_num_rows($r6);
+if($noofgages!=0)
+{
+	print("<table border=\"1\" cellspacing=\"1\" >");
+	print("<tr><th>Gage Description</th><th>Qty</th></tr>");
+	while($row6=mysql_fetch_assoc($r6))
+	{
+			print("<tr><td>$row6[Gage_Desc]</td><td>$row6[qty]</td></tr>");
+	}
+print("</table>");
+}else{
+	print("<br>No gages Defined for this Operation");
+}
+
+
+
+
+
+}
+
+
+
+
+
+
 ///cust clarifications
 
 
@@ -165,13 +204,14 @@ $q4="SELECT actl.Activity_Log_ID,actl.Activity_ID, NC_Description,Status,
 		WHERE ncr.Drawing_ID='$drawingid'
 		  ORDER BY Start_Date_Time DESC;";
 //print("$q4");
-print("<br><h1>Non Conformance Reports</h1><br>");
+
 $r4 = mysql_query($q4, $cxn) or die(mysql_error($cxn));
 $noofrecords=mysql_affected_rows();
 if($noofrecords!=0)
 {
+
 	$c="q";
-print("<p>NCs for this part");
+print("<br><h1>Non Conformance Reports</h1><br>");
 print("<table cellspacing=\"1\" cellborder=\"1\" >");
 print("<tr class=\"t\" ><th>Log ID</th><th>NC Type</th><th>NC Status</th><th>NC Date</th><th>Drawing Name and No</th><th>Batch ID</th>
 						<th>Reported By</th><th>Brief Description</th><th>Remarks</th><th>Full Report</th></tr>");

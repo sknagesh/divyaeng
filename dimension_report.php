@@ -130,11 +130,11 @@ $qry="SELECT dimn.Dimension_ID, dimn.Operation_ID,DATE_FORMAT(Insp_Date,'%d/%m/%
 		{
 			if($row['Comment']==''){$ob='<font color="black" size="9">'.round($row['Observed_Dimn']/$inch,4).'</font>';}else{$ob='<font color="black" size="5">'.$row['Comment'].'</font>';}
 			$rrow[$z][$x]=$ob.'<font color="blue" size="5">'.$row['Remarks'].'</font>';
-			if(($jdate=='')&&($name==''))
-				{
-			$jdate=$row['sdt'];
-			$name=$row['Operator_Name'];
-				}
+//			if(($jdate=='')&&($name==''))
+//				{
+			$jdate[$z]=$row['sdt'];
+			$name[$z]=$row['Operator_Name'];
+//				}
 			$x+=1;
 		}
 //	$jobno[$z]=$i['Job_NO'];	
@@ -238,7 +238,7 @@ else {
 		{
 			if($z<$jbs)
 			{
-		$pdf->MultiCell(35, 8, 'Comp. No'.$jobno[$z]. " ,Date ".$jdate. ",Inspected By ".$name, 1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);				
+		$pdf->MultiCell(35, 8, 'Comp. No'.$jobno[$z]. " ,Date:".$jdate[$z]. ", Inspected By ".$name[$z],1, 'L', 0, 0, '', '', true,0,false,true,8,'M',true);				
 //		$pdf->Cell(35,8,'Comp. No'.$jobno[$z],1,0,'L');
 		array_push($xldata[0],$jobno[$z]);
 			}else{

@@ -21,7 +21,7 @@ p { font-weight: bold; clear: both; }
 	$('#dest').hide();
 	$('#scustomer').click(function(){
 	var custid=$('#Customer_IDs').val();
-	var url='get_drawing.php?custid='+custid+'&id=s';
+	var url='get_drawing.php?custid='+custid+'&id=s'+'&hcomp=2';
   		$("#sdrawing").load(url)
       $('#ddrawing').text(' ');
       $('#doperations').text(' ');

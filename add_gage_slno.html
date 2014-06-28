@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Add New Suppplier for Tool Brand To Database</title>
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 15em; float: left; color: green}
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+	$('#gage').load("get_gages.php")
+    $("#addbrand").validate();  //attach validater to form
+    
+
+
+  $('#gage').click(function(){
+    var gid=$('#Gage_ID').val();
+    if(gid!='')
+    {
+      url='show_gage_slnos.php?gid='+gid;
+      $('#footer2').load(url);
+    }
+    
+  });
+
+
+	$("#submit").click(function(event) {
+	 
+   if($("#addbrand").valid())
+  	{
+  		event.preventDefault();
+	   	$.ajax({
+      					data: $('#addbrand').serializeArray(),
+      					type: "POST",
+      					url: "add_gage_slno.php",
+      					success: function(html) {
+				document.getElementById("footer").innerHTML=html;
+				$('#addbrand')[0].reset();
+      							}
+    				});
+  	}
+		});
+   
+    
+    
+  });
+
+$(function () {
+  $('#recdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#recdatedb', altFormat: 'Y-O-D'});
+  
+ 
+  });  
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+<div id="adraw">
+  <form name ="addbrand" id="addbrand">
+ <fieldset>
+<legend>Select Gage and Enter Gage Serial No</legend>
+
+<div id="gage"> </div>
+<p>
+<label>Enter Gage Serial No </label>
+<input type="text" id="slno" name="slno" class="required">
+</p>
+<p>
+<label>Date of Gage Receipt </label>
+
+<input type="text" id="recdate" name="recdate" class="required">
+<input type="hidden" id="recdatedb" name="recdatedb">
+</p>
+<p>
+<label>Gage Type Go/Go and No Go</label>
+<input type="text" id="type" name="type" class="required">
+</p>
+
+
+     <input class="submit" id="submit" type="submit" value="Submit"/>
+   </p>
+ </fieldset>
+ </form>
+<div id="footer"> </div>
+<div id="footer2"> </div>
+</div>
+
+</body>
+</html>
