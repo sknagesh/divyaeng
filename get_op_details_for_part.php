@@ -74,27 +74,40 @@ else {
 
 
 ////gages list and availability
-print("<label>Gages Required for this Operation</label>");
-$q5="SELECT * FROM Operation WHERE Drawing_ID=$drawingid;";
+print("<label2>Gages Required for this Operation</label2>");
+$q5="SELECT * FROM Operation WHERE Drawing_ID=$drawingid AND In_Op_List!=1 AND In_Tool_List!=0;";
 $r5 = mysql_query($q5, $cxn) or die(mysql_error($cxn));	
 while($row5=mysql_fetch_assoc($r5))
 {
 $opdesc=$row5['Operation_Desc'];
-$qgage="SELECT Gage_Desc,(SELECT COUNT(gsl.Gage_ID) FROM Gage_SlNo as gsl WHERE gsl.Gage_ID=g.Gage_ID) as qty 
-		FROM Gage as g INNER JOIN Operation_Gage as og ON og.Gage_ID=g.Gage_ID 
+$qgage="SELECT g.Gage_ID,Gage_Desc FROM Gage as g INNER JOIN Operation_Gage as og ON og.Gage_ID=g.Gage_ID 
 		WHERE Operation_ID=$row5[Operation_ID];";
 //print("<p>$qgage");
-print("<p>$opdesc");
+print("<p>$opdesc</p>");
 $r6 = mysql_query($qgage, $cxn) or die(mysql_error($cxn));	
 
 $noofgages=mysql_num_rows($r6);
 if($noofgages!=0)
 {
 	print("<table border=\"1\" cellspacing=\"1\" >");
-	print("<tr><th>Gage Description</th><th>Qty</th></tr>");
+	print("<tr><th>Gage Description</th><th>Qty</th><th>Gage Type</th></tr>");
 	while($row6=mysql_fetch_assoc($r6))
 	{
-			print("<tr><td>$row6[Gage_Desc]</td><td>$row6[qty]</td></tr>");
+			$q7="SELECT COUNT(Gage_Type)as qty,Gage_Type FROM Gage_SlNo WHERE Gage_ID=$row6[Gage_ID] GROUP BY Gage_Type;";
+			$r7 = mysql_query($q7, $cxn) or die(mysql_error($cxn));	
+			print("<tr><td>$row6[Gage_Desc]</td>");
+				$nqty=mysql_num_rows($r7);
+				if($nqty!=0)
+				{
+				while($row7=mysql_fetch_assoc($r7))
+				{
+					print("<td>$row7[qty]</td><td>$row7[Gage_Type]</td></tr><tr><td></td>");
+				}
+			}else{
+						print("<td><label3>No gages in stock!!</label3></td></tr>");
+					}
+
+
 	}
 print("</table>");
 }else{
@@ -121,7 +134,7 @@ $r=mysql_num_rows($r2);
 if($r)
 {
 
-	print("Customer Clarifications : DEW/QA/R/07 Rev 0 Dated 01/07/2013");
+	print("<br><label2>Customer Clarifications : DEW/QA/R/07 Rev 0 Dated 01/07/2013</label2>");
 	$z=1;
 	print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\">");
 	print("<tr><th>Clarification</th><th>Reply</th><th>Remarks</th></tr>");
@@ -151,7 +164,7 @@ $r=mysql_num_rows($r3);
 if($r)
 {
 
-	print("Process Improvement History DEW\PRD\R\07 Rev 0 Dated 01/07/2013");
+	print("<br><label2>Process Improvement History DEW\PRD\R\07 Rev 0 Dated 01/07/2013</label2>");
 	print("<table border=\"1\" cellspacing=\"1\" style=\"width:100%\"><tr>
 			<th>Operation</th><th>Changed By</th><th>Change Date</th><th>Reason For Change</th><th>Changes</th><th>Remarks</th><th>Images</th></tr>");
 	while($row3=mysql_fetch_assoc($r3))
@@ -211,7 +224,7 @@ if($noofrecords!=0)
 {
 
 	$c="q";
-print("<br><h1>Non Conformance Reports</h1><br>");
+print("<br><label2>Non Conformance Reports</label2><br>");
 print("<table cellspacing=\"1\" cellborder=\"1\" >");
 print("<tr class=\"t\" ><th>Log ID</th><th>NC Type</th><th>NC Status</th><th>NC Date</th><th>Drawing Name and No</th><th>Batch ID</th>
 						<th>Reported By</th><th>Brief Description</th><th>Remarks</th><th>Full Report</th></tr>");
@@ -251,7 +264,7 @@ print("<tr class=\"$c\"><td>$id</td><td>$nctype</td><td>$ncs</td><td>$sdt</td><t
 if($c=="q"){$c="s";}else{$c="q";}
 }
 print("</table>");
-}else{print("No NC Reports For This Part");}
+}
 
 
 
