@@ -32,7 +32,7 @@ if((isSet($_FILES['drg']['name']))&&$_FILES['drg']['name']!='')
                 }
 	$result = move_uploaded_file($drgtmpName, $drgfilePath);
 	if (!$result) {
-						echo "<br>Error uploading Drawing $drgfileName";
+						echo "<br>Error Reading input file $drgfileName";
 						exit;
 						}
 
@@ -73,53 +73,56 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 		$result6=mysql_query($q6) or die(mysql_error());
 		$r6=mysql_fetch_assoc($result6);
 		$did=$r6['Drawing_ID'];
-//print("Draing id=$did<p>");
+
+		if($did!=''){  //if there is no part id identified
+		//print("Draing id=$did<p>");
 		$q1="SELECT Drawing_NO,Component_Name from Component WHERE Drawing_ID='".$did."';";
 		$result1=mysql_query($q1) or die(mysql_error());
 		$r1=mysql_fetch_assoc($result1);
-//print("printing component information<p>");
+		//print("printing component information<p>");
 		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$x, 'Part:'.$r1['Drawing_NO'].' - '.$r1['Component_Name']);
-//print("finished printing comp information<p>");
+		//print("<p>$r1[Drawing_NO] -- $r1[Component_Name]");
+		//print("finished printing comp information<p>");
 		$x++;
 		$q2="SELECT Setup_Time,ADDTIME(Clamping_Time,Machining_Time) as tt,Operation_Desc,
 		($drgqty*TIME_TO_SEC(ADDTIME(Clamping_Time,Machining_Time))) as Total_Time 
-		FROM Operation WHERE Drawing_ID='".$did."' AND In_Tool_List=1 ORDER BY Operation_Desc ASC;";
-//print("printing headers<p>");
+		FROM Operation WHERE Drawing_ID='".$did."' AND In_Tool_List=1 AND In_Op_list!=1 ORDER BY Operation_Desc ASC;";
+		//print("printing headers<p>");
 		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$x,'Std. Time in Min');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$x,'Set Up Time');
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$x,'Avg Time in Min');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$x, 'Operation Description');
 		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$x,'Total Avg Time in Hours for'.$drgqty.' Nos');
-//print("finished printing headers<p>");
+		//print("finished printing headers<p>");
 		$x++;
 		$y=$x;//store row no for next column of data
 		$rr=mysql_query($q2) or die(mysql_error());
 		$noofop=mysql_affected_rows();
 		$pn=0;
 		$thours=0;
-//print("printing timing details<p>");
+		//print("printing timing details<p>");
 		while($row=mysql_fetch_assoc($rr))
 			{
 			$objPHPExcel->getActiveSheet()->SetCellValue('A'.$x,$row['tt']);
 			$objPHPExcel->getActiveSheet()->SetCellValue('D'.$x, $row['Operation_Desc']);
 			$x++;
 			}
-//print("finished printing timing details<p>");
-////get last batch run details for timing comparision
+			//print("finished printing timing details<p>");
+			////get last batch run details for timing comparision
 
 
-		$q3="SELECT bn.Batch_ID,Qty_In_Batch from Batch_NO as bn 
+		$q3="SELECT bn.Batch_ID,SUM(Qty_In_Batch) as bq from Batch_NO as bn 
 		INNER JOIN BNo_MI_Challans as bmc ON bmc.Batch_ID=bn.Batch_ID
 		INNER JOIN MI_Drg_Qty as midq ON midq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
-		WHERE midq.Drawing_ID=$did ORDER BY Deposit_Date Desc;";
-			//print("$q3");
+		WHERE midq.Drawing_ID=$did GROUP BY Batch_ID ORDER BY Deposit_Date Desc;";
+		//print("<p>$q3");
 		$r3=mysql_query($q3) or die(mysql_error());
 		$nr3=mysql_affected_rows();
 		if($nr3!=0)
 			{
 			$rr1=mysql_fetch_assoc($r3);
 			$bid=$rr1['Batch_ID'];
-			$bqty=$rr1['Qty_In_Batch'];
+			$bqty=$rr1['bq'];
 			}
 
 
@@ -136,14 +139,15 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 		INNER JOIN Operation as ope On ope.Operation_ID=prod.Operation_ID
 		INNER JOIN Component as comp on comp.Drawing_ID=ope.Drawing_ID
 		INNER JOIN Customer as cust ON cust.Customer_ID=comp.Customer_ID 
-		WHERE ope.Drawing_ID=$did AND Batch_ID='$bid' AND In_Tool_List=1 GROUP BY ope.Operation_ID;";
+		WHERE ope.Drawing_ID=$did AND Batch_ID='$bid' AND In_Tool_List=1 AND ope.In_Tool_List!=0 AND ope.In_Op_list!=1
+		GROUP BY ope.Operation_ID ORDER BY Operation_Desc ASC;";
 
 		$r4=mysql_query($q4) or die(mysql_error());
 		$rrr4=mysql_affected_rows();
 
 		if($rrr4!=0)
 			{
-//print("printing average timing details<p>");
+		//print("printing average timing details<p>");
 			$x=$y;
 			$tahours=0;
 				while($row4=mysql_fetch_assoc($r4))
@@ -166,19 +170,19 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 					$x++;
 					}
 
-//print("finished printing average timing details<p>");
+				//print("finished printing average timing details<p>");
 			}
 
 
 
-	$styleArray = array(
+		$styleArray = array(
     		'font'  => array(
         	'bold'  => true,
         	'color' => array('rgb' => 'FF0000'),
         	'size'  => 12,
         	'name'  => 'Verdana'
     	));
-//print("printing part total timing details<p>");
+		//print("printing part total timing details<p>");
 		$z=$y-2;
 		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$z,$drgqty);
 		$objPHPExcel->getActiveSheet()->getStyle('B'.$z)->applyFromArray($styleArray);
@@ -195,7 +199,7 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$z)->applyFromArray($styleArray);
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$z)->getNumberFormat()->setFormatCode('0.0');
 		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$z,'Last Batch Qty:'.$bqty);
-//print("finished printing part total timing details<p>");
+		//print("finished printing part total timing details<p>");
 		if($tasum=='')
 			{
 				$tasum.='D'.$z;
@@ -204,7 +208,7 @@ for ($rows = 2; $rows <= $highestRow; $rows++)
 			}
 		$x++;
 		$totalhours+=$tahours;
-
+	}
 
 
 

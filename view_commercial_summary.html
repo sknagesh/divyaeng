@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Production Summary</title>
+        <link href="select2.css" rel="stylesheet"/>
+        <script src="jquery.js"></script>
+        <script src="select2.min.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 14px; }
+label { width: 10em; float: left;font-weight: bold; clear: both; color:green; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.q { clear: both; background-color:#CCCCCD; color:#0B173B;}
+.s { clear: both; background-color:#F0F0F0; color:#0B173B;}
+.t { font-weight: bold; clear: both; background-color:#58ACFA; color:#F6CECE}
+.s.hover { background-color:#4A779D}
+.q.hover { background-color:#4A779D}
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+//	  	$("#customer").load('get_customer.php');  //load customer list from get_customer.php
+var pageSize = 20;
+  		$("#footer").load('get_commercial_summ_for_drg.php');
+
+    $('#interval').keyup(function(){
+    var interval=$('#interval').val();
+    if(interval!='')
+    {
+      var sdate=$('#sdatedb').val();
+      var edate=$('#edatedb').val();
+    var url='get_commercial_summ_for_drg.php?interval='+interval+"&sdate="+sdate+"&edate="+edate;
+      $("#footer").load(url)
+    }
+      });
+
+    $('#edate').keyup(function(){
+
+      var sdate=$('#sdatedb').val();
+      var edate=$('#edatedb').val();
+      var url='get_commercial_summ_for_drg.php?sdate='+sdate+"&edate="+edate;
+      $("#footer").load(url)
+
+      });
+
+/*
+
+		$('#customer').click(function(){
+		var custid=$('#Customer_ID').val();
+		var url='get_drawing.php?custid='+custid;
+  		$("#drawing").load(url)
+  		});
+*/
+$('#drawing').select2({
+  placeholder: 'Type Drawing Number',
+  allowClear: true,
+  minimumInputLength: 2,
+    multiple: false,
+    width: 'resolve',
+    ajax: {
+        dataType: "json",
+        type:'POST',
+        url: 'get_drawing-select2.php',
+    data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    //Used to determine whether or not there are more results available,
+                    //and if requests for more data should be sent in the infinite scrolling                    
+                    var more = (page * pageSize) < data.Total; 
+                    return { results: data};
+                }
+}
+
+});
+
+
+
+
+		$('#drawing').click(function(){
+/*		var drawingid=$('#Drawing_ID').val();*/
+    var drawingid=$('#drawing').val();
+		url2='get_batch_nos_for_drawing.php?drawingid='+drawingid;
+		$("#batchno").load(url2);
+		var url='get_commercial_summ_for_drg.php?drawingid='+drawingid;
+  		$("#footer").load(url);
+  		
+  		});
+
+		$('#batchno').click(function(){
+		var bid=$('#Batch_ID').val();
+/*		var drawingid=$('#Drawing_ID').val();*/
+    var drawingid=$('#drawing').val();
+		var url='get_commercial_summ_for_drg.php?drawingid='+drawingid+"&bid="+bid;
+  		$("#footer").load(url);
+  		
+  		});
+
+
+$(function () {
+  $('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#sdatedb', altFormat: 'Y-O-D', defaultDatetime: '-7d'});
+  
+  $('#edate').datetimeEntry({datetimeFormat: 'D-O-Y', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D'});
+  
+  });  
+
+
+  });
+
+function customRange() { 
+
+return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
+}
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+ 
+ <fieldset>
+<legend>Select Customer and  Drawing Details for Summary</legend>
+  <label>Enter Search Text </label> <input type="text" id="drawing" size="25" name="drawing">
+  <div id="batchno"> </div>
+  <label>Time Frame in Days</label><input type="text" name="interval" id="interval" class="number"><br>
+
+   <p>
+     <label for="sdate">Start Date</label>
+     <input type="text" id="sdate" name="sdate" size="25"/>
+     <input type="hidden" id="sdatedb" name="sdatedb" />
+   </p>
+   <p>
+     <label for="edate">End Date</label>
+     <input type="text" id="edate" name="edate" size="25"/>
+     <input type="hidden" id="edatedb" name="edatedb" />
+   </p>
+
+
+     <label>Monthwise Report</label><input type="checkbox" name="month" id="month">
+ </fieldset>
+<div id="footer"> </div>
+<div id="footer2"> </div>
+
+</body>
+</html>

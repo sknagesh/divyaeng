@@ -75,7 +75,7 @@ $pdf->AddPage('L','A4');
 $pdf->SetFont('helvetica','',10);
 
 
-$q2="SELECT * FROM Operation WHERE Drawing_ID=$did AND In_Tool_List=1 ORDER BY Operation_Desc ASC;";
+$q2="SELECT * FROM Operation WHERE Drawing_ID=$did AND In_Tool_List=1 AND In_Op_List=0 ORDER BY Operation_Desc ASC;";
 
 $rr=mysql_query($q2) or die(mysql_error());
 $noofop=mysql_affected_rows();

@@ -33,6 +33,8 @@ p { font-weight: bold; clear: both; }
 var pageSize = 20;
 	$('#grn').hide();
     $("#addgrn").validate();  //attach validater to form
+    $('#footer2').load("get_not_received_gr_list.php");
+
 	$('#customer').click(function(){ ///load drawing list based on customer
 		var custid=$('#Customer_ID').val();
 		var url='get_drawing.php?custid='+custid;
@@ -158,5 +160,6 @@ $('#drawing').select2({
 </fieldset>
 </form>
 <div id="footer"> </div>
+<div id="footer2"> </div>
 </body>
 </html>
