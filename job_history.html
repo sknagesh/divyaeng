@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>View Job History</title>
         <script src="jquery.js"></script>
+        <script src="select2.min.js"></script>
 
 
  <style type="text/css">
@@ -17,8 +18,10 @@ p { font-weight: bold; clear: both; }
 .t { font-weight: bold; clear: both; background-color:#4A779D; color:#F67A00}
 .submit { margin-left: 12em; }
 </style>
+     <link href="select2.css" rel="stylesheet"/>
   <script>
   $(document).ready(function(){
+    var pageSize = 20;
 	  	$("#customer").load('get_customer.php');  //load customer list from get_customer.php
 		$('#customer').click(function(){
 		var custid=$('#Customer_ID').val();
@@ -31,17 +34,84 @@ p { font-weight: bold; clear: both; }
   		});
 
 
-		$('#drawing').click(function(){
-		var drawingid=$('#Drawing_ID').val();
-		if(drawingid!='')
-		{
-		var url='get_operations.php?drawingid='+drawingid+'&iol=1';
-  		$("#operation").load(url)
-  		}else{
-  			$("#operation").text('');
-  			
-  		}
-  		});
+$('#customer').click(function() {     //populate drawing list based on customer
+  var custid=$('#Customer_ID').val();
+  var url="get_drawing.php?custid="+custid;
+  if(custid!='')
+  {
+  $('#drg').load(url);
+  $('#operation').text(' ');
+  $('#ipdimns').text(' ');
+  }else{
+    $('#drawing').text(' ');
+  }
+    });
+
+
+
+  $('#drg').click(function(){  //load operation list based on drawing
+    var drawingid=$('#Drawing_ID').val();
+
+    if(drawingid!='')
+    {
+    var url='get_operations.php?drawingid='+drawingid+'&iol=1';
+    $('#operation').load(url);
+    }else{
+    $('#operation').text('');
+    $('#batch').text('');
+    } 
+    });
+
+
+$('#drawing').select2({
+  placeholder: 'Type Drawing Number',
+  allowClear: true,
+  minimumInputLength: 2,
+    multiple: false,
+    width: 'resolve',
+    ajax: {
+        dataType: "json",
+        type:'POST',
+        url: 'get_drawing-select2.php',
+    data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    //Used to determine whether or not there are more results available,
+                    //and if requests for more data should be sent in the infinite scrolling                    
+                    var more = (page * pageSize) < data.Total; 
+                      $('#drg').text('');
+                    return { results: data};
+                }
+}
+
+});
+
+
+
+$("#drawing").click(function() {      //populate operation list based on drawing no
+    var drawingid=$('#drawing').val();
+
+    if(drawingid!='')
+    {
+    var url='get_operations.php?drawingid='+drawingid+'&iol=1';
+    $('#operation').load(url);
+    }else{
+    $('#operation').text('');
+    $('#batch').text('');
+    } 
+
+});
+
+
+
+
+
+
 
 		$('#operation').click(function(){
 		var operationid=$('#Operation_ID').val();
@@ -64,8 +134,9 @@ p { font-weight: bold; clear: both; }
  
  <fieldset>
 <legend>Select Drawing and  Operation Details for Job History</legend>
+<tr><td><label>Enter Search Text </label> <input type="text" id="drawing" size="25" name="drawing"></td>
     <div id="customer"> </div>
-     <div id="drawing"> </div>
+    <td><div id="drg"> </div></td>
      <div id="operation"> </div>
  </fieldset>
 <div id="footer"> </div>

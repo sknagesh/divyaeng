@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>MachineActivity Summary</title>
+        <link href="select2.css" rel="stylesheet"/>
+        <script src="jquery.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 14px; }
+label { width: 10em; float: left;font-weight: bold; clear: both; color:green; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.q { clear: both; background-color:#CCCCCD; color:#0B173B;}
+.s { clear: both; background-color:#F0F0F0; color:#0B173B;}
+.t { font-weight: bold; clear: both; background-color:#58ACFA; color:#F6CECE}
+.s.hover { background-color:#4A779D}
+.q.hover { background-color:#4A779D}
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+
+  		$("#footer").load('get_activity_summary.php');
+
+    $('#edate').keyup(function(){
+
+      var sdate=$('#sdatedb').val();
+      var edate=$('#edatedb').val();
+      console.log("sdate="+sdate+"edate="+edate);
+
+      var url="get_activity_summary.php?sdate="+sdate+"&edate="+edate;
+      $("#footer").load(url)
+
+      });
+
+     
+      });
+
+$(function () {
+  $('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#sdatedb', altFormat: 'Y-O-D'});
+  
+  $('#edate').datetimeEntry({datetimeFormat: 'D-O-Y', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D'});
+
+
+ 
+  });  
+
+
+
+
+function customRange() { 
+
+return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
+}
+
+
+  </script>
+
+
+
+
+    </head>
+    <body>
+ 
+ <fieldset>
+<legend>Select Time Frame for Summary</legend>
+   <p>
+     <label for="sdate">Start Date and Time</label>
+     <input type="text" id="sdate" name="sdate" size="25"/>
+     <input type="hidden" id="sdatedb" name="sdatedb" />
+   </p>
+   <p>
+     <label for="edate">End Date and Time</label>
+     <input type="text" id="edate" name="edate" size="25"/>
+     <input type="hidden" id="edatedb" name="edatedb" />
+   </p>
+
+ </fieldset>
+<div id="footer"> </div>
+<div id="footer2"> </div>
+
+</body>
+</html>

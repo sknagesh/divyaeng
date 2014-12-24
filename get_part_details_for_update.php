@@ -21,6 +21,7 @@ $row = mysql_fetch_assoc($resa);
 	$drgid=$row['Drawing_ID'];
 	$drgrev=$row['Drawing_Rev'];
 	$swt=$row['Scrap_Weight'];
+  $qhou=$row['Quote_Hours'];
   $custdrawingno=$row['Cust_Drawing_NO'];
   $mcode=$row['Material_Code'];
 print("
@@ -74,6 +75,10 @@ print("
      <input id=\"sweight\" name=\"sweight\" size=\"25\"  class=\"number\" value=\"$swt\"/>
    </p>
 
+   <p>
+     <label>Machine hours Considered</label>
+     <input id=\"qhours\" name=\"qhours\" size=\"25\"  class=\"number\" value=\"$qhou\"/>
+   </p>
 
    <p>
      <label>Select Drawing </label>

@@ -4,7 +4,7 @@ $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 $drawid=$_GET['drawingid'];
 
-$query="SELECT EX_Challan_NO,mi.Material_Inward_ID,Material_Qty,EX_Challan_Date,midq.MI_Drg_Qty_ID,
+$query="SELECT Purchase_Ref,Purchase_Ref_Date,EX_Challan_NO,mi.Material_Inward_ID,Material_Qty,EX_Challan_Date,midq.MI_Drg_Qty_ID,
 		(select sum(Outward_Qty) from MO_Drg_Qty where Drawing_ID='$drawid' and MI_Drg_Qty_ID=midq.MI_Drg_Qty_ID) as dqty 
 		FROM Material_Inward as mi INNER JOIN MI_Drg_Qty as midq on midq.Material_Inward_ID=mi.Material_Inward_ID 
 		WHERE midq.Drawing_ID='$drawid' AND Qty_Open=1";
@@ -23,7 +23,10 @@ $i=0;
 	{
 		if($row['dqty']!=''){$adqty=$row['dqty'];}else{$adqty=0;}
 		$mqty=$row['Material_Qty']-$adqty;
-print("<tr><td>$row[EX_Challan_NO]</td><td>$row[EX_Challan_Date]</td><td>$row[Material_Qty]</td>
+		if($row['EX_Challan_NO']!=''){$ecn=$row['EX_Challan_NO'];}else{$ecn=$row['Purchase_Ref'];}
+		if($row['EX_Challan_NO']!=''){$edt=$row['EX_Challan_Date'];}else{$edt=$row['Purchase_Ref_Date'];}
+
+print("<tr><td>$ecn</td><td>$edt</td><td>$row[Material_Qty]</td>
 	<td>$adqty</td><td>
 	<input type=\"text\" id=\"dqty[$i]\" name=\"dqty[$i]\" size=\"25\" max=\"$mqty\"></td>
 	 <input type=\"hidden\" id=\"midrgid[$i]\" name=\"midrgid[$i]\" value=\"$row[MI_Drg_Qty_ID]\"></td>

@@ -17,13 +17,16 @@ $compulsary=$_POST['compulsary'];
 $stagedimn=$_POST['stagedimn'];
 if(isSet($_POST['Dimension_ID'])){$ipid=$_POST['Dimension_ID'];}else{$ipid="";}
 $len=count($instrumentid);
-
+//print_r($ipid);
+//print_r($_POST['Dimension_ID']);
 
 $a=0;
 $updated=0;
 $newdimn=0;
+//print("length=$len<br>");
 while ($a <= $len-1) {
 	
+//print("<br>ipid=$ipid[$a]");
 	//if($ipid[$a]!="")
 	if(isSet($ipid[$a]))
 	{
@@ -38,7 +41,7 @@ $qry="UPDATE Dimension SET 	Baloon_NO='$baloonno[$a]',
 							Operation_ID='$operationid',
 							Compulsary_Dimn='$compulsary[$a]',
 							Stage_Dimension='$stagedimn[$a]'
-		WHERE Dimension_ID='$ipid[$a]'";
+							WHERE Dimension_ID='$ipid[$a]'";
 //print("$qry");
 $resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 $result=mysql_affected_rows($cxn);
@@ -47,7 +50,7 @@ if($result!=0){$updated+=1;}
 	{
 $qry="INSERT INTO Dimension (Baloon_NO,Basic_Dimn,Desc_ID,Tol_Lower,Tol_Upper,Instrument_ID,Prod_Dimn,Text_Field,Operation_ID,Compulsary_Dimn,Stage_Dimension) ";
 $qry.="VALUES('$baloonno[$a]','$basicdimn[$a]','$dimndesc[$a]','$tollower[$a]','$tolupper[$a]','$instrumentid[$a]','$proddimn[$a]','$textfield[$a]','$operationid','$compulsary[$a]','$stagedimn[$a]');";
-//print("$qry");
+//print("$qry<br>");
 $resa = mysql_query($qry, $cxn) or die(mysql_error($cxn));
 $result=mysql_affected_rows($cxn);
 if($result!=0){$newdimn+=1;}

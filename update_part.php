@@ -16,6 +16,7 @@ if(isSet($_POST['cblank'])){$cblank=$_POST['cblank'];}else{$cblank="";}
 if(isSet($_POST['pmblank'])){$pmblank=$_POST['pmblank'];}else{$pmblank="";}
 if(isSet($_POST['fsize'])){$fsize=$_POST['fsize'];}else{$fsize="";}
 if(isSet($_POST['sweight'])){$sweight=$_POST['sweight'];}else{$sweight="";}
+if(isSet($_POST['qhours'])){$qhours=$_POST['qhours'];}else{$qhours="";}
 if(isSet($_POST['custdrawingno'])){$custdrawingno=$_POST['custdrawingno'];}else{$custdrawingno="";}
 if(isSet($_POST['mcode'])){$mcode=$_POST['mcode'];}else{$mcode="";}
 
@@ -118,7 +119,8 @@ $query="UPDATE Component SET 	Drawing_NO='$drawingno',
 								Raw_Material_Size='$cblank',
 								Pre_Machined_Blank_Size='$pmblank',
 								Finish_Size='$fsize',
-								Scrap_Weight='$sweight'";
+								Scrap_Weight='$sweight',
+								Quote_Hours='$qhours'";
 								if($drgfileName!=''){$query.=",$drgfileName";}
 								if($profileName!=''){$query.=",$profileName";}
 								if($prefileName!=''){$query.=",$prefileName";}

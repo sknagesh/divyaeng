@@ -14,6 +14,7 @@ if(isSet($_POST['cblank'])){$cblank=$_POST['cblank'];}else{$cblank="";}
 if(isSet($_POST['pmblank'])){$pmblank=$_POST['pmblank'];}else{$pmblank="";}
 if(isSet($_POST['fsize'])){$fsize=$_POST['fsize'];}else{$fsize="";}
 if(isSet($_POST['sweight'])){$sweight=$_POST['sweight'];}else{$sweight="";}
+if(isSet($_POST['qhours'])){$qhours=$_POST['qhours'];}else{$qhours="";}
 if(isSet($_POST['custdrawingno'])){$custdrawingno=$_POST['custdrawingno'];}else{$custdrawingno="";}
 if(isSet($_POST['mcode'])){$mcode=$_POST['mcode'];}else{$mcode="";}
 
@@ -103,7 +104,8 @@ $query="INSERT INTO Component (Customer_ID,
 								Customer_Drawing,
 								Process_Sheet,
 								Preview_Image,
-								Scrap_Weight) ";
+								Scrap_Weight,
+								Quote_Hours) ";
 $query.="VALUES('$custid',
 				'$drawingno',
 				'$custdrawingno',
@@ -117,7 +119,8 @@ $query.="VALUES('$custid',
 				'$drgfileName',
 				'$profileName',
 				'$prefileName',
-				'$sweight');";
+				'$sweight',
+				'$qhours');";
 
 //print($query);
 
