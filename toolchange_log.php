@@ -30,6 +30,15 @@ $tconditionnew=$_POST['newtool2'];
 if(isSet($_POST['remark'])){$remarks=$_POST['remark'];}else{$remarks="";}
 
 
+if($tconditionnew=="New Tool")
+{
+$q1="SELECT Qty_New,Qty_New_SF FROM Tool_Qty WHERE Tool_ID='$newtid';";
+}else{
+$q1="SELECT Qty_Resharpened,,Qty_Resharpened_SF FROM Tool_Qty WHERE Tool_ID='$newtid';";
+}
+
+
+
 $query="INSERT INTO ActivityLog (Activity_ID,
 								Machine_ID,
 								Start_Date_Time,
@@ -81,6 +90,8 @@ $ok=mysql_affected_rows();
 if($ok!=0)
 {
 	print("Added one Row in to Tool Change Log and Log ID is $lastid");
+
+
 }else{
 	print("Error adding into Tool Change Log");
 }

@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="jquery.js"></script>
+        <script src="jquery.validate.js"></script>
+        <script src="jquery.datetimeentry.js"></script>
+        <script src="jquery.form.js"></script>
+
+
+ <style type="text/css">
+* { font-family: Verdana; font-size: 13px; }
+label { width: 15em; float: left; color:green;font-weight: bold; clear: both; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { font-weight: bold; clear: both; }
+.submit { margin-left: 12em; }
+</style>
+  <script>
+  $(document).ready(function(){
+	$('#clarification').validate();
+  	$('#customer').load("get_customer.php");
+  	$('#enquiry').load("get_enquires.php");
+    
+  	$('#customer').click(function(){
+  	var cid=$('#Customer_ID').val();
+  	var url="get_drawing.php?custid="+cid+'&hcomp=1';
+  		if(cid!='')
+  		{
+  		$('#drawing').load(url);
+    	$('#Enquiry_ID' ).removeClass("required");
+  		$('#Enquiry_ID').val("");
+      
+  		}
+  	});
+
+  	$('#enquiry').click(function(){
+  	var eid=$('#Enquiry_ID').val();
+  	if(eid!='')
+  	{
+    $( '#Customer_ID' ).removeClass("required");
+  	$('#Customer_ID').val("");
+  	$('#drawing').text("");
+    var url2="get_quote_drawing_or_enq.php?type=1+&id="+eid;
+    $.get(url2, function(data) {
+      
+      quote=data.split("<|>");
+      if(quote[0]=="yes")
+      {
+       $('#cdate').val(quote[1]);
+       $('#pdesc').text(quote[2]);
+       $('#eau').val(quote[3]);
+       $('#bsize').val(quote[4]);
+       $('#nos').val(quote[5]);
+       $('#stime').val(quote[6]);
+       $('#actime').val(quote[7]);
+       $('#effy').val(quote[8]);
+       $('#hwork').val(quote[9]);
+       $('#holes').val(quote[10]);
+       $('#packing').val(quote[11]);
+       $('#transport').val(quote[12]);
+       $('#cscrap').val(quote[13]);
+       var path='<a href="/enquiry/'+quote[14]+'" target="_NEW">Part Reference Image</a>'
+       console.log(path);
+       $('#refimage').html(path)
+
+        updateall();
+
+      }else{
+       $('#cdate').val('');
+       $('#pdesc').text('');
+       $('#eau').val('');
+       $('#bsize').val('1');
+       $('#nos').val('1');
+       $('#stime').val('1');
+       $('#actime').val('1');
+       $('#effy').val('90');
+       $('#hwork').val('0');
+       $('#holes').val('0');
+       $('#packing').val('0');
+       $('#transport').val('0');
+       $('#cscrap').val('0');
+       $('#refimage').text('');
+      updateall();
+      }
+
+      });
+
+  	}
+  	});
+
+$('#drawing').click(function(){
+    var did=$('#Drawing_ID').val();
+    if(did!='')
+    {
+    var url2="get_quote_drawing_or_enq.php?type=2+&id="+did;
+    $.get(url2, function(data) {
+      
+      quote=data.split("<|>");
+      if(quote[0]=="yes")
+      {
+       $('#cdate').val(quote[1]);
+       $('#pdesc').text(quote[2]);
+       $('#eau').val(quote[3]);
+       $('#bsize').val(quote[4]);
+       $('#nos').val(quote[5]);
+       $('#stime').val(quote[6]);
+       $('#actime').val(quote[7]);
+       $('#effy').val(quote[8]);
+       $('#hwork').val(quote[9]);
+       $('#holes').val(quote[10]);
+       $('#packing').val(quote[11]);
+       $('#transport').val(quote[12]);
+       $('#cscrap').val(quote[13]);
+       var path='<a href="/enquiry/'+quote[14]+'" target="_NEW">Part Reference Image</a>'
+       console.log(path);
+       $('#refimage').html(path)
+        updateall();
+
+      }else{
+       $('#cdate').val('');
+       $('#pdesc').text('');
+       $('#eau').val('');
+       $('#bsize').val('1');
+       $('#nos').val('1');
+       $('#stime').val('1');
+       $('#actime').val('1');
+       $('#effy').val('90');
+       $('#hwork').val('0');
+       $('#holes').val('0');
+       $('#packing').val('0');
+       $('#transport').val('0');
+       $('#cscrap').val('0');
+       $('#refimage').text('');
+      updateall();
+      }
+
+      });
+
+    }
+    });
+
+
+$(function () {
+	$('#cdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#cdatedb', altFormat: 'Y-O-D'});
+	});  
+
+
+$('#excel').click(function(event){
+
+if($('#clarification').valid())
+{
+
+    $.post("export_quote_to_excel.php", $('#clarification').serialize(),function(data) {
+
+        $('#footer').html(data);
+      });
+}
+
+
+});
+
+
+
+var options = {  ///options for ajaxSubnit function 
+                        success: function(html) {
+                          $('#footer').html(html);
+                    },
+        clearForm: true,        // clear all form fields after successful submit 
+        resetForm: true        // reset the form after successful submit 
+    };
+
+  $("#addp").click(function(event) {
+
+   if( $('#clarification').valid())
+    {
+      event.preventDefault();  ///we are preventing the form submitting as we are using ajax to dynamically submitting
+      $("#clarification").ajaxSubmit(options);
+    }
+
+    });
+
+    $('#stime').keyup(function(){
+     updateall();
+    });
+
+    $('#bsize').keyup(function(){
+     updateall();
+    });
+
+    $('#actime').keyup(function(){
+    console.log("actual cycle time");
+     updateall();
+    
+    });
+
+    $('#effy').keyup(function(){
+    console.log("efficiency");
+    updateall();
+
+     });
+
+    $('#hwork').keyup(function(){
+    console.log("hand work");
+    updateall();
+    });
+
+
+    $('#transport').keyup(function(){
+    console.log("transport");
+     updateall();
+    });
+
+    $('#packing').keyup(function(){
+    console.log("packing");
+    updateall();
+
+    });
+    
+    $('#holes').keyup(function(){
+    console.log("holes");
+    updateall();
+    });
+
+    $('#cscrap').keyup(function(){
+    console.log("scrap cost");
+    updateall();
+    });
+
+
+
+
+});
+function updateall(){
+    
+    var mtime=$('#actime').val();
+    var stime=$('#stime').val();
+    var bsize=$('#bsize').val();
+    var effy=$('#effy').val();
+    var hwork=$('#hwork').val();
+    var packing=$('#packing').val();
+    var transport=$('#transport').val();
+    var holes=$('#holes').val();
+    var scrap=$('#cscrap').val();
+    if(stime!=''&&mtime!='')
+    {
+      var tperpart=parseFloat(stime/bsize/60).toFixed(2);
+      $('#stimepart').text(tperpart);
+      var t1=stime/bsize;
+      var t2=(mtime*1)+(t1*1)  //multiplying by 1 to force integer conversion
+      var totaltimeperpart=parseFloat(t2/60).toFixed(2);
+      $('#cytime').text(totaltimeperpart);
+      var totaltimeperpartwe=parseFloat((totaltimeperpart*1)+(totaltimeperpart*(100-effy)/100)).toFixed(2);
+      $('#tmwe').text(totaltimeperpartwe);
+      var tcost=totaltimeperpartwe*450;
+      $('#tmcost').text(tcost);
+      var tostall=(tcost*1)+(packing*1)+(transport*1)+(holes*1)+(transport*1)+(hwork*1)-(scrap*1);
+      $('#tcost').text(tostall);
+      var fcost=parseFloat((tostall*1.1)).toFixed(2);
+      $('#totalcost').text(fcost);
+      var tmisc=(hwork*1)+(packing*1)+(transport*1)+(holes*1);
+      $('#tmisc').text(tmisc);
+
+
+    }
+  
+
+}
+
+
+
+  </script>
+
+
+    </head>
+    <body>
+
+  <form name ="clarification" id="clarification" action="quote_part.php" method="post" enctype="multipart/form-data">
+ <fieldset>
+<legend>Clarification Details</legend>
+   <p>
+     <div id="customer"> </div>
+     <div id="drawing"> </div>
+     <div id="enquiry"> </div>
+	   <p>
+     <label>Quotation Date </label>
+     <input type="text" name="cdate" id="cdate" size="25" class="required">
+      <input type="hidden" name="cdatedb" id="cdatedb" >
+	   <p>
+
+	   <p>
+     <label>General Notes</label>
+     <textarea name="pdesc" rows="4" cols="50" id="pdesc" class="required"> </textarea> 
+	   <p>
+		
+   <p>
+     <label>Upload Supporting Images/PDFs if any </label>
+     <input id="drg" name="drg" type="file" />
+   </p>
+   <div id="refimage"> </div>
+   <label>Cost Break Up</label>
+   <br>
+<table border="1">
+<tr><th>EAU</th><th>Batch Size</th><th>No of Settings</th><th>Total Setting Time/Batch</th><th>Setting Time/Part</th><th>Actual Cutting Time</th><th>Cycle Time/Part</th><th>Efficiency</th><th>Total Mach Hours With Effi.</th><th>Total Hours/EAU</th><th>Total Mach Cost @450</th><th>Hand Work</th><th>Additional Holes using Jig</th><th>Packing</th><th>Transport</th><th>Hw+Packing+Transport</th><th>Cost Of Scrap</th><th>Total Processing Cost</th><th>Profit@10%</th><th>Total Cost</th></tr>
+
+<tr>
+  <td><input type="text" id="eau" name="eau" class="number" size="4"></td>
+  <td><input type="text" id="bsize" name="bsize" class="number" size="4" value="1"></td>
+  <td><input type="text" id="nos" name="nos" class="number" size="4"></td>
+  <td><input type="text" id="stime" name="stime" class="number" size="5" value="1"></td>
+  <td><div id="stimepart"> </div></td>
+  <td><input type="text" id="actime" name="actime" class="number" size="5" value="1"></td>
+  <td><div id="cytime"> </div></td>
+  <td><input type="text" id="effy" name="effy" class="number" size="3" value="90"></td>
+  <td><div id="tmwe"> </div></td>
+  <td><div id="thours"> </div></td>
+  <td><div id="tmcost"> </div></td>
+  <td><input type="text" id="hwork" name="hwork" class="number" size="4" value="0"></td>
+  <td><input type="text" id="holes" name="holes" class="number" size="4" value="0"></td>
+  <td><input type="text" id="packing" name="packing" class="number" size="4" value="0"></td>
+  <td><input type="text" id="transport" name="transport" class="number" size="4" value="0"></td>
+  <td><div id="tmisc"> </div></td>
+  <td><input type="text" id="cscrap" name="cscrap" class="number" size="4" value="0"></td>
+  <td><div id="tcost"> </div></td>
+  <td><div id="profit"> </div></td>
+  <td><div id="totalcost"> </div></td>
+</tr>
+
+
+</table> 
+
+</legend>
+
+
+ <p>
+     <input class="submit" id="addp" type="submit" value="Submit"/>
+     <input class="submit" type="button" id="excel" name="excel" value="Excel Output"/>
+   </p>
+ 
+</fieldset>
+ </form>
+<div id="footer"></div>
+</body>
+</html>
