@@ -64,17 +64,16 @@ $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->SetCellValue('G5','Cycle Time/Part with Sett. Time');
         $objPHPExcel->getActiveSheet()->SetCellValue('H5','Eff.');
         $objPHPExcel->getActiveSheet()->SetCellValue('I5','Total Mach. Hours with Efficiency');
-        $objPHPExcel->getActiveSheet()->SetCellValue('J5','Total Hours/EAU');
-        $objPHPExcel->getActiveSheet()->SetCellValue('K5','Total Machining Cost @450 MHR');
-        $objPHPExcel->getActiveSheet()->SetCellValue('L5','Hand Work');
-        $objPHPExcel->getActiveSheet()->SetCellValue('M5','Additional Holes Using Jig');
-        $objPHPExcel->getActiveSheet()->SetCellValue('N5','Packing');
-        $objPHPExcel->getActiveSheet()->SetCellValue('O5','Transport');
-        $objPHPExcel->getActiveSheet()->SetCellValue('P5','HW+Packing+Transport');
-        $objPHPExcel->getActiveSheet()->SetCellValue('Q5','Cost Of Scrap');
-        $objPHPExcel->getActiveSheet()->SetCellValue('R5','Total Processing Cost');
-        $objPHPExcel->getActiveSheet()->SetCellValue('S5','With Profit @10%');
-        $objPHPExcel->getActiveSheet()->SetCellValue('T5','Total Cost');
+        $objPHPExcel->getActiveSheet()->SetCellValue('J5','Total Machining Cost @450 MHR');
+        $objPHPExcel->getActiveSheet()->SetCellValue('K5','Hand Work');
+        $objPHPExcel->getActiveSheet()->SetCellValue('L5','Additional Holes Using Jig');
+        $objPHPExcel->getActiveSheet()->SetCellValue('M5','Packing');
+        $objPHPExcel->getActiveSheet()->SetCellValue('N5','Transport');
+        $objPHPExcel->getActiveSheet()->SetCellValue('O5','HW+Packing+Transport');
+        $objPHPExcel->getActiveSheet()->SetCellValue('P5','Cost Of Scrap');
+        $objPHPExcel->getActiveSheet()->SetCellValue('Q5','Total Processing Cost');
+        $objPHPExcel->getActiveSheet()->SetCellValue('R5','With Profit @10%');
+        $objPHPExcel->getActiveSheet()->SetCellValue('S5','Total Cost');
 
 
 
@@ -87,22 +86,21 @@ $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->SetCellValue('G6','=E6/C6');
         $objPHPExcel->getActiveSheet()->SetCellValue('H6',$efficiency);
         $objPHPExcel->getActiveSheet()->SetCellValue('I6','=(F6+G6)+(100-H6)/100*(F6+G6)');
-        $objPHPExcel->getActiveSheet()->SetCellValue('J6','');
-        $objPHPExcel->getActiveSheet()->SetCellValue('K6','=I6*450');
-        $objPHPExcel->getActiveSheet()->SetCellValue('L6',$handwork);
-        $objPHPExcel->getActiveSheet()->SetCellValue('M6',$holes);
-        $objPHPExcel->getActiveSheet()->SetCellValue('N6',$packing);
-        $objPHPExcel->getActiveSheet()->SetCellValue('O6',$transportation);
-        $objPHPExcel->getActiveSheet()->SetCellValue('P6','=N6+O6+L6');
-        $objPHPExcel->getActiveSheet()->SetCellValue('Q6',$costofscrap);
-        $objPHPExcel->getActiveSheet()->SetCellValue('R6','=K6+P6-Q6');
-        $objPHPExcel->getActiveSheet()->SetCellValue('S6','=R6*0.1');
-        $objPHPExcel->getActiveSheet()->SetCellValue('T6','=S6+R6');
+        $objPHPExcel->getActiveSheet()->SetCellValue('J6','=I6*575');
+        $objPHPExcel->getActiveSheet()->SetCellValue('K6',$handwork);
+        $objPHPExcel->getActiveSheet()->SetCellValue('L6',$holes);
+        $objPHPExcel->getActiveSheet()->SetCellValue('M6',$packing);
+        $objPHPExcel->getActiveSheet()->SetCellValue('N6',$transportation);
+        $objPHPExcel->getActiveSheet()->SetCellValue('O6','=K6+N6+M6+L6');
+        $objPHPExcel->getActiveSheet()->SetCellValue('P6',$costofscrap);
+        $objPHPExcel->getActiveSheet()->SetCellValue('Q6','=J6+O6-P6');
+        $objPHPExcel->getActiveSheet()->SetCellValue('R6','=Q6*0.1');
+        $objPHPExcel->getActiveSheet()->SetCellValue('S6','=R6+Q6');
 
         if($pdesc!='')
         {
 
-        	$pdesce=explode('.', $pdesc);
+        	$pdesce=explode('|', $pdesc);
         }
         $i=0;
         $j=10;
@@ -115,8 +113,8 @@ $objPHPExcel->setActiveSheetIndex(0);
 
         
 ///cell formating
-        $objPHPExcel->getActiveSheet()->getStyle('T6')->getNumberFormat()->setFormatCode('0.00');
-        $objPHPExcel->getActiveSheet()->getStyle('E6')->getNumberFormat()->setFormatCode('0.000');
+        $objPHPExcel->getActiveSheet()->getStyle('S6')->getNumberFormat()->setFormatCode('0.00');
+        $objPHPExcel->getActiveSheet()->getStyle('E6')->getNumberFormat()->setFormatCode('0.00');
         $styleArray = array(
     		'font'  => array(
         	'bold'  => true,
@@ -133,7 +131,7 @@ $objPHPExcel->setActiveSheetIndex(0);
     )
   )
 );
-        $objPHPExcel->getActiveSheet()->getStyle('A5:T6')->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle('A5:S6')->applyFromArray($styleArray);
 
 
 $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);

@@ -48,7 +48,7 @@ p { font-weight: bold; clear: both; }
       if(quote[0]=="yes")
       {
        $('#cdate').val(quote[1]);
-       $('#pdesc').text(quote[2]);
+       $('#pdesc').val(quote[2]);
        $('#eau').val(quote[3]);
        $('#bsize').val(quote[4]);
        $('#nos').val(quote[5]);
@@ -60,6 +60,7 @@ p { font-weight: bold; clear: both; }
        $('#packing').val(quote[11]);
        $('#transport').val(quote[12]);
        $('#cscrap').val(quote[13]);
+       $('#qid').val(quote[15]);
        var path='<a href="/enquiry/'+quote[14]+'" target="_NEW">Part Reference Image</a>'
        console.log(path);
        $('#refimage').html(path)
@@ -68,7 +69,7 @@ p { font-weight: bold; clear: both; }
 
       }else{
        $('#cdate').val('');
-       $('#pdesc').text('');
+       $('#pdesc').val('');
        $('#eau').val('');
        $('#bsize').val('1');
        $('#nos').val('1');
@@ -81,6 +82,7 @@ p { font-weight: bold; clear: both; }
        $('#transport').val('0');
        $('#cscrap').val('0');
        $('#refimage').text('');
+       $('#qid').val('');
       updateall();
       }
 
@@ -100,7 +102,7 @@ $('#drawing').click(function(){
       if(quote[0]=="yes")
       {
        $('#cdate').val(quote[1]);
-       $('#pdesc').text(quote[2]);
+       $('#pdesc').val(quote[2]);
        $('#eau').val(quote[3]);
        $('#bsize').val(quote[4]);
        $('#nos').val(quote[5]);
@@ -112,6 +114,7 @@ $('#drawing').click(function(){
        $('#packing').val(quote[11]);
        $('#transport').val(quote[12]);
        $('#cscrap').val(quote[13]);
+       $('#qid').val(quote[15]);
        var path='<a href="/enquiry/'+quote[14]+'" target="_NEW">Part Reference Image</a>'
        console.log(path);
        $('#refimage').html(path)
@@ -119,7 +122,7 @@ $('#drawing').click(function(){
 
       }else{
        $('#cdate').val('');
-       $('#pdesc').text('');
+       $('#pdesc').val('');
        $('#eau').val('');
        $('#bsize').val('1');
        $('#nos').val('1');
@@ -132,6 +135,7 @@ $('#drawing').click(function(){
        $('#transport').val('0');
        $('#cscrap').val('0');
        $('#refimage').text('');
+       $('#qid').val(quote['']);
       updateall();
       }
 
@@ -252,7 +256,7 @@ function updateall(){
       $('#cytime').text(totaltimeperpart);
       var totaltimeperpartwe=parseFloat((totaltimeperpart*1)+(totaltimeperpart*(100-effy)/100)).toFixed(2);
       $('#tmwe').text(totaltimeperpartwe);
-      var tcost=totaltimeperpartwe*450;
+      var tcost=totaltimeperpartwe*575;
       $('#tmcost').text(tcost);
       var tostall=(tcost*1)+(packing*1)+(transport*1)+(holes*1)+(transport*1)+(hwork*1)-(scrap*1);
       $('#tcost').text(tostall);
@@ -301,7 +305,7 @@ function updateall(){
    <label>Cost Break Up</label>
    <br>
 <table border="1">
-<tr><th>EAU</th><th>Batch Size</th><th>No of Settings</th><th>Total Setting Time/Batch</th><th>Setting Time/Part</th><th>Actual Cutting Time</th><th>Cycle Time/Part</th><th>Efficiency</th><th>Total Mach Hours With Effi.</th><th>Total Hours/EAU</th><th>Total Mach Cost @450</th><th>Hand Work</th><th>Additional Holes using Jig</th><th>Packing</th><th>Transport</th><th>Hw+Packing+Transport</th><th>Cost Of Scrap</th><th>Total Processing Cost</th><th>Profit@10%</th><th>Total Cost</th></tr>
+<tr><th>EAU</th><th>Batch Size</th><th>No of Settings</th><th>Total Setting Time/Batch</th><th>Setting Time/Part</th><th>Actual Cutting Time</th><th>Cycle Time/Part</th><th>Efficiency</th><th>Total Mach Hours With Effi.</th><th>Total Mach Cost @575</th><th>Hand Work</th><th>Additional Holes using Jig</th><th>Packing</th><th>Transport</th><th>Hw+Packing+Transport</th><th>Cost Of Scrap</th><th>Total Processing Cost</th><th>Profit@10%</th><th>Total Cost</th></tr>
 
 <tr>
   <td><input type="text" id="eau" name="eau" class="number" size="4"></td>
@@ -313,7 +317,6 @@ function updateall(){
   <td><div id="cytime"> </div></td>
   <td><input type="text" id="effy" name="effy" class="number" size="3" value="90"></td>
   <td><div id="tmwe"> </div></td>
-  <td><div id="thours"> </div></td>
   <td><div id="tmcost"> </div></td>
   <td><input type="text" id="hwork" name="hwork" class="number" size="4" value="0"></td>
   <td><input type="text" id="holes" name="holes" class="number" size="4" value="0"></td>
@@ -331,7 +334,7 @@ function updateall(){
 
 </legend>
 
-
+<input type="hidden" id="qid" name="qid">
  <p>
      <input class="submit" id="addp" type="submit" value="Submit"/>
      <input class="submit" type="button" id="excel" name="excel" value="Excel Output"/>

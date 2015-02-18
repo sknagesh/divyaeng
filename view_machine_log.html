@@ -25,7 +25,7 @@ p { font-weight: bold; clear: both; }
   $(document).ready(function(){
   	$("#machine").load('get_machine.php');  //load customer list from get_customer.php
   	$("#activity").load('get_activity.php');
-	$('#footer').load("get_log_for_machine.php");
+	$('#footer').load("get_log_for_machine.php?sa=0");
 	$('#machine').click(function(){
 
 	var mid=$('#Machine_ID').val();
@@ -33,7 +33,8 @@ p { font-weight: bold; clear: both; }
 	var edate=$('#edatedb').val();
 	var aid=$('#Activity_ID').val();
 	var st=$('#stext').val();
-	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st;
+	var sa=$("input[name=convert]:checked").val();
+	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st+"&sa="+sa;
 	
 	$('#footer').load(url);
 
@@ -46,7 +47,8 @@ p { font-weight: bold; clear: both; }
 	var edate=$('#edatedb').val();
 	var aid=$('#Activity_ID').val();
 	var st=$('#stext').val();
-	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st;
+	var sa=$("input[name=convert]:checked").val();
+	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st+"&sa="+sa;
 	
 	$('#footer').load(url);
 
@@ -60,12 +62,26 @@ p { font-weight: bold; clear: both; }
 	var edate=$('#edatedb').val();
 	var aid=$('#Activity_ID').val();
 	var st=$('#stext').val();
-	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st;
+	var sa=$("input[name=convert]:checked").val();
+	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st+"&sa="+sa;
 	
 	$('#footer').load(url);
 
 	});		
 
+	$('input[name=convert]').click(function(){
+
+	var mid=$('#Machine_ID').val();
+	var sdate=$('#sdatedb').val();
+	var edate=$('#edatedb').val();
+	var aid=$('#Activity_ID').val();
+	var st=$('#stext').val();
+	var sa=$("input[name=convert]:checked").val();
+	var url="get_log_for_machine.php?mid="+mid+"&sdate="+sdate+"&edate="+edate+"&aid="+aid+"&stext="+st+"&sa="+sa;
+	
+	$('#footer').load(url);
+
+	});		
 
 $(function () {
 	$('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#sdatedb', altFormat: 'Y-O-D', defaultDatetime: '-7d'});
@@ -111,6 +127,11 @@ return {minDatetime: $('#sdate').datetimeEntry('getDatetime')};
    <p>
      <label>Filter for</label>
      <input type="text" id="stext" name="stext" size="25"/>
+ </p>
+   <p>
+     <label>Show All Entries</label>
+     <input type="radio" name="convert" id="convert" value="0" checked>No</input>
+	<input type="radio" name="convert" value="1">Yes</input>
  </p>
 
  </fieldset>

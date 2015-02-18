@@ -9,6 +9,7 @@ if(isSet($_GET['sdate'])){$sdate=$_GET['sdate'];}else{$sdate="";}
 if(isSet($_GET['edate'])){$edate=$_GET['edate'];}else{$edate="";}
 if(isSet($_GET['aid'])){$aid=$_GET['aid'];}else{$aid="";}
 if(isSet($_GET['stext'])){$stext=$_GET['stext'];}else{$stext="";}
+if(isSet($_GET['sa'])){$sa=$_GET['sa'];}else{$sa="";}
 
 if($mid!=''){$m=" AND actl.Machine_ID='$mid' ";}else{$m='';}
 
@@ -18,7 +19,9 @@ if($edate!=''){$ed=" AND Start_Date_Time<='$edate' ";}else{$ed='';}
 
 if($aid!=''){$a=" AND actl.Activity_ID='$aid' ";}else{$a='';}
 
-if(($mid=='')&&($sdate=='')&&($edate=='')&&($aid=='')){$lim='LIMIT 50';}else{$lim='';}
+//if(($mid=='')&&($sdate=='')&&($edate=='')&&($aid=='')){$lim='LIMIT 50';}else{$lim='';}
+
+if($sa=='0'){$lim=' LIMIT 50';}else{$lim='';}
 
 //if($stext!=''){$st="AND (Remarks LIKE '%$stext%')";}else{$st='';}
 
@@ -95,7 +98,7 @@ while ($row = mysql_fetch_assoc($resa))
 	{
 
 
-		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name, Operation_Desc,Quantity,pro.Program_NO FROM Production as pro 
+		$sq="SELECT pro.Batch_ID,Drawing_NO,Mfg_Batch_NO,Component_Name,Batch_Remarks, Operation_Desc,Quantity,pro.Program_NO FROM Production as pro 
 		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=pro.Batch_ID 
 		INNER JOIN Batch_NO as bn ON bn.Batch_ID=bmc.Batch_ID
 		INNER JOIN MI_Drg_Qty as mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID
@@ -115,7 +118,7 @@ while ($row = mysql_fetch_assoc($resa))
 	{
 
 
-		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Operation_Description,Quantity,np.Program_NO FROM NonProduction as np
+		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Batch_Remarks,Operation_Description,Quantity,np.Program_NO FROM NonProduction as np
 		INNER JOIN Component as comp ON comp.Drawing_ID=np.Drawing_ID 
 		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=np.Batch_ID 
 		WHERE Activity_Log_ID=$row[Activity_Log_ID] ;";
@@ -164,7 +167,7 @@ while ($row = mysql_fetch_assoc($resa))
 	{
 
 
-		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Operation_Description,Quantity,np.Program_NO FROM NonProduction as np
+		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Batch_Remarks,Operation_Description,Quantity,np.Program_NO FROM NonProduction as np
 		INNER JOIN Component as comp ON comp.Drawing_ID=np.Drawing_ID 
 		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=np.Batch_ID 
 		WHERE Activity_Log_ID=$row[Activity_Log_ID];";
@@ -183,7 +186,7 @@ while ($row = mysql_fetch_assoc($resa))
 	{
 
 
-		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Operation_Description,Quantity,np.Program_NO FROM NonProduction as np
+		$sq="SELECT np.Drawing_ID,Drawing_NO,Component_Name,Mfg_Batch_NO,Batch_Remarks,Operation_Description,Quantity,np.Program_NO FROM NonProduction as np
 		INNER JOIN Component as comp ON comp.Drawing_ID=np.Drawing_ID 
 		INNER JOIN Batch_NO AS bn ON bn.Batch_ID=np.Batch_ID 
 		WHERE Activity_Log_ID=$row[Activity_Log_ID];";

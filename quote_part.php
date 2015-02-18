@@ -3,13 +3,13 @@ include('dewdb.inc');
 require_once('../tcpdf/tcpdf.php');
 
 $uploadDir = '/home/www/enquiry/';
-//print_r($_POST);
+print_r($_POST);
 print("Saving quote to database");
 $cxn = mysql_connect($dewhost,$dewname,$dewpswd) or die(mysql_error());
 mysql_select_db('Divyaeng',$cxn) or die("error opening db: ".mysql_error());
 
-if(isSet($_POST['Drawing_ID'])){$drawingid=$_POST['Drawing_ID'];}else{$drawingid='';}
-if(isSet($_POST['Enquiry_ID'])){$enquiryid=$_POST['Enquiry_ID'];}else{$enquiryid='';}
+if(isSet($_POST['Drawing_ID'])){$drawingid=$_POST['Drawing_ID'];}else{$drawingid='0';}
+if(isSet($_POST['Enquiry_ID'])){$enquiryid=$_POST['Enquiry_ID'];}else{$enquiryid='0';}
 $cdatedb=$_POST['cdatedb'];
 $cdate=$_POST['cdate'];
 $pdesc=$_POST['pdesc'];
@@ -24,6 +24,7 @@ if(isSet($_POST['holes'])){$holes=$_POST['holes'];}else{$holes='';}
 if(isSet($_POST['packing'])){$packing=$_POST['packing'];}else{$packing='';}
 if(isSet($_POST['transport'])){$transportation=$_POST['transport'];}else{$transportation='';}
 if(isSet($_POST['cscrap'])){$costofscrap=$_POST['cscrap'];}else{$costofscrap='';}
+if(isSet($_POST['qid'])){$qid=$_POST['qid'];}else{$qid='';}
 
 if($enquiryid!='')
 {
@@ -67,7 +68,8 @@ if((isSet($_FILES['drg']['name']))&&$_FILES['drg']['name']!='')
 }else{$drgfileName='';}
 
 
-
+if($qid=='')
+{
 
 $q1="INSERT INTO Quote (Drawing_ID,
 						Enquiry_ID,
@@ -102,11 +104,29 @@ $q1="INSERT INTO Quote (Drawing_ID,
 					   '$costofscrap',
 					   '$drgfileName');";
 
-$r1 = mysql_query($q1, $cxn) or die(mysql_error($cxn));
-/*
-		$ppath='/enquiry/'.$pdfname;
-	print("<a class=\"pdf\" href=\"$ppath\" target=\"_NEW\" title=\"Opens PDF in a new TAB\">Clarification Request  ///out put file name is $pdfsname</a>");
-*/
+}else{
+$q1="UPDATE Quote SET Drawing_ID=$drawingid,
+						Enquiry_ID=$enquiryid,
+						Quote_Date='$cdatedb',
+						Quote_Notes='$pdesc',
+						EAU=$eau,
+						Batch_Size=$batchsize,
+						No_Of_Settings=$noofsettings,
+						Total_Batch_Setting_Time=$totalbatchsettingtime,
+						Actual_Cutting_Time=$actualcuttingtime,
+						Efficiency=$efficiency,
+						Hand_Work=$handwork,
+						Holes=$holes,
+						Packing=$packing,
+						Transportation=$transportation,
+						Cost_Of_Scrap=$costofscrap
+						WHERE Quote_ID=$qid;";
 
+
+}
 //	print($q1);
+
+$r1 = mysql_query($q1, $cxn) or die(mysql_error($cxn));
+
+
 ?>

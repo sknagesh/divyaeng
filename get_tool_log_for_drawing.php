@@ -7,7 +7,7 @@ if(isSet($_GET['bid'])){$bid=$_GET['bid'];}else{$bid="";}
 
 if($drawingid!='')
 {
-$didd="WHERE mdq.Drawing_ID='$drawingid'";
+$didd="WHERE comp.Drawing_ID='$drawingid'";
 }else{
 $didd="";
 }
@@ -20,7 +20,7 @@ $batch="AND tc.Batch_ID='$bid'";
 $batch="";
 }
 
-$query="SELECT actl.Activity_Log_ID,Machine_Name,tb.Brand_Description as obd,cb.Brand_Description as cbd,Job_NO,
+$query="SELECT actl.Activity_Log_ID,Machine_Name,tb.Brand_Description as obd,cb.Brand_Description as cbd,Job_NO,ot.Tool_Price,
 				Mfg_Batch_NO,Operation_Desc,Reason,Operator_Name,Remarks,New_Tool_condition as ntc,
 				Original_Tool_Condition as otc,Start_Date_Time,Component_Name,Drawing_NO,ot.Tool_Desc as tod,
 				ct.Tool_Desc as ctd FROM ToolChange AS tc
@@ -34,9 +34,7 @@ $query="SELECT actl.Activity_Log_ID,Machine_Name,tb.Brand_Description as obd,cb.
 		 		INNER JOIN Tool as ct ON ct.Tool_ID=tc.Changed_Tool_ID
 		 		INNER JOIN Tool_Brand as tb ON tb.Brand_ID=ot.Brand_ID
 		 		INNER JOIN Tool_Brand as cb ON cb.Brand_ID=ct.Brand_ID
-		 		INNER JOIN BNo_MI_Challans AS bmc ON bmc.Batch_ID=tc.Batch_ID
-				INNER JOIN MI_Drg_Qty AS mdq ON mdq.MI_Drg_Qty_ID=bmc.MI_Drg_Qty_ID 
-				INNER JOIN Component AS comp ON comp.Drawing_ID=mdq.Drawing_ID
+				INNER JOIN Component AS comp ON comp.Drawing_ID=ope.Drawing_ID
 		  		$didd $batch ORDER BY Start_Date_Time DESC;";
 
 //print("$query<br>");
@@ -45,6 +43,8 @@ $res=mysql_query($query) or die(mysql_error());
 $r=mysql_num_rows($res);
 if($r!=0)
 {
+$tc=0;
+$ttt=0;
 	$c="q";
 print("<table cellspacing=\"1\">");
 print("<tr class=\"t\"><th>ID</th><th>Machine</th><th>Drawing No and Name</th><th>Operation</th><th>Batch NO</th><th>Job NO</th><th>Changed By</th><th>Change Date and Time</th>
@@ -58,8 +58,17 @@ print("<tr class=\"$c\">
 			<td>$row[Operator_Name]</td><td>$row[Start_Date_Time]</td><td>$row[obd] Make $row[tod] / $row[otc]</td>
 			<td>$row[cbd] Make $row[ctd] / $row[ntc]</td><td>$row[Reason]</td><td>$row[Remarks]</td></tr>");
 	if($c=="q"){$c="s";}else{$c="q";}
+	if($row['Reason']=='Insert Index')
+	{
+		$ttt=450;
+	}else{
+		$ttt=0;
+	}
+	$tc+=$row['Tool_Price'];
+	$tc+=$ttt;
 }
 print("</table>");
+print("Total Tooling Cost Rs $tc/-");
 }
 else {
 	print("No tools Changed For This Component/Batch");

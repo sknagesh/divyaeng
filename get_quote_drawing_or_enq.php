@@ -14,7 +14,7 @@ if(isSet($_GET['id'])){$id=$_GET['id'];}else{$id='';}
 
 if($t==1)
 {
-	$q2="SELECT *,DATE_FORMAT(Quote_Date,'%d/%m/%Y') as d FROM Quote WHERE Enquiry_ID='$id';";
+	$q2="SELECT *,DATE_FORMAT(Quote_Date,'%d-%m-%Y') as d FROM Quote WHERE Enquiry_ID='$id';";
 	//print("query=$q2");
 	$r2 = mysql_query($q2, $cxn) or die(mysql_error($cxn));
 	$res2=mysql_fetch_assoc($r2);
@@ -34,10 +34,11 @@ if(mysql_num_rows($r2))
 	$transport=$res2['Transportation'];
 	$cscrap=$res2['Cost_Of_Scrap'];
 	$path=$res2['Quote_Image_Path'];
+	$qid=$res2['Quote_ID'];
 }
 }else if($t==2)
 {
-	$q2="SELECT *,DATE_FORMAT(Quote_Date,'%d/%m/%Y') as d FROM Quote WHERE Drawing_ID='$id';";
+	$q2="SELECT *,DATE_FORMAT(Quote_Date,'%d-%m-%Y') as d FROM Quote WHERE Drawing_ID='$id';";
 	$r2 = mysql_query($q2, $cxn) or die(mysql_error($cxn));
 	$res2=mysql_fetch_assoc($r2);
 if(mysql_num_rows($r2))
@@ -56,6 +57,7 @@ if(mysql_num_rows($r2))
 	$transport=$res2['Transportation'];
 	$cscrap=$res2['Cost_Of_Scrap'];
 	$path=$res2['Quote_Image_Path'];
+	$qid=$res2['Quote_ID'];
 }
 }else{
 		$qdate='';
@@ -67,8 +69,8 @@ if(mysql_num_rows($r2))
 
 if($qdate!='')
 {
-////    0        1              2           3           4           5          6            7             8           9            10            11               12               13           14
-$data="yes<|>".$qdate."<|>".$qnotes."<|>".$eau."<|>".$bsize."<|>".$nos."<|>".$stime."<|>".$actime."<|>".$effy."<|>".$hwork."<|>".$holes."<|>".$packing."<|>".$transport."<|>".$cscrap."<|>".$path;
+////    0        1              2           3           4           5          6            7             8           9            10            11               12               13           14       15
+$data="yes<|>".$qdate."<|>".$qnotes."<|>".$eau."<|>".$bsize."<|>".$nos."<|>".$stime."<|>".$actime."<|>".$effy."<|>".$hwork."<|>".$holes."<|>".$packing."<|>".$transport."<|>".$cscrap."<|>".$path."<|>".$qid;
 }else{
 	$data="no<|>";
 }

@@ -4,9 +4,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Open Challan Details</title>
+        <link href="select2.css" rel="stylesheet"/>
         <script src="jquery.js"></script>
         <script src="jquery.validate.js"></script>
         <script src="jQuery.download.js"></script>
+        <script src="select2.min.js"></script>
 
   <style type="text/css">
 * { font-family: Verdana; font-size: 14px; }
@@ -28,7 +30,7 @@ p { font-weight: bold; clear: both; }
  <script type="text/javascript">
  	$(document).ready(function(){
   	$("#customer").load('get_customer.php');
-
+	var pageSize = 20;
   		$('#customer').click(function(){
 
 	var cid=$('#Customer_ID').val();
@@ -53,6 +55,50 @@ p { font-weight: bold; clear: both; }
 		
 	});
 
+	$('#chln').click(function(){
+		var cid=$('#chln').val();
+		
+		
+		if(cid!='')
+		{
+			url="get_challan_dispatch_details.php?cid="+cid;
+		$('#footer').load(url);		
+
+
+		}
+
+		
+	});
+
+$('#chln').select2({
+	placeholder: 'Type Challan Number',
+	allowClear: true,
+	minimumInputLength: 2,
+    multiple: false,
+    width: 'resolve',
+    ajax: {
+        dataType: "json",
+        type:'POST',
+        url: 'get_challan-select2.php',
+		data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    //Used to determine whether or not there are more results available,
+                    //and if requests for more data should be sent in the infinite scrolling                    
+                    var more = (page * pageSize) < data.Total; 
+                    return { results: data};
+                }
+}
+
+});
+
+
+
 
 
 });
@@ -61,6 +107,7 @@ p { font-weight: bold; clear: both; }
     <body>
 <fieldset>
 <legend>Select Challan For dispatch Details</legend>
+<label>Enter Challan Number </label> <input type="text" id="chln" size="25" name="chln">
 <div id="customer"> </div>
 <div id="challans"> </div>
 </fieldset>

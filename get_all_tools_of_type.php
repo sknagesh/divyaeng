@@ -8,9 +8,21 @@ if(isSet($_GET['tdia'])){$tdia=$_GET['tdia'];}else{$tdia="";}
 if(isSet($_GET['crnr'])){$crnr=$_GET['crnr'];}else{$crnr="";}
 if(isSet($_GET['fl'])){$fl=$_GET['fl'];}else{$fl="";}
 
+
+
 if($crnr!='')
 {
-	$crnr=" AND Tool_Corner_Rad='$crnr' ";
+
+	if(!is_numeric($crnr))
+	{
+		$crnrt=explode('-', $crnr);
+	$crnr=" AND Tool_Corner_Rad>='$crnrt[0]' AND Tool_Corner_Rad<='$crnrt[1]' ";			
+
+	}else{
+	$crnr=" AND Tool_Corner_Rad='$crnr' ";		
+	}
+
+
 }
 
 if($ttypeid!='')
@@ -21,7 +33,15 @@ if($ttypeid!='')
 
 if($tdia!='')
 {
-	$tdia=" AND Tool_Dia='$tdia' ";
+	if(!is_numeric($tdia))
+	{
+		$tdiat=explode('-', $tdia);
+
+		$tdia=" AND Tool_Dia>='$tdiat[0]' AND Tool_Dia<='$tdiat[1]' ";
+	}else{
+		$tdia=" AND Tool_Dia='$tdia' ";
+	}
+	
 }
 
 if($fl!='')

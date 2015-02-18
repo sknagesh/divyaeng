@@ -25,6 +25,7 @@ p { font-weight: bold; clear: both; }
   $(document).ready(function(){
 
   		$("#footer").load('get_activity_summary.php');
+      $("#footer2").load('get_production_status.php');
 
     $('#edate').keyup(function(){
 
@@ -32,7 +33,7 @@ p { font-weight: bold; clear: both; }
       var edate=$('#edatedb').val();
       console.log("sdate="+sdate+"edate="+edate);
 
-      var url="get_activity_summary.php?sdate="+sdate+"&edate="+edate;
+      var url="get_activity_summary.php?sdate="+encodeURIComponent(sdate)+"&edate="+encodeURIComponent(edate);
       $("#footer").load(url)
 
       });
@@ -41,9 +42,9 @@ p { font-weight: bold; clear: both; }
       });
 
 $(function () {
-  $('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y',altField: '#sdatedb', altFormat: 'Y-O-D'});
+  $('#sdate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma',altField: '#sdatedb', altFormat: 'Y-O-D H:M:S'});
   
-  $('#edate').datetimeEntry({datetimeFormat: 'D-O-Y', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D'});
+  $('#edate').datetimeEntry({datetimeFormat: 'D-O-Y H:Ma', beforeShow: customRange,altField: '#edatedb', altFormat: 'Y-O-D H:M:S'});
 
 
  

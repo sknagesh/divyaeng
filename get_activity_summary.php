@@ -35,7 +35,7 @@ WHERE actl.Machine_ID=$machineid[$x] AND Start_Date_Time>='$sdate' AND End_Date_
 //print($query);
 
 $res=mysql_query($query) or die(mysql_error());
-$r=mysql_num_rows();
+$r=mysql_num_rows($res);
 	while($row=mysql_fetch_assoc($res))
 	{
 if($row['Production']!=''){$pb=$row['Production']/60;}else{$pb=0;}
